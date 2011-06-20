@@ -1,0 +1,11 @@
+.DS_Store
+Icon?
+# Settings for TextMate FTP
+.ftpssh_settings
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes

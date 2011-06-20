@@ -1,0 +1,36 @@
+@import <Foundation/Foundation.j>
+@import <AppKit/AppKit.j>
+@import "../CoreLecture/CoreLecture.j"
+@import "LLPresentationController.j"
+
+@implementation LLPreviewEventHandler : CPObject
+{
+	
+}
+
+-(void)slideView:(CCSlideView)slideView mouseClickedAtPoint:(CGPoint)point
+{
+	
+}
+
+-(void)slideViewDidPressEscapeKey:(CCSlideView)slideView
+{
+	[[[CPApplication sharedApplication] delegate] endPreview];
+}
+
+-(void)slideViewDidPressRightArrowKey:(CCSlideView)slideView
+{
+	[[LLPresentationController sharedController] moveToNextSlide];
+}
+
+-(void)slideViewDidPressLeftArrowKey:(CCSlideView)slideView
+{
+	[[LLPresentationController sharedController] moveToPreviousSlide];
+}
+
+-(void)slideView:(CCSlideView)slideView didPressKey:(char)key
+{
+	//	Dont need to do anything special
+}
+
+@end
