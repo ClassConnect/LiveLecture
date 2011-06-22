@@ -143,23 +143,16 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 -(void)setupMenuBar {
 	[CPMenu setMenuBarVisible:YES];
 	var menu = [CPApp mainMenu];
-	[[menu itemWithTitle:"New"] setKeyEquivalent:"n"];
-	[[menu itemWithTitle:"New"] setKeyEquivalentModifierMask:CPCommandKeyMask];
-	[[menu itemWithTitle:"New"] setTarget:_controller];
-	[[menu itemWithTitle:"New"] setAction:@selector(new)];
-	[[menu itemWithTitle:"Open"] setKeyEquivalent:"o"];
-	[[menu itemWithTitle:"Open"] setKeyEquivalentModifierMask:CPCommandKeyMask];
-	[[menu itemWithTitle:"Open"] setTarget:_controller];
-	[[menu itemWithTitle:"Open"] setAction:@selector(open)];
+	//	Remove the items I don't want
+	[menu removeItem:[menu itemWithTitle:"New"]];
+	[menu removeItem:[menu itemWithTitle:"Open"]];
+	//	Get rid of the submenu for save, we still want the regular button
+	[[menu itemWithTitle:"Save"] setSubmenu:nil];
+	//	Set the keyboard shortcut and target/action
 	[[menu itemWithTitle:"Save"] setKeyEquivalent:"s"];
 	[[menu itemWithTitle:"Save"] setKeyEquivalentModifierMask:CPCommandKeyMask];
 	[[menu itemWithTitle:"Save"] setTarget:[LLOnlinePersistenceHandler sharedHandler]];
 	[[menu itemWithTitle:"Save"] setAction:@selector(save)];
-//	[[menu itemWithTitle:"Save As"] setKeyEquivalent:"S"];
-//	[[menu itemWithTitle:"Save As"] setKeyEquivalentModifierMask:CPCommandKeyMask];
-//	[[menu itemWithTitle:"Save As"] setTarget:controller];
-//	[[menu itemWithTitle:"Save As"] setAction:@selector(saveas)];
-	
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar {

@@ -8,18 +8,15 @@
 @import "CCWidgetLayer.j"
 @import "CCPictureWidget.j"
 
-var CCPictureWidgetLayerLoadingSpinner = nil;
-
 @implementation CCPictureWidgetLayer : CCWidgetLayer {
 	CPImage _image;
 }
 
-+(void)initialize
-{
-	
-	if(self != [CCPictureWidgetLayer class])
-		return;
-}
+// +(void)initialize
+// {
+// 	if(self != [CCPictureWidgetLayer class])
+// 		return;
+// }
 
 -(void)imageDidLoad:(CPImage)image {
 	[self setNeedsDisplay];
@@ -34,10 +31,10 @@ var CCPictureWidgetLayerLoadingSpinner = nil;
 	}
 	// else
 	// {
-	// 	CGContextSetFillColor([CPColor whiteColor]);
-	// 	CGContextFillRect([self bounds]);
 	// 	CGContextSetFillColor([CPColor grayColor]);
-	// 	CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
+	// 	CGContextFillRect([self bounds]);
+	// 	// CGContextSetFillColor([CPColor grayColor]);
+	// 	// CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
 	// }
 }
 

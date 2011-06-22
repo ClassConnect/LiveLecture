@@ -409,10 +409,10 @@ var TextLayerIsMSIE = NO;
 	var keyCode = [event keyCode];
 	var character = [event characters];
 	var flags = [event modifierFlags];
-	// CPLog("KeyCode: "+keyCode);
-	// CPLog("Character: "+character);
-	// CPLog("Character Ignoring Modifiers: "+[event charactersIgnoringModifiers]);
-	// CPLog("-----");
+	alert("CPRightArrowFunctionKey: "+(character == CPRightArrowFunctionKey));
+	// alert("KeyCode: "+keyCode);
+	// alert("Character: "+character);
+	// alert("Character Ignoring Modifiers: "+[event charactersIgnoringModifiers]);
 	if(flags & (CPCommandKeyMask | CPControlKeyMask))
 			if((keyCode < 36 || keyCode > 41) && !kEmacsConversion[keyCode] && !kValidCommandKeys[character])
 				return;
@@ -446,13 +446,13 @@ var TextLayerIsMSIE = NO;
 	if([self hasSelection] && keyCode != 9) {
 			switch(keyCode) {
 				case 8:
-				case 46: 	if(character != '.')
-							{
+				case 46: 	//if(character != '.')
+							//{
 								[self deleteSelection];
 								[self positionCaret];
 								[self redrawSelection];
 								return;
-							}
+							// }
 							// else
 							// {
 							// 	[self deleteSelection];
@@ -469,11 +469,11 @@ var TextLayerIsMSIE = NO;
 				case 37:
 				case 38:
 				case 39:
-				case 40:	if(character == "'")
-							{
-								[self deleteSelection];
-								break;
-							}
+				case 40:	//if(character == "'")
+							//{
+							//	[self deleteSelection];
+							//	break;
+							//}
 							if(flags & CPCommandKeyMask)
 							{
 								[self moveCaret:kArrowConversion[keyCode] extendSelection:(flags & CPShiftKeyMask)];
@@ -1444,8 +1444,8 @@ var TextLayerIsMSIE = NO;
 
     character = [self binarySearch:element.childNodes compare:targetComparator args:relativeY];
 		
-		if(character)//	CCEdit
-		{//	CCEdit
+	if(character)//	CCEdit
+	{//	CCEdit
 	    var leftOffset = character.offsetLeft;
 	    var leftCharacter = character.previousSibling;
 	    while(leftCharacter && leftCharacter.offsetLeft < leftOffset)
@@ -1473,7 +1473,7 @@ var TextLayerIsMSIE = NO;
 	        if(character && character.innerHTML == TextLayerNewLineElement.innerHTML)
 	            character = character.previousSibling;
 	    }
-		}//	CCEdit
+	}//	CCEdit
 
     return { character:character, paragraph:element };
 }

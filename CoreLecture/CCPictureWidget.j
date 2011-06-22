@@ -13,7 +13,7 @@
 
 -(id)initWithWidget:(CCPictureWidget)widget
 {
-	if(self = [self init])
+	if(self = [super initWithWidget:widget])
 	{
 		[self setImagePath:[[widget imagePath] copy]];
 	}

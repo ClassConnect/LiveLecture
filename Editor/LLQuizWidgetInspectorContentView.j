@@ -90,6 +90,13 @@
 
 -(void)controlTextDidChange:(CPTextField)field
 {
+	// [_widget setQuestion:[_questionField stringValue]];
+	// [_layer setQuestionText:[_questionField stringValue]];
+	// [[LLPresentationController sharedController] mainSlideContentDidChange];
+}
+
+-(void)controlTextDidEndEditing:(CPTextField)field
+{
 	[_widget setQuestion:[_questionField stringValue]];
 	[_layer setQuestionText:[_questionField stringValue]];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];

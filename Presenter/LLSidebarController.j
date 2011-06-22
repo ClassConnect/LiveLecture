@@ -52,7 +52,7 @@
 		[_accordionView addItem:tokItem];
 	if((rteenabled && [[LLUser currentUser] isTeacher]) || !rteenabled)
 		[_accordionView addItem:navItem];
-	if((rteenabled && [[LLUser currentUser] isTeacher]) || !rteenabled)
+	if((rteenabled && [[LLUser currentUser] isTeacher]))
 		[_accordionView addItem:stuItem];
 	[view addSubview:_accordionView];
 	[view addSubview:_buttonBar];

@@ -173,11 +173,12 @@
 {
 	if(self = [super initWithCoder:coder])
 	{	
-		_question = [coder decodeObjectForKey:@"question"];
-		_answers = [coder decodeObjectForKey:@"answers"];
+		_question = unescape([coder decodeObjectForKey:@"question"]);
+		_answers = [ ];
+		var escapedAnswers = [coder decodeObjectForKey:@"answers"];
+		for(var i = 0 ; i < [escapedAnswers count] ; i++)
+			_answers[i] = unescape(escapedAnswers[i]);
 		_selectedAnswer = [[coder decodeObjectForKey:@"selectedAnswer"] intValue];
-		_answerCount = [coder decodeObjectForKey:@"answerCount"];
-		[self fromStorage];
 	}
 	return self;
 }
@@ -185,11 +186,12 @@
 -(void)encodeWithCoder:(CPCoder)coder
 {
 	[super encodeWithCoder:coder];
-	[self toStorage];
-	[coder encodeObject:_question forKey:@"question"];
-	[coder encodeObject:_answers forKey:@"answers"];
+	[coder encodeObject:escape(_question) forKey:@"question"];
+	var escapedAnswers = [ ];
+	for(var i = 0 ; i < [_answers count] ; i++)
+		escapedAnswers[i] = escape(_answers[i]);
+	[coder encodeObject:escapedAnswers forKey:@"answers"];
 	[coder encodeObject:[CPNumber numberWithInt:_selectedAnswer] forKey:@"selectedAnswer"];
-	[coder encodeObject:_answerCount forKey:@"answerCount"];
 }
 
 @end

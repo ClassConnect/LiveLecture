@@ -67,7 +67,6 @@ var LLSlideDragType = "LLSlideDragType";
 -(void)reload
 {
 	[collection setContent:[[CPArray alloc] initWithArray:[[LLPresentationController sharedController] allSlides] copyItems:YES]];
-//	[collection reloadContent];
 }
 
 -(void)moveSlideAtIndex:(CPInteger)start toIndex:(CPInteger)finish
@@ -104,8 +103,10 @@ var LLSlideDragType = "LLSlideDragType";
 
 -(void)slideContentChanged
 {
-	var controller = [LLPresentationController sharedController];
-	[collection setContent:[[controller currentSlide] copy] forItemAtIndex:[controller currentSlideIndex]];
+	var controller = [LLPresentationController sharedController],
+		currentIndex = [controller currentSlideIndex];
+	[collection setContent:[[controller currentSlide] copy] forItemAtIndex:currentIndex];
+	[[[collection itemAtIndex:currentIndex] view] setSlideIndex:currentIndex];
 }
 
 -(void)setSelectedIndex:(int)index

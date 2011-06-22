@@ -203,7 +203,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[widget setLocation:CGPointMake(362,334)];
 	[widget setSize:CGRectMake(0,0,520,300)];
 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
-	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[mainSlideView slide]];
+//	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[[mainSlideView slide] copy]];
 }
 
 -(void)showThemeSelectionPanel
@@ -261,10 +261,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)showPictureURLPanel
 {
 	[self showModalAlertWithText:"Picture URL:"
-							 informativeText:"Make sure to include 'http://'"
-									 placeholder:"http://www.google.com/images/logos/ps_logo2.png"
-										 imageName:"alert_icon_picture.png"
-											callback:function(text){
+				 informativeText:"Make sure to include 'http://'"
+					 placeholder:"http://www.google.com/images/logos/ps_logo2.png"
+					   imageName:"alert_icon_picture.png"
+						callback:function(text){
 		//	Make new Picture Widget with the given URL
 		var widget = [[CCPictureWidget alloc] initWithPathToImage:text];
 		[widget setSize:CGRectMake(0,0,720,480)];
@@ -277,10 +277,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)showMovieURLPanel
 {
 	[self showModalAlertWithText:"Youtube ID:"
-							 informativeText:"http://www.youtube.com/watch?v=*This Text Here*"
-									 placeholder:"bESGLojNYSo"
-										 imageName:"alert_icon_movie.png"
-											callback:function(text){
+				 informativeText:"http://www.youtube.com/watch?v=*This Text Here*"
+					 placeholder:"bESGLojNYSo"
+					   imageName:"alert_icon_movie.png"
+						callback:function(text){
 		//	Make new Movie Widget with the given URL
 		var widget;
 		if(text.indexOf("youtube.com") == -1)
@@ -299,10 +299,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)showWebURLPanel
 {
 	[self showModalAlertWithText:"Website URL:"
-							 informativeText:""
-									 placeholder:"http://www.google.com"
-										 imageName:"alert_icon_website.png"
-											callback:function(text){
+				 informativeText:""
+					 placeholder:"http://www.google.com"
+					   imageName:"alert_icon_website.png"
+						callback:function(text){
 		//	Make new Web Widget with the given URL
 		if(text.indexOf("http://") != 0)
 			text = "http://"+text;
@@ -324,7 +324,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 //	----------------------------
 
 -(void)mainSlideContentDidChange {
-	[[_presentation slides] replaceObjectAtIndex:_currentSlideIndex withObject:[mainSlideView slide]];
+	[[_presentation slides] replaceObjectAtIndex:_currentSlideIndex withObject:[[mainSlideView slide] copy]];
 	[navigationController slideContentChanged];
 }
 

@@ -14,7 +14,6 @@
 
 //	Default implementation just adds "Layer" to the end of the widget class name
 //	So the layer class for CCMovieWidget is CCMovieWidgetLayer
-//	For now, there is an exception fro CCTextWidget, which uses TextLayer
 +(Class)layerClass
 {
 	return CPClassFromString(CPStringFromClass(self) + "Layer");

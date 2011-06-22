@@ -14,7 +14,6 @@
 @import "CCPictureWidgetLayer.j"
 @import "CCTextWidget.j"
 @import "TextLayer.j"
-//@import "CCTextWidgetLayer.j"
 @import "CCMovieWidget.j"
 @import "CCMovieWidgetLayer.j"
 @import "CCWebWidget.j"
@@ -161,13 +160,12 @@
 	//	This may seem weird, but it gets rid of a bug with the CPCollectionView not updating. Weird as hell
 	if([_slide isEqual:slide])// && !_isThumbnail)
 			return;
-	
 	//	We are going to go through the previous slide's widget layers and see if
 	//	there are any that we can reuse.
 	[_widgetLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
 	var cached = _widgetLayers,
-			widgets_to_create = [[slide widgets] copy],
-			oldSlide = _slide;
+		widgets_to_create = [[slide widgets] copy],
+		oldSlide = _slide;
 	_widgetLayers = [ ];
 	//	Do the actual copy before we start
 	_slide = slide;
@@ -183,7 +181,8 @@
 	}
 	//	Now we are going to go through the new slide and make sure we didn't
 	//	miss any widgets
-	for(var i = 0 ; i < [widgets_to_create count] ; i++) {
+	for(var i = 0 ; i < [widgets_to_create count] ; i++)
+	{
 		[self addWidgetLayerToSlide:[self configuredLayerForWidget:widgets_to_create[i]]];
 	}
 	
@@ -207,19 +206,12 @@
 		return;
 	_isThumbnail = isThumbnail;
 	[_widgetLayers makeObjectsPerformSelector:@selector(setIsThumbnail:) withObject:isThumbnail];
-//	for(var i = 0 ; i < [sl count] ; i++) {
-//		[[sl objectAtIndex:i] setIsThumbnail:isThumbnail];
-//	}
 }
 
 -(void)setIsPresenting:(BOOL)isPresenting
-{
-//	if(isPresenting == _isPresenting)
-//		return;
-	
+{	
 	_isPresenting = isPresenting;
 	
-//	[_widgetLayers makeObjectsPerformSelector:@selector(setIsPresenting:) withObject:isPresenting];
 	var count = [_widgetLayers count];
 	for(var i = 0 ; i < count ; i++)
 		[_widgetLayers[i] setIsPresenting:isPresenting];

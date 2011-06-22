@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>LLPowerpointConverter.j</string>
+	<string>../CoreLecture/TextLayer.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -13,8 +13,6 @@
 			<string>LiveLecture</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
-			<key>selected</key>
-			<true/>
 			<key>sourceDirectory</key>
 			<string></string>
 		</dict>
@@ -39,104 +37,28 @@
 	<integer>204</integer>
 	<key>metaData</key>
 	<dict>
-		<key>../CoreLecture/CCSlideLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>202</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>190</integer>
-		</dict>
-		<key>../CoreLecture/CCTextWidget.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>23</integer>
-				<key>line</key>
-				<integer>34</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>14</integer>
-		</dict>
 		<key>../CoreLecture/TextLayer.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>75</integer>
 				<key>line</key>
-				<integer>553</integer>
-			</dict>
-			<key>columnSelection</key>
-			<false/>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>525</integer>
-			<key>selectFrom</key>
-			<dict>
-				<key>column</key>
-				<integer>25</integer>
-				<key>line</key>
-				<integer>557</integer>
-			</dict>
-			<key>selectTo</key>
-			<dict>
-				<key>column</key>
-				<integer>2</integer>
-				<key>line</key>
-				<integer>553</integer>
-			</dict>
-		</dict>
-		<key>LLOnlinePersistenceHandler.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>78</integer>
-				<key>line</key>
-				<integer>87</integer>
+				<integer>411</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>46</integer>
-		</dict>
-		<key>LLPowerpointConverter.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>42</integer>
-				<key>line</key>
-				<integer>91</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>66</integer>
+			<integer>383</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>../CoreLecture/CCSlideLayer.j</string>
-		<string>LLOnlinePersistenceHandler.j</string>
-		<string>LLPowerpointConverter.j</string>
-		<string>../CoreLecture/CCTextWidget.j</string>
 		<string>../CoreLecture/TextLayer.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{0, 80}, {1440, 798}}</string>
+	<string>{{0, 79}, {1440, 799}}</string>
 </dict>
 </plist>
