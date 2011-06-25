@@ -90,8 +90,11 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)setTheme:(CCSlideTheme)theme
 {
+	debugger;
+	if([[_presentation theme] isEqual:theme])
+		return;
 	[_presentation setTheme:theme];
-	[mainSlideView setSlide:[self currentSlide]];
+	[[mainSlideView slideLayer] refreshTheme];
 	[navigationController setThemeForItems:theme];
 }
 
@@ -148,15 +151,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)setCurrentSlideIndex:(int)currentSlideIndex
 {
-	if(_currentSlideIndex == currentSlideIndex)
-		return;
 	//	Make sure to deal with the -1 case, which is when the user clicks somewhere that doesnt correspond to a slide
 	//	When this happens, we dont want anything to happen visually, so we set the selected index to be the current one again
-	if(currentSlideIndex < 0)
-	{
-		[navigationController setSelectedIndex:_currentSlideIndex];
+	if(_currentSlideIndex == currentSlideIndex || currentSlideIndex < 0)
 		return;
-	}
 	_currentSlideIndex = currentSlideIndex;
 	[mainSlideView setSlide:[self currentSlide]];
 	[navigationController setSelectedIndex:_currentSlideIndex];
@@ -190,9 +188,9 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)newTextWidget
 {
-	var widget = [[CCTextWidget alloc] initWithString:@"Text"];
-	[widget setLocation:CGPointMake(362,334)];
-	[widget setSize:CGRectMake(0,0,300,100)];
+	var widget = [[CCTextWidget alloc] initWithString:@"Double click to Edit"];
+	[widget setLocation:CGPointMake(50,334)];
+	[widget setSize:CGRectMake(0,0,924,100)];
 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
 	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[mainSlideView slide]];
 }

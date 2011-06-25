@@ -117,7 +117,6 @@ var TextLayerIsMSIE = NO;
 	JSObject _typingTextProperties;
 	JSObject _defaultTextAttributes;
 	//	My Edits
-	CPColor _defaultColor @accessors(property=defaultColor);
 	CCTextWidget _textBody;
 	
 	CPUndoManager _undoManager;
@@ -280,14 +279,11 @@ var TextLayerIsMSIE = NO;
 
     _typingTextAttributes = nil;
 
-    [self setDefaultTextAttributes:TextAttributesMake("Arial", 12.0, [CPColor whiteColor], TextAttributeOffState, TextAttributeOffState, TextAttributeOffState, TextLayerLeftAlignmentMask, TextLayerDiscBulletStyleMask)];
+    [self setDefaultTextAttributes:TextAttributesMake("Arial", 12.0, [[CPColor whiteColor] cssString], TextAttributeOffState, TextAttributeOffState, TextAttributeOffState, TextLayerLeftAlignmentMask, TextLayerDiscBulletStyleMask)];
 
     _selectionRange = CPMakeRange(0, 0);
 
     _textBody = nil;
-
-	//	TODO: Make this work with the upcoming theme system instead of just a default
-	_defaultColor = [CPColor whiteColor];
 
     return self;
 }
@@ -409,10 +405,6 @@ var TextLayerIsMSIE = NO;
 	var keyCode = [event keyCode];
 	var character = [event characters];
 	var flags = [event modifierFlags];
-	alert("CPRightArrowFunctionKey: "+(character == CPRightArrowFunctionKey));
-	// alert("KeyCode: "+keyCode);
-	// alert("Character: "+character);
-	// alert("Character Ignoring Modifiers: "+[event charactersIgnoringModifiers]);
 	if(flags & (CPCommandKeyMask | CPControlKeyMask))
 			if((keyCode < 36 || keyCode > 41) && !kEmacsConversion[keyCode] && !kValidCommandKeys[character])
 				return;
@@ -446,18 +438,18 @@ var TextLayerIsMSIE = NO;
 	if([self hasSelection] && keyCode != 9) {
 			switch(keyCode) {
 				case 8:
-				case 46: 	//if(character != '.')
-							//{
+				case 46: 	if(character != '.')
+							{
 								[self deleteSelection];
 								[self positionCaret];
 								[self redrawSelection];
 								return;
-							// }
-							// else
-							// {
-							// 	[self deleteSelection];
-							// 	break;
-							// }
+							}
+							else
+							{
+								[self deleteSelection];
+								break;
+							}
 				case 36:	[self moveCaret:kHome extendSelection:(flags & CPShiftKeyMask)];
 							[self positionCaret];
 							[self redrawSelection];
@@ -469,22 +461,27 @@ var TextLayerIsMSIE = NO;
 				case 37:
 				case 38:
 				case 39:
-				case 40:	//if(character == "'")
-							//{
-							//	[self deleteSelection];
-							//	break;
-							//}
-							if(flags & CPCommandKeyMask)
+				case 40:	//	Deal with the fact that there are a few special characters with the same key codes
+							//	as the arrow keys
+							if(character == "'" || character == "%" || character == "(" || character == "&")
 							{
-								[self moveCaret:kArrowConversion[keyCode] extendSelection:(flags & CPShiftKeyMask)];
+								[self deleteSelection];
+								break;
 							}
 							else
 							{
-								[self moveCaret:keyCode extendSelection:(flags & CPShiftKeyMask)];
+								if(flags & CPCommandKeyMask)
+								{
+									[self moveCaret:kArrowConversion[keyCode] extendSelection:(flags & CPShiftKeyMask)];
+								}
+								else
+								{
+									[self moveCaret:keyCode extendSelection:(flags & CPShiftKeyMask)];
+								}
+								[self positionCaret];
+								[self redrawSelection];
+								return;
 							}
-							[self positionCaret];
-							[self redrawSelection];
-							return;
 				case 65:
 				case 69:
 				case 66:
@@ -518,16 +515,19 @@ var TextLayerIsMSIE = NO;
 			case 37:
 			case 38:
 			case 39:
-			case 40:	if(character == "'")
+			case 40:	if(character == "'" || character == "%" || character == "(" || character == "&")
 						{
-							[self insertCharacter:"'" stillInserting:NO];
+							[self insertCharacter:character stillInserting:NO];
 							break;
 						}
-						if(flags & CPCommandKeyMask)
-							[self moveCaret:kArrowConversion[keyCode] extendSelection:(flags & CPShiftKeyMask)];
 						else
-							[self moveCaret:keyCode extendSelection:(flags & CPShiftKeyMask)];
-						break;
+						{
+							if(flags & CPCommandKeyMask)
+								[self moveCaret:kArrowConversion[keyCode] extendSelection:(flags & CPShiftKeyMask)];
+							else
+								[self moveCaret:keyCode extendSelection:(flags & CPShiftKeyMask)];
+							break;
+						}
 			//	Tab
 			case 9:		if(flags & CPShiftKeyMask)
 						{
@@ -2336,7 +2336,7 @@ var TextLayerIsMSIE = NO;
     var initial = _defaultTextAttributes == nil,
         fontFamily = attributes.fontFamily,
         fontSize = attributes.fontSize,
-        color = [attributes.color cssString],
+        color = attributes.color,
         fontWeight = attributes.boldState == TextAttributeOnState ? "bold" : "normal",
         fontStyle = attributes.italicState == TextAttributeOnState ? "italic" : "normal",
         textDecoration = attributes.underlineState == TextAttributeOnState ? "underline" : "none",
@@ -2345,7 +2345,7 @@ var TextLayerIsMSIE = NO;
     {
         var oldDefaultFontFamily = _defaultTextAttributes.fontFamily,
             oldDefaultFontSize = _defaultTextAttributes.fontSize,
-            oldDefaultColor = [_defaultColor cssString],
+            oldDefaultColor = _defaultTextAttributes.color,
             oldDefaultFontWeight = _defaultTextAttributes.boldState == TextAttributeOnState ? "bold" : "normal",
             oldDefaultFontStyle = _defaultTextAttributes.italicState == TextAttributeOnState ? "italic" : "normal",
             oldDefaultTextDecoration = _defaultTextAttributes.underlineState == TextAttributeOnState ? "underline" : "none",
@@ -2364,6 +2364,8 @@ var TextLayerIsMSIE = NO;
             style.fontFamily = fontFamily;
         if (initial || parseFontSize(style.fontSize) == oldDefaultFontSize)
             setFontSize(character, fontSize);
+		// if(!_isThumbnail)
+		// 	debugger;
         if (initial || colorsAreEqual(style.color, oldDefaultColor))
             style.color = color;
         if (initial || style.fontWeight == oldDefaultFontWeight)
@@ -2553,15 +2555,15 @@ var TextLayerIsMSIE = NO;
 	[self setTextScale:_scale];
 }
 
--(void)setDefaultColor:(CPColor)color
-{
-	var attribs = [self defaultTextAttributes];
-	[self setDefaultTextAttributes:TextAttributesMake("Arial", 12.0, color, TextAttributeOffState, TextAttributeOffState, TextAttributeOffState, TextLayerLeftAlignmentMask, TextLayerDiscBulletStyleMask)]
-}
-
 -(void)slideThemeDidChangeToTheme:(CCSlideTheme)theme
 {
-	[self setDefaultColor:[theme fontColor]];
+	var colorString = [theme fontColor];
+	//	BUG FIX: CPColor shits on you if you have your color string formatted
+	//	in #FFFFFF format, instead of FFFFFF format. So if the # is there, get
+	//	rid of it.
+	if(colorString.length == 7)
+		colorString = colorString.slice(1);
+	[self setDefaultTextAttributes:TextAttributesMake("Arial", 12.0, [[CPColor colorWithHexString:colorString] cssString], TextAttributeOffState, TextAttributeOffState, TextAttributeOffState, TextLayerLeftAlignmentMask, TextLayerDiscBulletStyleMask)];
 }
 
 // -(void)editingControlDidFinishEditing:(CCWidgetEditingControl)editingControl

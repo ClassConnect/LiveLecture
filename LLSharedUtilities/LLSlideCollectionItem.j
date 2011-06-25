@@ -60,6 +60,14 @@ var slideDivider = nil;
 	[_slideNumberLabel setTextColor:(isSelected ? [CPColor whiteColor] : [CPColor blackColor])];
 }
 
+-(void)setTheme:(CCSlideTheme)theme
+{
+	// if([[[_slideLayer slide] theme] isEqual:theme])
+	// 	return;
+	[[_slideLayer slide] setTheme:theme];
+	[_slideLayer refreshTheme];
+}
+
 -(void)setSlideIndex:(CPInteger)slideIndex
 {
 	if(_slideIndex == slideIndex)

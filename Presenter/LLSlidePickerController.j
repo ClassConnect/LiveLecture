@@ -33,7 +33,7 @@
 {
 	var currentIndex = [[collection selectionIndexes] firstIndex];
 	[[LLPresentationController sharedController] setCurrentSlideIndex:currentIndex];
-	[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguements:[currentIndex]];
+	[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[currentIndex]];
 }
 
 @end

@@ -43,7 +43,7 @@ var __shared__ = nil;
 		//	Buttons
 		var okButton = [CPButton buttonWithTitle:"OK" theme:[CPTheme defaultHudTheme]],
 			cancelButton = [CPButton buttonWithTitle:"Cancel" theme:[CPTheme defaultHudTheme]],
-			buttonY = 390/*Height of the content rect*/ - ((390 - [_collection frame].size.height - [okButton frame].size.height) / 2) - [okButton frame].size.height,
+			buttonY = 390/*Height of the content rect*/ - ((390 - [sv frame].size.height - [okButton frame].size.height) / 2) - [okButton frame].size.height,
 			okX = 617/*Width of the content rect*/ - 10 - [okButton frame].size.width,
 			cancelX = okX - 10 - [cancelButton frame].size.width;
 		[okButton setFrameOrigin:CGPointMake(okX,buttonY)];
@@ -86,7 +86,7 @@ var __shared__ = nil;
 	if([_manager indexOfTheme:[[[LLPresentationController sharedController] presentation] theme]] != [[_collection selectionIndexes] lastIndex])
 	{
 		//	Set the new theme!
-		[[LLPresentationController sharedController] setTheme:[_manager themeAtIndex:[[_collection selectionIndexes] lastIndex]]];
+		[[LLPresentationController sharedController] setTheme:[[_manager themeAtIndex:[[_collection selectionIndexes] lastIndex]] copy]];
 	}
 	[self close];
 	[[CPApplication sharedApplication] abortModal];

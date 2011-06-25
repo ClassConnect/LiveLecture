@@ -8,7 +8,7 @@
 {
 	var p = [self convertPoint:[event locationInWindow] fromView:nil],
 		c = [LLPresentationController sharedController]
-	if(![c showsSidebar] && p.x < 10)
+	if(![c showsSidebar] && p.x < 50)
 	{
 		[c setShowsSidebar:YES animated:YES];
 		return;

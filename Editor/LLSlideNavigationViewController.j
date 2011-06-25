@@ -114,6 +114,14 @@ var LLSlideDragType = "LLSlideDragType";
 	[collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:index]];
 }
 
+-(void)setThemeForItems:(CCSlideTheme)theme
+{
+	for(var i = 0 ; i < [[collection content] count] ; i++)
+	{
+		[[[collection itemAtIndex:i] view] setTheme:theme];
+	}
+}
+
 //	---------------------------------
 //	CPCollectionViewDelegate Methods
 //	---------------------------------

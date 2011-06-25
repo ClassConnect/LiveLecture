@@ -8,6 +8,8 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 @implementation LLStudentListManager : CPObject
 {
 	CPMutableArray _students;
+	
+	BOOL _isWaitingForResponses;
 }
 
 +(id)defaultManager
@@ -45,13 +47,12 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 	if(!contains)
 	{
 		[_students addObject: { uid:id , name:name }];
-		[self postNotification];	
+		[self postNotification];
 	}
 }
 
 -(void)removeStudentWithID:(CPString)id
 {
-	CPLog("Received remove student message");
 	var count = [_students count];
 	var removed = NO;
 	for(var i = 0 ; i < count ; i++)
@@ -64,6 +65,21 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 	}
 	if(removed)
 		[self postNotification];
+}
+
+-(void)removeAllStudents
+{
+	_students = [ ];
+}
+
+-(void)requestListOfStudentsAndWait
+{
+	_isWaitingForResponse = YES;
+	[[LLRTE sharedInstance] requestListOfStudents];
+	[CPTimer scheduledTimerWithTimeInterval:5 callback:function(){
+		_isWaitingForResponse = NO;
+		[self postNotification];
+	} repeats:NO];
 }
 
 -(CPInteger)IDOfStudentAtIndex:(CPInteger)index
@@ -90,6 +106,10 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 
 -(void)postNotification
 {
+	//	Don't post notifications if we are waiting for a response
+	//	As soon as we are done waiting, it will update the list for us
+	if(_isWaitingForResponse)
+		return;
 	[[CPNotificationCenter defaultCenter] postNotificationName:LLStudentListDidChangeContents object:nil];
 }
 

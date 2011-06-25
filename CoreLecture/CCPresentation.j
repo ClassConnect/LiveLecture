@@ -15,6 +15,7 @@
 @implementation CCPresentation : CPObject {
 	CPMutableArray _slides @accessors(readonly, property=slides);
 	CPMutableArray _transitions @accessors(readonly, property=transitions);
+	CCSlideTheme _theme @accessors(property=theme);
 	CPString _name @accessors(property=projectName);
 }
 
@@ -39,7 +40,10 @@
 
 -(void)setTheme:(CCSlideTheme)theme
 {
-	[_slides makeObjectsPerformSelector:@selector(setTheme:) withObject:theme];
+	if([_theme isEqual:theme])
+		return;
+	_theme = theme;
+	[_slides makeObjectsPerformSelector:@selector(setTheme:) withObject:_theme];
 }
 
 @end

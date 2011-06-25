@@ -37,6 +37,20 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
+		<key>../CoreLecture/TextLayer.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>21</integer>
+				<key>line</key>
+				<integer>416</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>393</integer>
+		</dict>
 		<key>../LLSharedUtilities/LLQuizWidgetLayer.j</key>
 		<dict>
 			<key>caret</key>
@@ -56,14 +70,14 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>21</integer>
+				<integer>2</integer>
 				<key>line</key>
-				<integer>53</integer>
+				<integer>128</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>35</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>

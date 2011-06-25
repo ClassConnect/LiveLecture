@@ -29,19 +29,21 @@
 	{
 		CGContextDrawImage(context,bounds,_image);
 	}
-	// else
-	// {
-	// 	CGContextSetFillColor([CPColor grayColor]);
-	// 	CGContextFillRect([self bounds]);
-	// 	// CGContextSetFillColor([CPColor grayColor]);
-	// 	// CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
-	// }
+	else
+	{
+		CGContextSetFillColor(context,[CPColor grayColor]);
+		CGContextSetStrokeColor(context,[CPColor blackColor]);
+		CGContextFillRect(context,[self bounds]);
+		// CGContextSetFillColor([CPColor grayColor]);
+		// CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
+	}
 }
 
 -(void)setWidget:(CCWidget)widget {
 	[super setWidget:widget];
 	_image = [[CPImage alloc] initWithContentsOfFile:[_widget imagePath]];
 	[_image setDelegate:self];
+	[self setNeedsDisplay];
 }
 
 @end

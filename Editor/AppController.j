@@ -32,19 +32,19 @@ HOST = "http://ccinternal.com"
 // Identifiers
 //	TODO: Make 'Other Widgets' bring up a panel where the user can drag in widgets that their school has added
 var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
-		LLToolbarDeleteSlideItemIdentifier = "LLToolbarDeleteSlideItemIdentifier",
-		LLToolbarSelectThemeItemIdentifier = "LLToolbarSelectThemeItemIdentifier",
-		//	Filebox and Searchbox
-		LLToolbarFileboxItemIdentifier = "LLToolbarFileboxItemIdentifier",
-		LLToolbarSearchboxItemIdentifier = "LLToolbarSearchboxItemIdentifier",
-		//	Choosing any widget
+	LLToolbarDeleteSlideItemIdentifier = "LLToolbarDeleteSlideItemIdentifier",
+	LLToolbarSelectThemeItemIdentifier = "LLToolbarSelectThemeItemIdentifier",
+	//	Filebox and Searchbox
+	LLToolbarFileboxItemIdentifier = "LLToolbarFileboxItemIdentifier",
+	LLToolbarSearchboxItemIdentifier = "LLToolbarSearchboxItemIdentifier",
+	//	Choosing any widget
     LLToolbarNewTextWidgetItemIdentifier = "LLToolbarNewTextWidgetItemIdentifier",
     LLToolbarNewPictureWidgetItemIdentifier = "LLToolbarNewPictureWidgetItemIdentifier",
-		LLToolbarNewMovieWidgetItemIdentifier = "LLToolbarNewMovieWidgetItemIdentifier",
-		LLToolbarNewWebWidgetItemIdentifier = "LLToolbarNewWebWidgetItemIdentifier",
-		LLToolbarOtherWidgetItemIdentifier = "LLToolbarOtherWidgetItemIdentifier",
-		//	Extra
-		LLToolbarInspectorItemIdentifier = "LLToolbarInspectorItemIdentifier",
+	LLToolbarNewMovieWidgetItemIdentifier = "LLToolbarNewMovieWidgetItemIdentifier",
+	LLToolbarNewWebWidgetItemIdentifier = "LLToolbarNewWebWidgetItemIdentifier",
+	LLToolbarOtherWidgetItemIdentifier = "LLToolbarOtherWidgetItemIdentifier",
+	//	Extra
+	LLToolbarInspectorItemIdentifier = "LLToolbarInspectorItemIdentifier",
     LLToolbarPreviewItemIdentifier = "LLToolbarPreviewItemIdentifier";
 
 @implementation AppController : CPObject {
@@ -157,130 +157,109 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar {
    return [	CPToolbarFlexibleSpaceItemIdentifier,
-						CPToolbarSpaceItemIdentifier,
-   					LLToolbarNewSlideItemIdentifier,
-   					LLToolbarDeleteSlideItemIdentifier,
-						LLToolbarSelectThemeItemIdentifier,
-						LLToolbarFileboxItemIdentifier,
-						LLToolbarSearchboxItemIdentifier,
-   					LLToolbarNewTextWidgetItemIdentifier,
-   					LLToolbarNewPictureWidgetItemIdentifier,
-						LLToolbarNewMovieWidgetItemIdentifier,
-						LLToolbarNewWebWidgetItemIdentifier,
-						LLToolbarOtherWidgetItemIdentifier,
-						LLToolbarInspectorItemIdentifier,
-   					LLToolbarPreviewItemIdentifier];
+			CPToolbarSpaceItemIdentifier,
+			LLToolbarNewSlideItemIdentifier,
+			LLToolbarDeleteSlideItemIdentifier,
+			LLToolbarSelectThemeItemIdentifier,
+			LLToolbarFileboxItemIdentifier,
+			LLToolbarSearchboxItemIdentifier,
+			LLToolbarNewTextWidgetItemIdentifier,
+			LLToolbarNewPictureWidgetItemIdentifier,
+			LLToolbarNewMovieWidgetItemIdentifier,
+			LLToolbarNewWebWidgetItemIdentifier,
+			LLToolbarOtherWidgetItemIdentifier,
+			LLToolbarInspectorItemIdentifier,
+			LLToolbarPreviewItemIdentifier];
 }
 
 // Return an array of toolbar item identifier (the default toolbar items that are present in the toolbar)
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar {
    return [	LLToolbarNewSlideItemIdentifier,
-   					LLToolbarDeleteSlideItemIdentifier,
-   					CPToolbarSpaceItemIdentifier,
-						LLToolbarSelectThemeItemIdentifier,
-						CPToolbarSpaceItemIdentifier,
-						LLToolbarNewTextWidgetItemIdentifier,
-   					LLToolbarNewPictureWidgetItemIdentifier,
-						LLToolbarNewMovieWidgetItemIdentifier,
-						LLToolbarNewWebWidgetItemIdentifier,
-						LLToolbarOtherWidgetItemIdentifier,
-						CPToolbarSpaceItemIdentifier,
-						LLToolbarFileboxItemIdentifier,
-						LLToolbarSearchboxItemIdentifier,
-   					CPToolbarFlexibleSpaceItemIdentifier,
-						LLToolbarInspectorItemIdentifier,
-   					LLToolbarPreviewItemIdentifier];
+			LLToolbarDeleteSlideItemIdentifier,
+   			CPToolbarSpaceItemIdentifier,
+			LLToolbarSelectThemeItemIdentifier,
+			CPToolbarSpaceItemIdentifier,
+			LLToolbarNewTextWidgetItemIdentifier,
+   			LLToolbarNewPictureWidgetItemIdentifier,
+			LLToolbarNewMovieWidgetItemIdentifier,
+			LLToolbarNewWebWidgetItemIdentifier,
+			LLToolbarOtherWidgetItemIdentifier,
+			CPToolbarSpaceItemIdentifier,
+			LLToolbarFileboxItemIdentifier,
+			LLToolbarSearchboxItemIdentifier,
+   			CPToolbarFlexibleSpaceItemIdentifier,
+			LLToolbarInspectorItemIdentifier,
+   			LLToolbarPreviewItemIdentifier];
 }
 
-- (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)anItemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag {
-	var toolbarItem = [[CPToolbarItem alloc] initWithItemIdentifier:anItemIdentifier];
+- (CPToolbarItem)toolbar:(CPToolbar)aToolbar itemForItemIdentifier:(CPString)itemIdentifier willBeInsertedIntoToolbar:(BOOL)aFlag {
+	var toolbarItem = [[CPToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
 	var target,
-			action,
-			label,
-			imagename;
-	/* */if(anItemIdentifier == LLToolbarNewSlideItemIdentifier)
+		action,
+		label,
+		imagename;
+	switch(itemIdentifier)
 	{
-		target = _controller;
-		action = @selector(newSlide);
-		label = "New Slide";
-		imagename = "Icon.png";
-	}
-	else if(anItemIdentifier == LLToolbarDeleteSlideItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(deleteCurrentSlide);
-		label = "Delete Slide";
-		imagename = "Icon.png";
-	}
-	else if(anItemIdentifier == LLToolbarSelectThemeItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showThemeSelectionPanel);
-		label = "Theme";
-		imagename = "Icon.png";
-	}
-	else if(anItemIdentifier == LLToolbarFileboxItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showFileboxPanel);
-		label = "Filebox";
-		imagename = "icon_filebox.png";
-	}
-	else if(anItemIdentifier == LLToolbarSearchboxItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showMediaPanel);
-		label = "Searchbox";
-		imagename = "icon_searchbox.png";
-	}
-	else if(anItemIdentifier == LLToolbarNewTextWidgetItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(newTextWidget);
-		label = "Text";
-		imagename = "icon_widget_text.png";
-	}
-	else if(anItemIdentifier == LLToolbarNewPictureWidgetItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showPictureURLPanel);
-		label = "Photo";
-		imagename = "icon_widget_picture.png";
-	}
-	else if(anItemIdentifier == LLToolbarNewMovieWidgetItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showMovieURLPanel);
-		label = "Video";
-		imagename = "icon_widget_movie.png";
-	}
-	else if(anItemIdentifier == LLToolbarNewWebWidgetItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showWebURLPanel);
-		label = "Website";
-		imagename = "icon_widget_web.png";
-	}
-	else if(anItemIdentifier == LLToolbarOtherWidgetItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(newQuizWidget);
-		label = "Quiz";
-		imagename = "icon_widget_other.png";
-	}
-	else if(anItemIdentifier == LLToolbarInspectorItemIdentifier)
-	{
-		target = _controller;
-		action = @selector(showInspectorPanel);
-		label = "Inspector";
-		imagename = "icon_inspector.png";
-	}
-	else if(anItemIdentifier == LLToolbarPreviewItemIdentifier)
-	{
-		target = self;
-		action = @selector(beginPreview);
-		label = "Preview Slide";
-		imagename = "icon_present.png";
+		case LLToolbarNewSlideItemIdentifier:			target = _controller;
+														action = @selector(newSlide);
+														label = "New Slide";
+														imagename = "Icon.png";
+														break;
+		case LLToolbarDeleteSlideItemIdentifier:		target = _controller;
+														action = @selector(deleteCurrentSlide);
+														label = "Delete Slide";
+														imagename = "Icon.png";
+														break;
+		case LLToolbarSelectThemeItemIdentifier:		target = _controller;
+														action = @selector(showThemeSelectionPanel);
+														label = "Theme";
+														imagename = "Icon.png";
+														break;
+		case LLToolbarNewTextWidgetItemIdentifier:		target = _controller;
+														action = @selector(newTextWidget);
+														label = "Text";
+														imagename = "icon_widget_text.png";
+														break;
+		case LLToolbarNewPictureWidgetItemIdentifier:	target = _controller;
+														action = @selector(showPictureURLPanel);
+														label = "Photo";
+														imagename = "icon_widget_picture.png";
+														break;
+		case LLToolbarNewMovieWidgetItemIdentifier:		target = _controller;
+														action = @selector(showMovieURLPanel);
+														label = "Video";
+														imagename = "icon_widget_movie.png";
+														break;
+		case LLToolbarNewWebWidgetItemIdentifier:		target = _controller;
+														action = @selector(showWebURLPanel);
+														label = "Website";
+														imagename = "icon_widget_web.png";
+														break;
+		case LLToolbarOtherWidgetItemIdentifier:		target = _controller;
+														action = @selector(newQuizWidget);
+														label = "Quiz";
+														imagename = "icon_widget_other.png";
+														break;
+		case LLToolbarFileboxItemIdentifier:			target = _controller;
+														action = @selector(showFileboxPanel);
+														label = "Filebox";
+														imagename = "icon_filebox.png";
+														break;
+		case LLToolbarSearchboxItemIdentifier:			target = _controller;
+														action = @selector(showMediaPanel);
+														label = "Searchbox";
+														imagename = "icon_searchbox.png";
+														break;
+		case LLToolbarInspectorItemIdentifier:			target = _controller;
+														action = @selector(showInspectorPanel);
+														label = "Inspector";
+														imagename = "icon_inspector.png";
+														break;
+		case LLToolbarPreviewItemIdentifier:			target = self;
+														action = @selector(beginPreview);
+														label = "Preview";
+														imagename = "icon_present.png";
+														break;
 	}
 	
 	//	Set up the item

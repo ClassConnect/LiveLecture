@@ -26,6 +26,7 @@ kLLRTEStudentLeftNotification = "kLLRTEStudentLeftNotification"
 
 //	Personal Requests:
 kLLRTEGetStudentListResponse = "kLLRTEGetStudentListResponse"
+kLLRTECurrentSlideNotification = "kLLRTECurrentSlideNotification"
 
 //	Video Enabled/Disabled
 kLLRTEVideoEnabledMessage = "kLLRTEVideoEnabledMessage"
@@ -99,7 +100,7 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 -(void)sendVideoStatusMessage:(BOOL)enabled
 {
 	var type = ((enabled) ? kLLRTEVideoEnabledMessage : kLLRTEVideoDisabledMessage);
-	_connection.publisher(_students,{
+	_connection.publish(_students,{
 		type:type
 	});
 }
@@ -108,7 +109,7 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 {
 	if([[LLUser currentUser] isTeacher])
 		return;
-	_connection.publish(_everyone,{
+	_connection.publish(_teachers,{
 		type:kLLRTEStudentJoinedNotification,
 		u:[[LLUser currentUser] userID],
 		n:[[LLUser currentUser] name]
@@ -119,7 +120,7 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 {
 	if([[LLUser currentUser] isTeacher])
 		return;
-	_connection.publish(_everyone,{
+	_connection.publish(_teachers,{
 		type:kLLRTEStudentLeftNotification,
 		u:[[LLUser currentUser] userID]
 	});
@@ -130,6 +131,14 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 	_connection.publish(_students,{
 		type:kLLRTEGetStudentListRequest,
 		u:[[LLUser currentUser] userID]
+	});
+}
+
+-(void)sendCurrentSlideMessageToStudent:(CPInteger)student_id
+{
+	_connection.publish([LLRTE channelNameForUserID:student_id],{
+		type:kLLRTECurrentSlideNotification,
+		s:[[LLPresentationController sharedController] currentSlideIndex]
 	});
 }
 
@@ -174,12 +183,13 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 		switch(message.data)
 		{
 			case kLLRTEActionNextSlide:		[[LLPresentationController sharedController] moveToNextSlide];
-			break;
+											break;
 			case kLLRTEActionPreviousSlide:	[[LLPresentationController sharedController] moveToPreviousSlide];
-			break;
+											break;
 			case kLLRTEActionMoveToSlide:	[[LLPresentationController sharedController] setCurrentSlideIndex:[args objectAtIndex:0]];
-			default: CPLog("Received Everyone Message in Error")
-			break;
+											break;
+			default:						CPLog("Received Everyone Message in Error");
+											break;
 		}
 	}
 	if(message.type == kLLRTEWidgetAction)
@@ -202,11 +212,17 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 {
 	if(![[LLUser currentUser] isTeacher])
 		return; //SOMEONE IS BEING NAUGHTY!
-	//	Handle messages
+	switch(message.type)
+	{
+		case kLLRTEStudentJoinedNotification:	[[LLStudentListManager defaultManager] addStudentWithID:message.u name:message.n];
+												[self sendCurrentSlideMessageToStudent:message.u];
+	}
 }
 
 -(void)receivedStudentMessage:(JSObject)message
 {
+	//	I'm not quite sure what this does. I think it is so if I receive a
+	//	message from Eric's PHP Script, then it will behave correctly
 	if(message.text != undefined)
 		message.u = message.text;
 	switch(message.type)
@@ -217,18 +233,18 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 														u:[[LLUser currentUser] userID],
 														n:[[LLUser currentUser] name]
 													});
-		break;
+												break;
 		case kLLRTEStudentJoinedNotification:	if(message.u != [[LLUser currentUser] userID])
 													[[LLStudentListManager defaultManager] addStudentWithID:message.u name:message.n];
-		break;
+												break;
 		case kLLRTEStudentLeftNotification:		[[LLStudentListManager defaultManager] removeStudentWithID:message.u];
-		break;
+												break;
 		case kLLRTEVideoEnabledMessage:			[[CPNotificationCenter defaultCenter] postNotificationName:LLPresentationVideoEnabled object:nil];
-		break;
+												break;
 		case kLLRTEVideoDisabledMessage:		[[CPNotificationCenter defaultCenter] postNotificationName:LLPresentationVideoDisabled object:nil];
-		break;
-		default: CPLog("Received Student Message in Error");
-		break;
+												break;
+		default:								CPLog("Received Student Message in Error");
+												break;
 	}
 }
 
@@ -236,10 +252,12 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 {
 	switch(message.type)
 	{
-		case kLLRTEGetStudentListResponse:	[[LLStudentListManager defaultManager] addStudentWithID:message.u name:message.n];
-		break;
-		default: CPLog("Received Personal Message in Error");
-		break;
+		case kLLRTEGetStudentListResponse:		[[LLStudentListManager defaultManager] addStudentWithID:message.u name:message.n];
+												break;
+		case kLLRTECurrentSlideNotification:	[[LLPresentationController sharedController] setCurrentSlideIndex:message.s];
+												break;
+		default:								CPLog("Received Personal Message in Error");
+												break;
 	}
 }
 

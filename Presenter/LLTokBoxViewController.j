@@ -136,7 +136,7 @@ var centeredMask = CPViewMinXMargin|CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxY
 -(void)videoWasDisabled:(CPNotification)notification
 {
 	_videoEnabled = NO;
-	[_button setDisabled:NO];
+	[_button setEnabled:NO];
 }
 
 //	CPURLConnectionDelegate

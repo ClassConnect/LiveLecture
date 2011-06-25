@@ -26,6 +26,7 @@
 -(void)setImagePath:(CPString)imagePath {
 	_image = [[CPImage alloc] initWithContentsOfFile:imagePath];
 	[_image setDelegate:self];
+	[self setNeedsDisplay];
 }
 
 -(void)imageDidLoad:(CPImage)image {

@@ -55,9 +55,9 @@
 -(BOOL)isEqual:(CCSlideTheme)rhs
 {
 	return	_title == [rhs title]					&&
-					[_fontColor isEqual:[rhs fontColor]]	&&
-					_thumbnailURL == [rhs thumbnailURL]		&&
-					_backgroundPath == [rhs backgroundPath];
+			[_fontColor isEqual:[rhs fontColor]]	&&
+			_thumbnailURL == [rhs thumbnailURL]		&&
+			_backgroundPath == [rhs backgroundPath];
 }
 
 -(id)copy

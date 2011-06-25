@@ -146,8 +146,19 @@ HOST = "http://ccinternal.com"
 		[_progressBar removeFromSuperview];
 		[_contentView addSubview:view];
 		[[LLPresentationController sharedController] setShowsSidebar:NO animated:YES];
-		[[LLRTE sharedInstance] notifyOfEntry];
-		[[LLRTE sharedInstance] requestListOfStudents];
+		
+		if(![[LLUser currentUser] isTeacher])
+		{
+			//	Student specific setup
+//			[[LLRTE sharedInstance] notifyOfEntry];
+		}
+		else
+		{
+			//	Do teacher specific config
+//			[[LLRTE sharedInstance] requestListOfStudents];
+			[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[0]];
+		}
+/*
 		window.onbeforeunload = function()
 		{
 			[[LLRTE sharedInstance] notifyOfExit];
@@ -165,6 +176,7 @@ HOST = "http://ccinternal.com"
 			}
 			return;
 		};
+*/
 	}
 	else	//	Start the connection to the load the presentation 
 	{
@@ -178,9 +190,9 @@ HOST = "http://ccinternal.com"
 		var urlstr = HOST + "/app/livelecture/load.cc?"+(([_controller isFile]) ? "lid" : "fid")+"="+[_controller livelectureID]+(([_controller isFile]) ? "&cid="+[_controller classID] : "");
 		var req = [CPURLRequest requestWithURL:[CPURL URLWithString:urlstr]];
 		_loadConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
-		_timer = [CPTimer scheduledTimerWithTimeInterval:.5 callback:function(){
+		_timer = [CPTimer scheduledTimerWithTimeInterval:.05 callback:function(){
 			if([_progressBar doubleValue] < 90)
-				[_progressBar incrementBy:5];
+				[_progressBar incrementBy:.5];
 		} repeats:YES];
 		[_loadConnection start];
 	}

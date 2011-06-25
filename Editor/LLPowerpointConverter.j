@@ -97,7 +97,7 @@
 {
 	//	Most likely 1, but want to do this anyway
 	var widgets = [slide widgets],
-			subtitle_height = 30;
+		subtitle_height = 30;
 	if([widgets count] == 0)
 		return;
 	for(var i = 1 ; i < [widgets count] ; i++)
@@ -106,11 +106,11 @@
 	}
 	//	Set the title heading
 	// 768/2, 1024 / 2
-	var middle_height = 384,
-			middle_width = 512,
-			title_widget = widgets[0],
-			title_height = CGRectGetHeight([title_widget size]),
-			title_width = CGRectGetWidth([title_widget size]);
+	var middle_width = 512,
+		middle_height = 384,
+		title_widget = widgets[0],
+		title_width = CGRectGetWidth([title_widget size]),
+		title_height = CGRectGetHeight([title_widget size]);
 	if(subtitle_height > middle_height)
 		middle_height = subtitle_height;
 	[title_widget setLocation:CGPointMake(middle_width - (title_width / 2), ((middle_height - 5 - title_height) < 0) ? 0 : middle_height - 5 - title_height)];
@@ -161,11 +161,11 @@
 		return;
 	}
 	var content_begin = [self _layoutHeading:[slide widgets][0]],
-			current_height = content_begin;
+		current_height = content_begin;
 	for(var i = 1; i < [[slide widgets] count] ; i++)
 	{
 		var wid = [[slide widgets] objectAtIndex:i];
-		[wid setLocation:CGPointMake(10,current_height)];
+		[wid setLocation:CGPointMake(50,current_height)];
 		current_height += (CGRectGetHeight([wid size]) + 5);
 	}
 }
@@ -201,8 +201,8 @@
 +(float)_layoutHeading:(CCWidget)widget
 {
 	var width = CGRectGetWidth([widget size]);
-	[widget setLocation:CGPointMake((1024 - width) / 2, 15)];
-	return CGRectGetHeight([widget size]) + 15 + 15;
+	[widget setLocation:CGPointMake((1024 - width) / 2, 30)];
+	return CGRectGetHeight([widget size]) + 30 + 30;
 }
 
 @end

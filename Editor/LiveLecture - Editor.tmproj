@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>../CoreLecture/TextLayer.j</string>
+	<string>../CoreLecture/CCPictureWidgetLayer.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -37,24 +37,130 @@
 	<integer>204</integer>
 	<key>metaData</key>
 	<dict>
-		<key>../CoreLecture/TextLayer.j</key>
+		<key>../CoreLecture/CCPictureWidgetLayer.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>75</integer>
+				<integer>35</integer>
 				<key>line</key>
-				<integer>411</integer>
+				<integer>25</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>383</integer>
+			<integer>5</integer>
+		</dict>
+		<key>../CoreLecture/CCPresentation.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>47</integer>
+				<key>line</key>
+				<integer>24</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>10</integer>
+		</dict>
+		<key>../CoreLecture/CCSlide.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>30</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>../CoreLecture/CCSlideLayer.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>19</integer>
+				<key>line</key>
+				<integer>147</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>126</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>7</integer>
+				<key>line</key>
+				<integer>147</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>19</integer>
+				<key>line</key>
+				<integer>147</integer>
+			</dict>
+		</dict>
+		<key>../LLSharedUtilities/LLSlideCollectionItem.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>28</integer>
+				<key>line</key>
+				<integer>64</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>44</integer>
+		</dict>
+		<key>LLPresentationController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>31</integer>
+				<key>line</key>
+				<integer>28</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>LLSlideThemeSelectionPanel.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>12</integer>
+				<key>line</key>
+				<integer>42</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>21</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>../CoreLecture/TextLayer.j</string>
+		<string>LLPresentationController.j</string>
+		<string>../CoreLecture/CCSlideLayer.j</string>
+		<string>../CoreLecture/CCPictureWidgetLayer.j</string>
+		<string>LLSlideThemeSelectionPanel.j</string>
+		<string>../CoreLecture/CCPresentation.j</string>
+		<string>../LLSharedUtilities/LLSlideCollectionItem.j</string>
+		<string>../CoreLecture/CCSlide.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>

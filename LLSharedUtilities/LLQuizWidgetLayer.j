@@ -118,6 +118,11 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	[_numResponsesLayer setTextScale:scale];
 }
 
+-(void)slideThemeDidChangeToTheme:(CCSlideTheme)theme
+{
+	[_text slideThemeDidChangeToTheme:theme];
+}
+
 @end
 
 @implementation LLQuizWidgetLayer : CCWidgetLayer {
@@ -238,6 +243,13 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 -(BOOL)supportsEditingMode
 {
 	return YES;
+}
+
+-(void)slideThemeDidChangeToTheme:(CCSlideTheme)theme
+{
+	//	When the theme changes we want to change the text of the quiz widget
+	[_questionLayer slideThemeDidChangeToTheme:theme];
+	[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:theme];
 }
 
 -(void)drawInContext:(CGContext)context
