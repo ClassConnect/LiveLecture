@@ -31,6 +31,13 @@ var __LLUSER_SHARED__ = nil
 	if(self = [super init])
 	{
 		_uid = -1;
+		//	This will set up everything to be how it should be in the editor
+		//	Basically, we want the user to be a teacher, but the RTE should be
+		//	off.
+		//	Since every bool defaults to NO, we can just set isTeacher to YES
+		//
+		//	In the presenter, the configureFromJSON will take care of setup
+		_isTeacher = YES;
 	}
 	return self;
 }

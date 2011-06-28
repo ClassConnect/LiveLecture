@@ -165,7 +165,13 @@ var hide = function(element) {	element.style.display = "none"; 	};
 
 -(void)disconnect
 {
+	if([self isPublishing])
+		[self stopPublishing];
+	[_streamViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+	_streamViews = [ ];
+	_streamIDs = [ ];
 	[self _session].disconnect();
+	[self _session].cleanup();
 }
 
 -(void)publish
@@ -173,10 +179,13 @@ var hide = function(element) {	element.style.display = "none"; 	};
 	if(!_publisher)
 	{
 		var props = {width:[self bounds].size.width,height:[self bounds].size.height};
+		if([delegate respondsToSelector:@selector(tokboxViewWillStartPublishing:)])
+			[delegate tokboxViewWillStartPublishing:self];
+		_DOMElement.appendChild(_publisherDiv);
 		_publisher = [self _session].publish(_publisherDiv.id,props);
 		_publisherFlashElement = document.getElementById(_publisher.id);
-		if([delegate respondsToSelector:@selector(tokboxViewWillStartPublishing)])
-			[delegate tokboxViewWillStartPublishing];
+		if([delegate respondsToSelector:@selector(tokboxViewDidStartPublishing:)])
+			[delegate tokboxViewDidStartPublishing:self];
 	}
 	show(_publisherDiv);
 }
@@ -191,7 +200,7 @@ var hide = function(element) {	element.style.display = "none"; 	};
 	if(_publisher)
 	{
 		[self _session].unpublish(_publisher);
-		if([delegate respondsToSelector:@selector(tokboxViewWillStartPublishing)])
+		if([delegate respondsToSelector:@selector(tokboxViewWillStopPublishing)])
 			[delegate tokboxViewWillStopPublishing];
 		_publisher = nil;
 	}
@@ -233,7 +242,6 @@ var hide = function(element) {	element.style.display = "none"; 	};
 -(void)_addStreams:(CPArray)streams
 {
 	[streams makeObjectsPerformFunction:function(object){
-		CPLog(""+object.streamId);
 		var streamview = [[CCTokBoxStreamView alloc] _initWithStreamObject:object tokboxSession:[self _session] frame:CGRectMake(0,0,[self frameSize].width,[self frameSize].height)];
 		if(streamview)
 		{

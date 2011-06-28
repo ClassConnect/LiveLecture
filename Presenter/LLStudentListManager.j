@@ -74,10 +74,10 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 
 -(void)requestListOfStudentsAndWait
 {
-	_isWaitingForResponse = YES;
+	_isWaitingForResponses = YES;
 	[[LLRTE sharedInstance] requestListOfStudents];
 	[CPTimer scheduledTimerWithTimeInterval:5 callback:function(){
-		_isWaitingForResponse = NO;
+		_isWaitingForResponses = NO;
 		[self postNotification];
 	} repeats:NO];
 }
@@ -108,7 +108,7 @@ var __LLSTUDENTLISTMANAGER_SHARED__ = nil
 {
 	//	Don't post notifications if we are waiting for a response
 	//	As soon as we are done waiting, it will update the list for us
-	if(_isWaitingForResponse)
+	if(_isWaitingForResponses)
 		return;
 	[[CPNotificationCenter defaultCenter] postNotificationName:LLStudentListDidChangeContents object:nil];
 }

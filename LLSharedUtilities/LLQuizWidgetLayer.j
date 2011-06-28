@@ -20,21 +20,22 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		return;
 	}
 	[[LLRTE sharedInstance] widget:[LLQuizWidget class] sendData:[widgetIndex,oldanswer,[quizwidget selectedAnswer]]];
-//	[quizwidget setSelectedAnswer:answerIndex];
 }
 
 @implementation LLQuizWidgetLayerAnswer : CALayer
 {
+	LLQuizWidgetLayer _owner @accessors(property=owner);
 	BOOL _selected @accessors(property=selected,getter=isSelected);
 	TextLayer _text;
+	CPString _answer;
 	CPImage _selectedImage;
 	CGRect _imageRect;
 	unsigned _numResponses @accessors(property=numberOfResponses);
 	TextLayer _numResponsesLayer;
-	BOOL _isTeacher @accessors(isTeacher);
+	BOOL _isTeacher @accessors(property=isTeacher);
 }
 
--(id)initAsTeacher:(BOOL)isTeacher
+-(id)initAsTeacher:(BOOL)isTeacher withOwner:(LLQuizWidgetLayer)owner
 {
 	if(self = [super init])
 	{
@@ -46,8 +47,10 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		
 		//	The code to make sure the text layer isnt editable is based on _isThumbnail, so lets use that
 		[_text setIsThumbnail:YES];
+//		_isTeacher = (isTeacher) ? YES : NO;
 		_isTeacher = isTeacher;
-		if(_isTeacher)
+		_owner = owner;
+		if(_isTeacher && _owner._isPresenting)
 		{
 			_numResponsesLayer = [[TextLayer alloc] init];
 			[_numResponsesLayer setFontSize:20];
@@ -55,6 +58,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 			[_numResponsesLayer setBounds:CGRectMake(0,0,40,40)];
 			[_numResponsesLayer setPosition:CGPointMake(0,0)];
 			[_numResponsesLayer setTextColor:[CPColor redColor]];
+			[_numResponsesLayer align:4];
 			[self addSublayer:_numResponsesLayer];
 		}
 		else
@@ -68,6 +72,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 -(void)setAnswerText:(CPString)string
 {
 	[_text setStringValue:string];
+	_answer = string;
 }
 
 -(void)setSelected:(BOOL)selected
@@ -82,8 +87,6 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 -(void)setNumberOfResponses:(unsigned)newNum
 {
-//	if(/*newNum == _numResponses ||*/ ![[LLUser currentUser] isTeacher])
-//		return;
 	_numResponses = newNum;
 	
 	[_numResponsesLayer setStringValue:""+_numResponses];
@@ -91,8 +94,17 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 -(void)drawInContext:(CGContext)context
 {
-	if(_isTeacher)
-		return;
+	if(_owner._isPresenting && (_isTeacher || _owner._isThumbnail))
+	{
+		//	If we are showing the answers, we want to make the rect above the
+		//	numResponsesLayer to be clear, if we aren't showing the answers,
+		//	it should be gray
+		CGContextSetFillColor(context,[_owner showsAnswers] ? [CPColor clearColor] : [CPColor grayColor]);
+		CGContextSetStrokeColor(context,[_owner showsAnswers] ? [CPColor clearColor] : [CPColor whiteColor]);
+		CGContextFillRect(context,CGRectMake(0,0,40,40));
+		CGContextStrokeRect(context,CGRectMake(0,0,40,40));
+		[_numResponsesLayer setHidden:![_owner showsAnswers]];
+	}
 	//	The rect that the image draws in 
 	if([_selectedImage loadStatus] == CPImageLoadStatusCompleted)
 	{
@@ -125,10 +137,14 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 @end
 
-@implementation LLQuizWidgetLayer : CCWidgetLayer {
+@implementation LLQuizWidgetLayer : CCWidgetLayer
+{
 	float _textScaleCache;
 	TextLayer _questionLayer;
 	CPArray _answerLayers;
+	
+	BOOL _showsAnswers @accessors(property=showsAnswers);
+	CALayer _showAnswersLink;
 }
 
 +(id)initialize
@@ -154,6 +170,8 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		_questionLayer = [[TextLayer alloc] init];
 		[_questionLayer setIsThumbnail:YES];
 		[_questionLayer setFontSize:20];
+		//[_questionLayer setPosition:CGPointMake(0,40)];
+		
 		[self addSublayer:_questionLayer];
 		[self setBackgroundColor:[CPColor colorWithHexString:"EEEEEE"]];
 	}
@@ -165,38 +183,21 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	[_questionLayer setStringValue:text];
 }
 
--(void)makeAnswerLayers
-{
-	var rectHeight = [self bounds].size.height/([_widget numberOfPossibleAnswers]+1),
-		rectBounds = CGRectMake(0,0,[self bounds].size.width,rectHeight);
-	[_answerLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-	[_answerLayers removeAllObjects];
-	_answerLayers = [CPArray array];
-	var isTeacher = ((_isPresenting) ? [[LLUser currentUser] isTeacher] : NO);
-	for(var i = 0 ; i < [_widget numberOfPossibleAnswers] ; i++)
-	{
-		var current = [[LLQuizWidgetLayerAnswer alloc] initAsTeacher:isTeacher];
-		[current setAnswerText:[_widget answerAtIndex:i]];
-		[current setBounds:rectBounds];
-		//	We put it at i+1 because the question is the same height as the answers, and the answers are below the question
-		[current setPosition:CGPointMake(0,rectHeight*(i + 1))];
-		[_answerLayers addObject:current];
-		if(NO)
-		{
-			[current setNumberOfResponses:[_widget numberOfResponsesForAnswerAtIndex:i]];
-		}
-		if(i == [_widget selectedAnswer])
-			[current setSelected:YES];
-		[self addSublayer:current];
-		[current setTextScale:_textScaleCache];
-	}
-}
-
 -(void)setTextScale:(float)scale
 {
 	_textScaleCache = scale;
 	[_questionLayer setTextScale:scale];
 	[_answerLayers makeObjectsPerformSelector:@selector(setTextScale:) withObject:scale];
+	[_showAnswersLink setTextScale:scale];
+}
+
+-(void)setIsPresenting:(BOOL)isPresenting
+{
+	if(_isPresenting == isPresenting)
+		return;
+	_isPresenting = isPresenting;
+	//	We need to remake the answer layers
+	[self makeAnswerLayers];
 }
 
 -(void)setBounds:(CGRect)bounds
@@ -204,14 +205,14 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	[super setBounds:bounds];
 	if(!_widget)
 		return;
-	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,[self bounds].size.height / ([_widget numberOfPossibleAnswers]+1))];
+	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,([self bounds].size.height - 40) / ([_widget numberOfPossibleAnswers]+1))];
 	[self makeAnswerLayers];
 }
 
 -(void)setWidget:(CCWidget)widget
 {
 	[super setWidget:widget];
-	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,[self bounds].size.height / ([_widget numberOfPossibleAnswers]+1))];
+	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,([self bounds].size.height - 40) / ([_widget numberOfPossibleAnswers]+1))];
 	[self setQuestionText:[widget question]];
 	//	4 is the mask for center alignment
 	[_questionLayer align:4];
@@ -222,10 +223,27 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 -(void)mouseDown:(CCEvent)event
 {
+	if([[LLUser currentUser] isTeacher])
+	{
+		//	All we care about is if they hit the show answers link
+		//	
+		//	To figure this out, we convert the point to the link's 
+		//	coordinate system, then use the CGRectContainsPoint method
+		var presController = [LLPresentationController sharedController],
+			slideLayer = [[presController mainSlideView] slideLayer],
+			linkPoint = [slideLayer convertPoint:[event slideLayerPoint] toLayer:_showAnswersLink];
+		if(CGRectContainsPoint([_showAnswersLink bounds],linkPoint))
+		{
+			[self setShowsAnswers:!_showsAnswers];
+			[_showAnswersLink setSelected:_showsAnswers];
+			[_answerLayers makeObjectsPerformSelector:@selector(setNeedsDisplay)];
+		}
+		return;
+	}
 	var oldAnswer = [_widget selectedAnswer];
 	var pointInCurrentCoords = [self convertPoint:[event slideLayerPoint] fromLayer:[self superlayer]],
 		rectHeight = [self bounds].size.height / ([_widget numberOfPossibleAnswers]+1),
-		selectedIndex = parseInt(pointInCurrentCoords.y / rectHeight)-1;
+		selectedIndex = parseInt((pointInCurrentCoords.y - 40) / rectHeight)-1;
 	if(selectedIndex != -1)
 	{
 		if([_widget selectedAnswer] != -1)
@@ -254,22 +272,70 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 -(void)drawInContext:(CGContext)context
 {
-	//	THIS IS A COMMENT!
 	//	Update the number of responses on the layers
 	for(var i = 0 ; i < [_answerLayers count] ; i++)
 	{
 		[_answerLayers[i] setNumberOfResponses:[_widget numberOfResponsesForAnswerAtIndex:i]];
 	}
+	//	Draw the 'quiz' image on the top right
 	if([_toprightimage loadStatus] == CPImageLoadStatusCompleted)
 		CGContextDrawImage(context,CGRectMake([self bounds].size.width - 87,[self bounds].size.height - 69,87,69),_toprightimage);
 	else
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(imageDidLoad:) name:CPImageDidLoadNotification object:_toprightimage];
+	
+	
 }
 
 -(void)imageDidLoad:(CPImage)image
 {
 	[[CPNotificationCenter defaultCenter] removeObserver:self name:CPImageDidLoadNotification object:_toprightimage];
 	[self setNeedsDisplay];
+}
+
+-(void)makeAnswerLayers
+{
+	var topHeight = 40;
+	var rectHeight = ([self bounds].size.height - topHeight)/([_widget numberOfPossibleAnswers]+1),
+		rectBounds = CGRectMake(0,0,[self bounds].size.width,rectHeight),
+		currentHeight = topHeight+rectHeight; // topHeight for show answers link, rectHeight for question
+	[_answerLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+	[_answerLayers removeAllObjects];
+	//	Before we do the Answer Layers, lets make the 'show answers' button
+	CPLog([[LLUser currentUser] isTeacher]+" "+!_isThumbnail+" "+_isPresenting);
+	if([[LLUser currentUser] isTeacher] && !_isThumbnail && _isPresenting)
+	{
+		if(_showAnswersLink)
+		{
+			[_showAnswersLink removeFromSuperlayer];
+			_showAnswersLink = nil
+		}
+		_showAnswersLink = [[LLQuizWidgetLayerAnswer alloc] initAsTeacher:NO withOwner:self];
+		[_showAnswersLink setAnswerText:"Show Answers"];
+		[_showAnswersLink setSelected:NO];
+		[_showAnswersLink setBounds:CGRectMake(0,0,300,40)];
+		[_showAnswersLink setPosition:CGPointMake(CGRectGetWidth([self bounds])-300,rectHeight)];
+		[self addSublayer:_showAnswersLink];
+	}
+	_answerLayers = [CPArray array];
+	var isTeacher = [[LLUser currentUser] isTeacher];
+	for(var i = 0 ; i < [_widget numberOfPossibleAnswers] ; i++)
+	{
+		var current = [[LLQuizWidgetLayerAnswer alloc] initAsTeacher:isTeacher withOwner:self];
+		[current setAnswerText:[_widget answerAtIndex:i]];
+		[current setBounds:rectBounds];
+		[current setPosition:CGPointMake(0,currentHeight)];
+		[_answerLayers addObject:current];
+		if(isTeacher)
+		{
+			[current setNumberOfResponses:[_widget numberOfResponsesForAnswerAtIndex:i]];
+		}
+		if(i == [_widget selectedAnswer])
+			[current setSelected:YES];
+		[self addSublayer:current];
+		[current setTextScale:_textScaleCache];
+		[current setNeedsDisplay];
+		currentHeight += rectHeight;
+	}
 }
 
 @end

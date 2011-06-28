@@ -15,6 +15,8 @@
  */
 @implementation CCMovieWidgetLayer : CCWidgetLayer {
 	DOMElement _contentElement;
+	
+	BOOL _isDirty;
 }
 
 -(id)init {
@@ -41,45 +43,24 @@
 	}
 	else
 	{
-		var html = "<object width=\"100%\" height=\"100%\">";
-		html 	+= "<param name=\"movie\" value=\"" + [[_widget movie] filename] +"\">";
-		html	+= "<param name=\"wmode\" value=\"transparent\">";
-		html	+= "<embed src=\"" + [[_widget movie] filename] + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"100%\" height=\"100%\"></object>";
-		
-		if(_contentElement.innerHTML != html)
+		if(_isDirty)
+		{
+			var html = "<object width=\"100%\" height=\"100%\">";
+			html 	+= "<param name=\"movie\" value=\"" + [[_widget movie] filename] +"\">";
+			html	+= "<param name=\"wmode\" value=\"transparent\">";
+			html	+= "<embed src=\"" + [[_widget movie] filename] + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"100%\" height=\"100%\"></object>";
+
 			_contentElement.innerHTML = html;
+			
+			_isDirty = NO;
+		}
 	}
 }
 
 -(void)setWidget:(CCMovieWidget)widget {
 	[super setWidget:widget];
+	_isDirty = YES;
 	[self setNeedsDisplay];
 }
-
--(void)layerDidMoveToSuperlayer {
-	[super layerDidMoveToSuperlayer];
-	// [fl setBounds:[self bounds]];
-}
-
--(void)mouseDown:(CCEvent)event
-{
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
-}
-
--(void)mouseDragged:(CCEvent)event
-{
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
-}
-
--(void)mouseUp:(CCEvent)event
-{
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
-}
-
--(void)mouseMoved:(CCEvent)event
-{
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
-}
-
 
 @end

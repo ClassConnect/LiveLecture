@@ -6,8 +6,8 @@
 
 var __LLONLINEPERSISTENCEHANDLER_SHARED__ = nil;
 
-var kLLLoadURL = "/app/livelecture/pptconversiontest.php";
-//var kLLLoadURL = HOST+"/app/livelecture/load.cc";
+//var kLLLoadURL = "/app/livelecture/pptconversiontest.php";
+var kLLLoadURL = HOST+"/app/livelecture/load.cc";
 var kLLSaveURL = HOST+"/app/livelecture/save.cc";
 
 LLOnlinePersistanceSaveSuccessful = "LLOnlinePersistanceSaveSuccessful";
@@ -68,7 +68,10 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 	{
 		var obj = [data objectFromJSON];
 		if(obj["success"] == true)
+		{
 			[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:@"Save Successful!" message:"You have successfully saved your presentation" icon:TNGrowlIconInfo];
+			[[LLPresentationController sharedController] setDirty:NO];
+		}
 		else
 			[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Save Failed" message:obj["errorString"] icon:TNGrowlIconError];
 	}

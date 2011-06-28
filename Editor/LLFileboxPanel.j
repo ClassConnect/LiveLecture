@@ -78,18 +78,18 @@ function is_folder(object)
 		
 		//	Loading View
 		_loadingView = [[CPView alloc] initWithFrame:[_collection bounds]];
-   	[_loadingView setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
+	   	[_loadingView setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
    
-   	var progressIndicator = [CPProgressIndicator new];
+	   	var progressIndicator = [CPProgressIndicator new];
 		
-   	[progressIndicator setStyle:CPProgressIndicatorSpinningStyle];
-   	[progressIndicator sizeToFit];
+	   	[progressIndicator setStyle:CPProgressIndicatorSpinningStyle];
+	   	[progressIndicator sizeToFit];
    
-    [progressIndicator setAutoresizingMask:CPViewMinXMargin|CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxYMargin];
-   	[progressIndicator setCenter:[_loadingView center]];
+	    [progressIndicator setAutoresizingMask:CPViewMinXMargin|CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxYMargin];
+	   	[progressIndicator setCenter:[_loadingView center]];
 		[progressIndicator startAnimation:nil];
     
-    [_loadingView addSubview:progressIndicator];
+	    [_loadingView addSubview:progressIndicator];
 		
 		//	Add all the subviews
 		[contentView addSubview:sv];

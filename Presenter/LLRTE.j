@@ -24,6 +24,9 @@ kLLRTEGetStudentListRequest = "kLLRTEGetStudentListRequest"
 kLLRTEStudentJoinedNotification = "kLLRTEStudentJoinedNotification"
 kLLRTEStudentLeftNotification = "kLLRTEStudentLeftNotification"
 
+//	Teacher Requests:
+kLLRTECurrentSlideRequest = "kLLRTECurrentSlideRequest"
+
 //	Personal Requests:
 kLLRTEGetStudentListResponse = "kLLRTEGetStudentListResponse"
 kLLRTECurrentSlideNotification = "kLLRTECurrentSlideNotification"
@@ -31,6 +34,9 @@ kLLRTECurrentSlideNotification = "kLLRTECurrentSlideNotification"
 //	Video Enabled/Disabled
 kLLRTEVideoEnabledMessage = "kLLRTEVideoEnabledMessage"
 kLLRTEVideoDisabledMessage = "kLLRTEVideoDisabledMessage"
+
+//	Stop Hosting
+kLLRTEStopHostingNotification = "kLLRTEStopHostingNotification"
 
 var __LLRTE_SHARED__ = nil
 
@@ -63,7 +69,7 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 
 +(CPString)channelNameForUserID:(CPInteger)uid
 {
-	return "/livelecture/users/"+uid;
+	return "/livelecture/"+[[LLPresentationController sharedController] livelectureID]+"/users/"+uid;
 }
 
 -(id)init
@@ -130,6 +136,14 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 {
 	_connection.publish(_students,{
 		type:kLLRTEGetStudentListRequest,
+		u:[[LLUser currentUser] userID]
+	});
+}
+
+-(void)requestCurrentSlideIndex
+{
+	_connection.publish(_teachers,{
+		type:kLLRTECurrentSlideRequest,
 		u:[[LLUser currentUser] userID]
 	});
 }
@@ -206,6 +220,10 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 	{
 		[[LLStudentListManager defaultManager] removeStudentWithID:message.u];
 	}
+	if(message.type == kLLRTEStopHostingNotification)
+	{
+		window.location = "/app/class.cc?id="+message.text+"#5";
+	}
 }
 
 -(void)receivedTeacherMessage:(JSObject)message
@@ -215,7 +233,10 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 	switch(message.type)
 	{
 		case kLLRTEStudentJoinedNotification:	[[LLStudentListManager defaultManager] addStudentWithID:message.u name:message.n];
-												[self sendCurrentSlideMessageToStudent:message.u];
+												//[self sendCurrentSlideMessageToStudent:message.u];
+												break;
+		case kLLRTECurrentSlideRequest:			[self sendCurrentSlideMessageToStudent:message.u];
+												break;
 	}
 }
 

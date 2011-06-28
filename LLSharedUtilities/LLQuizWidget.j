@@ -51,7 +51,8 @@
 	if(self = [super initWithWidget:widget])
 	{
 		[self setQuestion:[[widget question] copy]];
-		[self setAnswers:[[widget answers] copy]];
+//		[self setAnswers:[[widget answers] copy]];
+		[self setAnswers:[[CPArray alloc] initWithArray:[widget answers] copyItems:YES]];
 		[self setSelectedAnswer:[[widget selectedAnswer] copy]];
 		_answerCount = [widget._answerCount copy];
 	}
@@ -179,6 +180,9 @@
 		for(var i = 0 ; i < [escapedAnswers count] ; i++)
 			_answers[i] = unescape(escapedAnswers[i]);
 		_selectedAnswer = [[coder decodeObjectForKey:@"selectedAnswer"] intValue];
+		_answerCount = [ ];
+		for(var i = 0  ; i < [_answers count] ; i++)
+			_answerCount[i] = 0;
 	}
 	return self;
 }

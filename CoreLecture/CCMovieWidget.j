@@ -16,7 +16,6 @@
 {
 	// Strip autoplay
 	filename = [[filename stringByReplacingOccurrencesOfString:@"&autoplay=1" withString:@""] stringByReplacingOccurrencesOfString:@"&autoplay=0" withString:@""];
-	filename = [filename stringByReplacingOccurrencesOfString:@"&" withString:@"&amp;"];
 	return filename;
 }
 
@@ -46,7 +45,7 @@
 
 +(CPString)_filenameFromYoutubeID:(CPString)yid
 {
-	return "http://www.youtube.com/v/"+yid+"&fs=0&source=uds";
+	return "http://www.youtube.com/v/"+yid+"&fs=0&source=uds&showinfo=0;rel=0";
 }
 
 -(id)initWithWidget:(CCMovieWidget)widget
@@ -60,7 +59,7 @@
 
 -(id)initWithYoutubeID:(CPString)yid
 {
-	return [self initWithMovie:[CPFlashMovie flashMovieWithFile:[CCMovieWidget _filenameFromYoutubeID:yid]]];
+	return [self _initWithCleanedMovie:[CPFlashMovie flashMovieWithFile:[CCMovieWidget _filenameFromYoutubeID:yid]]];
 }
 
 -(id)initWithFile:(CPString)file
@@ -69,6 +68,15 @@
 }
 
 -(id)initWithMovie:(CPFlashMovie)movie
+{
+	//	TODO: Fix this, it should go through the Youtube ID
+	return [self _initWithCleanedMovie:movie];
+}
+
+//	We say 'cleaned' movie, because we want to make sure that the URL was built
+//	using the _filenameFromYoutubeID method, which adds a few parameters that
+//	we want (like turning off related videos)
+-(id)_initWithCleanedMovie:(CPFlashMovie)movie
 {
 	if(self = [super init])
 	{

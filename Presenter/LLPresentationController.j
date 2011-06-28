@@ -1,9 +1,6 @@
 /*
  * Created by Scott Rice
  * Copyright 2011, ClassConnect All rights reserved.
- *
- *	Main overarching class that handles the communication 
- *	between different parts of the application, when appropriate.
  */
 
 @import <Foundation/Foundation.j>
@@ -25,6 +22,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 	LLSidebarController sidebarController @accessors;
 	CCSlideView mainSlideView @accessors;
+	
+	//	To make sure that when the user hits the stop button they don't
+	//	get asked if they want to stop the livelecture before leaving
+	BOOL _stopped @accessors(property=stopped);
 }
 
 +(id)sharedController {
@@ -109,6 +110,11 @@ var __LLPRESENTATION_SHARED__ = nil;
 //	Sidebar
 //	----------------------------
 
+-(void)toggleSidebar
+{
+	[self setShowsSidebar:!_showsSidebar animated:YES];
+}
+
 -(void)setShowsSidebar:(BOOL)showsSidebar animated:(BOOL)animated
 {
 	if(showsSidebar == _showsSidebar)
@@ -143,30 +149,21 @@ var __LLPRESENTATION_SHARED__ = nil;
 		[sidebar setFrame:newSidebarFrame];
 		[mainSlideView setFrame:newSlideViewFrame];
 	}
-	
-	// if(showsSidebar)
-	// {
-	// 	[sidebaranimation addProperty:"frame"
-	// 	 				  		start:CGRectMake(0-sbf.size.width,0,sbf.size.width,height) 
-	// 							  end:CGRectMake(0,0,sbf.size.width,height)];
-	// 	[slideviewanimation addProperty:"frame"
-	// 							  start:CGRectMake(0,0,svf.size.width,height)
-	// 								end:CGRectMake(sbf.size.width,0,svf.size.width - sbf.size.width,height)];
-	// }
-	// else
-	// {
-	// 	[sidebaranimation addProperty:"frame"
-	// 	 				  		start:CGRectMake(0,0,sbf.size.width,height)
-	// 							  end:CGRectMake(0-sbf.size.width,0,sbf.size.width,height) ];
-	// 	[slideviewanimation addProperty:"frame"
-	// 							  start:CGRectMake(sbf.size.width,0,svf.size.width,height)
-	// 								end:CGRectMake(0,0,svf.size.width+sbf.size.width,height)];
-	// }
 }
 
 -(BOOL)sidebarIsLocked
 {
 	return [sidebarController sidebarIsLocked];
+}
+
+-(void)stopHostingLiveLecture
+{
+	//	Ask the user if they are sure they want to leave
+	if(confirm("Are you sure you want to stop hosting this LiveLecture?"))
+	{
+		[[LLPresentationController sharedController] setStopped:YES];
+		window.location = ("/app/livelecture/stophosting.php?llid="+_llid);
+	}
 }
 
 @end

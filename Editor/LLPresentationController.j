@@ -27,6 +27,8 @@ var __LLPRESENTATION_SHARED__ = nil;
 	
 	Function _alert_callback;
 	CPTextField _alert_text_field;
+	
+	BOOL _isDirty @accessors(property=dirty,getter=isDirty);
 }
 
 +(id)sharedController
@@ -324,6 +326,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)mainSlideContentDidChange {
 	[[_presentation slides] replaceObjectAtIndex:_currentSlideIndex withObject:[[mainSlideView slide] copy]];
 	[navigationController slideContentChanged];
+	[self setDirty:YES];
 }
 
 @end

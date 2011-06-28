@@ -147,36 +147,34 @@ HOST = "http://ccinternal.com"
 		[_contentView addSubview:view];
 		[[LLPresentationController sharedController] setShowsSidebar:NO animated:YES];
 		
+		//	Setup the arrow that will let the user click and open the sidebar
+		var arrowSize = 64;
+		var sidebarButton = [CPButton buttonWithTitle:""];
+		[sidebarButton setBordered:NO];
+		[sidebarButton setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_sidebar_arrow.png"] size:CGSizeMake(arrowSize,arrowSize)]];
+		[sidebarButton setImagePosition:CPImageOnly];
+		[sidebarButton setTarget:_controller];
+		[sidebarButton setAction:@selector(toggleSidebar)];
+		//	Initially positions it on the bottom left
+		[sidebarButton setFrame:CGRectMake(0,CGRectGetHeight([_contentView bounds])-arrowSize,arrowSize,arrowSize)];
+		//	Makes it stay on the bottom left when the frame changes
+		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin];
+		[view addSubview:sidebarButton];
+		
 		if(![[LLUser currentUser] isTeacher])
 		{
 			//	Student specific setup
-//			[[LLRTE sharedInstance] notifyOfEntry];
+			[[LLRTE sharedInstance] requestCurrentSlideIndex];
 		}
 		else
 		{
 			//	Do teacher specific config
-//			[[LLRTE sharedInstance] requestListOfStudents];
 			[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[0]];
 		}
-/*
-		window.onbeforeunload = function()
-		{
-			[[LLRTE sharedInstance] notifyOfExit];
-			if([[LLUser currentUser] isTeacher])
-			{
-				var answer = confirm("Would you like to stop hosting this LiveLecture?");
-				if(answer)
-				{
-					alert("Stop Hosting!");
-				}
-				else
-				{
-					alert("Keep it open!");
-				}
-			}
-			return;
+		window.onbeforeunload = function() {
+			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher])
+				return "Your LiveLecture is still running. Are you sure you want to leave without stopping it?\n(To stop hosting, open the sidebar and click the x at the bottom)";
 		};
-*/
 	}
 	else	//	Start the connection to the load the presentation 
 	{

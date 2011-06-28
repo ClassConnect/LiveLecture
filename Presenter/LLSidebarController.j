@@ -24,14 +24,25 @@
 	[view setBackgroundColor:[CPColor colorWithHexString:"DAE1E9"]];
 	_buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0,175,215,25)];
 	[_buttonBar setAutoresizingMask:CPViewMinYMargin];
+	//	Lock Button
 	var lockButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)],
-		lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(11,12)];
+		lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(20,20)];
 	[lockButton setBordered:NO];
 	[lockButton setImage:lockImage];
 	[lockButton setImagePosition:CPImageOnly];
 	[lockButton setTarget:self];
 	[lockButton setAction:@selector(toggleLock:)];
-	[_buttonBar setButtons:[lockButton]];
+	//	Stop Hosting LiveLecture button
+	var stopButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
+		stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
+	[stopButton setBordered:NO];
+	[stopButton setImage:lockImage];
+	[stopButton setImagePosition:CPImageOnly];
+	[stopButton setTarget:[LLPresentationController sharedController]];
+	[stopButton setAction:@selector(stopHostingLiveLecture)];
+	//	Add buttons to bar
+	[_buttonBar setButtons:[lockButton, stopButton]];
+	//	Setup the accordionview
 	var rteenabled = [[LLUser currentUser] RTEEnabled];
 	_accordionView = [[CCAutoresizingAccordionView alloc] initWithFrame:CGRectMake(0,0,215,175)];
 	[_accordionView setAutoresizingMask:CPViewHeightSizable];
@@ -39,8 +50,9 @@
 	_tokboxController = [[LLTokBoxViewController alloc] init];
 	var tokItem = [[CCAutoresizingAccordionViewItem alloc] initWithIdentifier:"com.classconnect.livelecture.presentor.sidebar.tokboxview"];
 	[tokItem setLabel:"Teacher Video"];
-	[tokItem setStaticHeight:200];
+	[tokItem setStaticHeight:234];
 	[tokItem setView:[_tokboxController view]];
+	[_tokboxController createStopVideoButton];
 	var navItem = [[CCAutoresizingAccordionViewItem alloc] initWithIdentifier:"com.classconnect.livelecture.presentor.sidebar.slidepicker"];
 	[navItem setLabel:"Jump to Slide"];
 	[navItem setView:[_pickerController view]];

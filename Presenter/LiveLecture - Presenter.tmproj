@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>AppController.j</string>
+	<string>LLRTE.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -37,6 +37,20 @@
 	<integer>200</integer>
 	<key>metaData</key>
 	<dict>
+		<key>../CoreLecture/CCSlideView.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>2</integer>
+				<key>line</key>
+				<integer>280</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>229</integer>
+		</dict>
 		<key>../CoreLecture/TextLayer.j</key>
 		<dict>
 			<key>caret</key>
@@ -56,37 +70,38 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>38</integer>
+				<integer>24</integer>
 				<key>line</key>
-				<integer>7</integer>
+				<integer>89</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>78</integer>
 		</dict>
-		<key>AppController.j</key>
+		<key>LLRTE.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
 				<integer>2</integer>
 				<key>line</key>
-				<integer>128</integer>
+				<integer>209</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>198</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>AppController.j</string>
+		<string>../LLSharedUtilities/LLQuizWidgetLayer.j</string>
+		<string>LLRTE.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{0, 80}, {1440, 798}}</string>
+	<string>{{0, 79}, {1440, 799}}</string>
 </dict>
 </plist>

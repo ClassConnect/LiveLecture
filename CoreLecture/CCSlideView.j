@@ -185,7 +185,7 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 		
 		//	This is here so that mouse events can be sort of smart
 		//	We want it so that the delegate only receives a message if we think the user isn't interacting with a widget
-		//	We will define 'interacting with a widget' as "Clicked on something other than a widget", but we may need to change this as time goes on
+		//	We will define 'interacting with a widget' as "clicked on a widget", but we may need to change this as time goes on
 		if(_firstResponder == nil)
 		{
 			CCCallDelegateMethodWithObject(_delegate,@selector(slideView:mouseClickedAtPoint:),self,[betterEvent slideLayerPoint]);
@@ -316,11 +316,11 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 		}
 		switch([event charactersIgnoringModifiers])
 		{
-			case CPDeleteFunctionKey:
-			case CPDeleteCharacter:	[_firstResponder resignFirstResponder];
-									[_slideLayer deleteWidget:_firstResponder];
-									_firstResponder = nil;
-									break;
+			case CPDeleteCharacter:	
+			case CPDeleteFunctionKey:	[_firstResponder resignFirstResponder];
+										[_slideLayer deleteWidget:_firstResponder];
+										_firstResponder = nil;
+										break;
 		}
 	}
 }

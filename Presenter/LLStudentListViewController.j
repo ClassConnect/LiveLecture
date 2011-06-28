@@ -28,14 +28,15 @@
 {
 	_button = [CPButton buttonWithTitle:"Update List"]; // Declare it here so we can use it's height
 	var view = [[CPView alloc] initWithFrame:CGRectMake(0,0,215,200)],
-		buttonHeight = CGRectGetHeight([_button bounds]);
-	_scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,buttonHeight,215,200-buttonHeight)];
-	[view setAutoresizingMask:CPViewHeightSizable];
+		buttonHeight = CGRectGetHeight([_button bounds]),
+		buttonWidth = CGRectGetWidth([_button bounds]);
+	_scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,buttonHeight+10,215,200-(buttonHeight+10))];
+	[view setAutoresizingMask:CPViewHeightSizable];	
 	[_scrollView setAutoresizingMask:CPViewHeightSizable];
 	[_scrollView setHasHorizontalScroller:YES];
 	[_scrollView setHasVerticalScroller:YES];
-	[_button setFrame:CGRectMake(0,0,215,buttonHeight)];
-//	[_button setThemeState:CPThemeStateDefault];
+	[_button setFrame:CGRectMake(215-(buttonWidth + 20 + 5),5,buttonWidth + 20,buttonHeight)];
+	[_button setThemeState:CPThemeStateDefault];
 	[_button setTarget:self];
 	[_button setAction:@selector(refresh)];
 	[_button setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_refresh.png"] size:CGSizeMake(16,16)]];
@@ -67,6 +68,8 @@
 	[_manager requestListOfStudentsAndWait];
 }
 
+//	CPTableViewDelegate Methods
+
 -(void)numberOfRowsInTableView:(CPTableView)tableView
 {
 	return [_manager numberOfStudents] ? [_manager numberOfStudents] : 1;
@@ -79,6 +82,8 @@
 	else
 		return "No Students";
 }
+
+//	Notification Handling
 
 -(void)studentsDidChange:(CPNotification)notification
 {

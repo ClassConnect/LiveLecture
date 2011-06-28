@@ -9,15 +9,16 @@
  */
 
 //	Debug
-HOST = "http://ccinternal.com"
+//HOST = "http://ccinternal.com"
 //	Production
-//HOST = ""
+HOST = ""
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 @import "MediaKit/MediaKit.j"
 @import "GrowlCappuccino/GrowlCappuccino.j"
 @import "../CoreLecture/CoreLecture.j"
+@import "LLUser.j"
 @import "LLInspectorPanel.j"
 @import "LLSlideThemeManager.j"
 @import "LLPreviewEventHandler.j"
@@ -47,7 +48,8 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	LLToolbarInspectorItemIdentifier = "LLToolbarInspectorItemIdentifier",
     LLToolbarPreviewItemIdentifier = "LLToolbarPreviewItemIdentifier";
 
-@implementation AppController : CPObject {
+@implementation AppController : CPObject
+{
 	CPWindow _mainWindow;
 	CPWindow _previewWindow;
 	
@@ -105,8 +107,8 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	//	Set up the right view
 	_editorView = [[CCSlideView alloc] initWithFrame:CGRectMake(215,0,CGRectGetWidth([_contentView bounds])-215,CGRectGetHeight([_contentView bounds]))];
-	[_editorView setAutoresizingMask: CPViewWidthSizable	|
-	 								CPViewHeightSizable ];
+	[_editorView setAutoresizingMask:	CPViewWidthSizable	|
+	 									CPViewHeightSizable ];
 	
 	//	Add all the subviews
 	[_contentView addSubview:[nav view]];
@@ -127,7 +129,12 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	[_editorView setNeedsDisplay:YES];
 	
-	[[TNGrowlCenter defaultCenter] setView:_editorView];
+	[[TNGrowlCenter defaultCenter] setView:_contentView];
+	
+	window.onbeforeunload = function() {
+		if([[LLPresentationController sharedController] isDirty])
+			return "You have unsaved changes, are you sure you want to leave?";
+	}
 }
 
 -(void)showErrorMessage:(CPString)message
@@ -148,11 +155,22 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	[menu removeItem:[menu itemWithTitle:"Open"]];
 	//	Get rid of the submenu for save, we still want the regular button
 	[[menu itemWithTitle:"Save"] setSubmenu:nil];
+	[[menu itemWithTitle:"Save"] setIndentationLevel:15];
 	//	Set the keyboard shortcut and target/action
 	[[menu itemWithTitle:"Save"] setKeyEquivalent:"s"];
 	[[menu itemWithTitle:"Save"] setKeyEquivalentModifierMask:CPCommandKeyMask];
 	[[menu itemWithTitle:"Save"] setTarget:[LLOnlinePersistenceHandler sharedHandler]];
 	[[menu itemWithTitle:"Save"] setAction:@selector(save)];
+	
+	var backItem = [[CPMenuItem alloc] initWithTitle:"Back to ClassConnect" action:@selector(back) keyEquivalent:""];
+	[backItem setTarget:self];
+	[backItem setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_back.png"] size:CGSizeMake(16,16)]];
+	[menu addItem:backItem];
+}
+
+-(void)back
+{
+	window.location = "/app/presentations.cc";
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar {

@@ -15,6 +15,7 @@ var _GLOBE_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pat
 {
 	TextLayer _thumbnailText;
 	CALayer _contentLayer;
+	CPString _displayedURL;
 }
 
 -(id)init {
@@ -59,19 +60,24 @@ var _GLOBE_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pat
 		[_contentLayer setHidden:YES];
 		return;
 	}
-	[_contentLayer setBounds:[self bounds]];
 	
-	var html = "<iframe";
-	html += " src=\""+[_widget URL]+"\"";
-	html += " width = \"100%\"";
-	html += " height = \"100%\"";
-	html += " scrolling = \"yes\"";
-	html += " frameborder = \"0\"";
-	html += "></iframe>";
-	
-	_contentLayer._DOMElement.innerHTML = html;
 	[_thumbnailText setHidden:YES];
 	[_contentLayer setHidden:NO];
+	[_contentLayer setBounds:[self bounds]];
+	
+	if(_displayedURL != [_widget URL])
+	{
+		var html = "<iframe";
+		html += " src=\""+[_widget URL]+"\"";
+		html += " width = \"100%\"";
+		html += " height = \"100%\"";
+		html += " scrolling = \"yes\"";
+		html += " frameborder = \"0\"";
+		html += "></iframe>";
+		
+		_contentLayer._DOMElement.innerHTML = html;
+		_displayedURL = [_widget URL];
+	}
 }
 
 -(void)setTextScale:(float)scale
