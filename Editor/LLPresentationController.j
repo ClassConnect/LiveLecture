@@ -95,6 +95,10 @@ var __LLPRESENTATION_SHARED__ = nil;
 	if([[_presentation theme] isEqual:theme])
 		return;
 	[_presentation setTheme:theme];
+	//	BUGFIX: Since the slide that the slideLayer is referencing is actually
+	//	a copy of the current slide, we need to explicitly set the theme before
+	//	we refresh for it to show up
+	[mainSlideView setSlide:[self currentSlide]];
 	[[mainSlideView slideLayer] refreshTheme];
 	[navigationController setThemeForItems:theme];
 }
