@@ -11,6 +11,8 @@
 
 _CCWidgetLayerHighestZ = 1;
 
+var kMinimumWidgetSize = 15;
+
 @implementation CCWidgetLayer : CALayer {
 	//	I have to put this property here JUST BECAUSE OF THE TEXTLAYER! AJKLDFJS
 	CPInteger _widgetIndex @accessors(property=widgetIndex);
@@ -219,8 +221,8 @@ _CCWidgetLayerHighestZ = 1;
 
 -(void)editingControl:(CCWidgetEditingControl)control didOffsetByPoint:(CGPoint)offset
 {
-	var pos = CGPointMakeCopy([self position]);
-	var bounds = CGRectMakeCopy([self bounds]);
+	var pos = CGPointMakeCopy([self position]),
+		bounds = CGRectMakeCopy([self bounds]);
 	//	X Direction
 	if([control resizingMask] & CCWidgetEditingControlSizableLeft)
 	{
@@ -230,15 +232,19 @@ _CCWidgetLayerHighestZ = 1;
 		}
 		else
 		{
-			pos.x += offset.x;
-			bounds.size.width -= offset.x;
+			if(bounds.size.width - offset.x > kMinimumWidgetSize)
+			{
+				pos.x += offset.x;
+				bounds.size.width -= offset.x;
+			}
 		}
 	}
 	else if([control resizingMask] & CCWidgetEditingControlSizableRight)
 	{
-		if(pos.x + (bounds.size.width + offset.x) <= 1024)
+		if((pos.x + (bounds.size.width + offset.x) <= 1024) && bounds.size.width + offset.x > kMinimumWidgetSize)
 			bounds.size.width += offset.x;
 	}
+	//	Y Direction
 	if([control resizingMask] & CCWidgetEditingControlSizableTop)
 	{
 		if(pos.y + offset.y < 0)
@@ -247,15 +253,19 @@ _CCWidgetLayerHighestZ = 1;
 		}
 		else
 		{
-			pos.y += offset.y;
-			bounds.size.height -= offset.y;
+			if(bounds.size.height - offset.y > kMinimumWidgetSize)
+			{
+				pos.y += offset.y;
+				bounds.size.height -= offset.y;
+			} 
 		}
 	}
 	else if([control resizingMask] & CCWidgetEditingControlSizableBottom)
 	{
-		if(pos.y + (bounds.size.height + offset.y) <= 768)
+		if((pos.y + (bounds.size.height + offset.y) <= 768) && bounds.size.height + offset.y > kMinimumWidgetSize)
 			bounds.size.height += offset.y;
 	}
+	if(bounds.size.width > 15)
 	//	Update the layer and the widget
 	[self setPosition:pos];
 	[_widget setLocation:pos];
