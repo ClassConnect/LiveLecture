@@ -297,20 +297,20 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	if(!_previewView)
 	{
 		_previewWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero() styleMask:CPBorderlessBridgeWindowMask];
-	    var _contentView = [_previewWindow contentView];
-		_previewView = [[CCSlideView alloc] initWithFrame:[_contentView bounds]];
+	    var previewContent = [_previewWindow contentView];
+		_previewView = [[CCSlideView alloc] initWithFrame:[previewContent bounds]];
 		[_previewView setAutoresizingMask:	CPViewWidthSizable |
 											CPViewHeightSizable];
-		[_contentView addSubview:_previewView];
+		[previewContent addSubview:_previewView];
 		[_previewView setDelegate:[LLPreviewEventHandler new]];
 		[_previewView setIsPresenting:YES];
+		[_previewWindow makeFirstResponder:_previewView];
 		[[CPNotificationCenter defaultCenter] addObserver:[_previewView slideLayer] selector:@selector(resize) name:@"CPViewFrameDidChangeNotification" object:nil];
 	}
 	else
 	{
 		[_previewView setHidden:NO];
 	}
-	[_previewWindow orderFront:self];
 	
 	//	Hide all of the media panels
 	[[LLFileboxPanel sharedPanel] close];
@@ -319,16 +319,19 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	[_controller setMainSlideView:_previewView];
 	[_previewView setSlide:[_controller currentSlide]];
+	[_previewWindow makeKeyAndOrderFront:self];
+	[_editorView resignFirstResponder];
 	[_previewView becomeFirstResponder];
 	[CPMenu setMenuBarVisible:NO];
 }
 
 -(void)endPreview
 {
-	[_mainWindow orderFront:self];
 	[_controller setMainSlideView:_editorView];
-	[_editorView setSlide:[_controller currentSlide]]
+	[_editorView setSlide:[_controller currentSlide]];
+	[_mainWindow makeKeyAndOrderFront:self];
 	[_previewView resignFirstResponder];
+	[_editorView becomeFirstResponder];
 	[_previewView setHidden:YES];
 	[CPMenu setMenuBarVisible:YES];
 }
