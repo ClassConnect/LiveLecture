@@ -64,7 +64,6 @@ var __LLUSER_SHARED__ = nil
 		[self setName:obj["firstName"]+" "+obj["lastName"]];
 		[self setVideoEnabled:obj["videoEnabled"]];
 	}
-	CPLog("UID:"+obj["uid"]+" LLID:"+[[LLPresentationController sharedController] livelectureID]);
 }
 
 @end

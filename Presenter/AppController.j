@@ -7,9 +7,9 @@
  */
 
 //	Debug
-HOST = "http://ccinternal.com"
+//HOST = "http://ccinternal.com"
 //	Production
-//HOST = ""
+HOST = ""
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
@@ -50,7 +50,7 @@ HOST = "http://ccinternal.com"
 		if([args containsKey:@"lid"])
 		{
 			var lid = [args objectForKey:@"lid"];
-			[[LLPresentationController sharedController] setIsFile:YES];
+			[[LLPresentationController sharedController] setIsFile:NO];
 			[[LLPresentationController sharedController] setLivelectureID:lid];
 			url = [CPURL URLWithString:HOST + "/app/livelecture/config.cc?lid="+lid];
 		}
@@ -59,8 +59,14 @@ HOST = "http://ccinternal.com"
 			var fid = [args objectForKey:@"fid"],
 				cid = [args objectForKey:@"cid"];
 			[[LLPresentationController sharedController] setIsFile:YES];
-			[[LLPresentationController sharedController] setLiveLectureID:lid];
+			[[LLPresentationController sharedController] setLivelectureID:fid];
 			[[LLPresentationController sharedController] setClassID:cid];
+			//	Setup the user with the file settings
+			var user = [LLUser currentUser];
+			[user setRTEEnabled:NO];
+			[user setIsTeacher:YES];
+			[user setVideoEnabled:NO];
+			user._allowed = YES;
 			url = [CPURL URLWithString:HOST + "/app/livelecture/config.cc?fid="+fid+"&cid="+cid];
 		}
 		var req = [CPURLRequest requestWithURL:url],
@@ -78,7 +84,11 @@ HOST = "http://ccinternal.com"
 		[contentView addSubview:_progressBar];
 		[contentView addSubview:_label];
 		
-		[_configConnection start];
+		if(![[LLPresentationController sharedController] isFile])
+			[_configConnection start];
+		else
+			// Just keep on going!
+			[self connectionDidFinishLoading:_configConnection];
 	}
 	else
 	{
@@ -104,10 +114,12 @@ HOST = "http://ccinternal.com"
 		if(![data isEqual:""])
 			[[LLPresentationController sharedController] setPresentation:[CPKeyedUnarchiver unarchiveObjectWithData:[CPData dataWithRawString:data]]];
 		else
-			[self showErrorMessage:"An error has occured. Please hit the back button and try to reopen LiveLecture"];
+			[self showErrorMessage:"Your presentation could not be loaded."];
 	}
 	else
+	{
 		[[LLUser currentUser] configureFromJSON:data];
+	}
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection
@@ -172,7 +184,7 @@ HOST = "http://ccinternal.com"
 			[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[0]];
 		}
 		window.onbeforeunload = function() {
-			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher])
+			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher] && ![[LLPresentationController sharedController] isFile])
 				return "Your LiveLecture is still running. Are you sure you want to leave without stopping it?\n(To stop hosting, open the sidebar and click the x at the bottom)";
 		};
 	}
@@ -185,7 +197,7 @@ HOST = "http://ccinternal.com"
 		}
 		[_label setStringValue:"Loading LiveLecture Presentation"];
 		[_progressBar setDoubleValue:10];
-		var urlstr = HOST + "/app/livelecture/load.cc?"+(([_controller isFile]) ? "lid" : "fid")+"="+[_controller livelectureID]+(([_controller isFile]) ? "&cid="+[_controller classID] : "");
+		var urlstr = HOST + "/app/livelecture/load.cc?"+(([_controller isFile]) ? "fid" : "lid")+"="+[_controller livelectureID]+(([_controller isFile]) ? "&cid="+[_controller classID] : "");
 		var req = [CPURLRequest requestWithURL:[CPURL URLWithString:urlstr]];
 		_loadConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
 		_timer = [CPTimer scheduledTimerWithTimeInterval:.05 callback:function(){

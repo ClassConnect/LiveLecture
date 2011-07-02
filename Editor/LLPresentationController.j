@@ -92,7 +92,6 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)setTheme:(CCSlideTheme)theme
 {
-	debugger;
 	if([[_presentation theme] isEqual:theme])
 		return;
 	[_presentation setTheme:theme];
@@ -116,19 +115,21 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[w2 setSize:CGRectMake(0,0,924,548)];
 	[s addWidget:w1];
 	[s addWidget:w2];
-	[[_presentation slides] addObject:s];
-	[self setCurrentSlideIndex:[self numberOfSlides]-1];
+	[s setTheme:[_presentation theme]];
+	[[_presentation slides] insertObject:s atIndex:_currentSlideIndex+1];
+	[self setCurrentSlideIndex:_currentSlideIndex+1];
 	[navigationController addSlide:s];
 }
 
 -(void)deleteCurrentSlide
 {
 	[[_presentation slides] removeObjectAtIndex:_currentSlideIndex];
-	[navigationController removeSlideAtIndex:_currentSlideIndex];
+	var oldCurr = _currentSlideIndex;
 	if((_currentSlideIndex == [self numberOfSlides]) && [self numberOfSlides])
 	{
 		[self setCurrentSlideIndex:_currentSlideIndex-1];
 	}
+	[navigationController removeSlideAtIndex:oldCurr];
 	//	If they got rid of the last slide, give them a new one
 	if([self numberOfSlides] == 0) {
 		[self newSlide];
@@ -154,12 +155,13 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)setCurrentSlideIndex:(int)currentSlideIndex
 {
 	//	Make sure to deal with the -1 case, which is when the user clicks somewhere that doesnt correspond to a slide
-	//	When this happens, we dont want anything to happen visually, so we set the selected index to be the current one again
+	//	When this happens, we dont want anything to happen
 	if(_currentSlideIndex == currentSlideIndex || currentSlideIndex < 0)
 		return;
 	_currentSlideIndex = currentSlideIndex;
 	[mainSlideView setSlide:[self currentSlide]];
 	[navigationController setSelectedIndex:_currentSlideIndex];
+	[[LLInspectorPanel sharedPanel] setContentViewForWidget:nil correspondingLayer:nil];
 }
 
 -(CCSlide)currentSlide
@@ -276,9 +278,9 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)showMovieURLPanel
 {
-	[self showModalAlertWithText:"Youtube ID:"
-				 informativeText:"http://www.youtube.com/watch?v=*This Text Here*"
-					 placeholder:"bESGLojNYSo"
+	[self showModalAlertWithText:"Youtube Video:"
+				 informativeText:"Paste the full URL of the Youtube Video Here"
+					 placeholder:"http://www.youtube.com/watch?v=bESGLojNYSo"
 					   imageName:"alert_icon_movie.png"
 						callback:function(text){
 		//	Make new Movie Widget with the given URL

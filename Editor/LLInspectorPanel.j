@@ -37,6 +37,9 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 
 -(void)setContentViewForWidget:(CCWidget)widget correspondingLayer:(CCWidgetLayer)layer
 {
+	//	If it is the same widget, then don't do anything
+	if(widget == [_content widget])
+		return;
 	[_content widgetWillChange];
 	//	Only make a new view if there is a differnet widget class
 	if([[_content widget] class] != [widget class])
@@ -51,7 +54,6 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 		_content = [inspectorClass new];
 		[[self contentView] addSubview:_content];
 	}
-	
 	[_content setWidget:widget];
 	[_content setLayer:layer];
 	[_content widgetDidChange];

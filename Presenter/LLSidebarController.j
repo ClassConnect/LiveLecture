@@ -41,7 +41,13 @@
 	[stopButton setTarget:[LLPresentationController sharedController]];
 	[stopButton setAction:@selector(stopHostingLiveLecture)];
 	//	Add buttons to bar
-	[_buttonBar setButtons:[lockButton, stopButton]];
+	//	If they are viewing this from Archive (which will be able to be told
+	//	by them being a teacher but having the RTE disabled), then they should
+	//	not have a stop button.
+	if([[LLUser currentUser] isTeacher] && [[LLUser currentUser] RTEEnabled])
+		[_buttonBar setButtons:[lockButton, stopButton]];
+	else
+		[_buttonBar setButtons:[lockButton]];
 	//	Setup the accordionview
 	var rteenabled = [[LLUser currentUser] RTEEnabled];
 	_accordionView = [[CCAutoresizingAccordionView alloc] initWithFrame:CGRectMake(0,0,215,175)];

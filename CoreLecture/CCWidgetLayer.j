@@ -271,8 +271,7 @@ _CCWidgetLayerHighestZ = 1;
 
 -(void)editingControlDidFinishEditing:(CCWidgetEditingControl)control
 {
-	[_delegate remakeSlideFromWidgetLayers];
-//	[[LLPresentationController sharedController] mainSlideContentDidChange];
+	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 
 -(void)addControls

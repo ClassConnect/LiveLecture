@@ -212,8 +212,11 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 		if([_receiverLayer supportsEditingMode])
 		{
 			//	If we are editing, we just forward on the mouse event
-			//	If we arent editing, if we have 1 click, we do nothing, but if we have 2 clicks
-			//	Then we begin editing mode for the layer (though we send it n-1 clicks instead of n)
+			//	If we arent editing:
+			//		If we have 1 click we do nothing special
+			//		If we have 2 clicks then we begin editing mode (though
+			//		we send n-1 clicks, so this shows up as a regular click
+			//		in editing mode to the layer)
 			if([_receiverLayer isEditing])
 				[_receiverLayer mouseDown:betterEvent];
 			else

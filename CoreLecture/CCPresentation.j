@@ -34,8 +34,16 @@
 
 -(CCSlideTheme)theme
 {
-	//	Since the themes are the same throughout the entire presentation, I can just grab the first theme and return that
-	return [_slides[0] theme];
+	if(_theme)
+		return _theme;
+	else
+	{
+		if(_slides[0] && _slides[0]._theme)
+			return _slides[0]._theme
+		else
+			return [CCSlideTheme defaultTheme];
+	}
+//	return [_slides[0] theme];
 }
 
 -(void)setTheme:(CCSlideTheme)theme
@@ -56,6 +64,7 @@
 	{
 		_slides = [coder decodeObjectForKey:@"slides"];
 		_transitions = [coder decodeObjectForKey:@"transitions"];
+		_theme = [coder decodeObjectForKey:@"theme"];
 		_name = [coder decodeObjectForKey:@"name"];
 	}
 	return self;
@@ -65,6 +74,7 @@
 {	
 	[coder encodeObject:_slides forKey:@"slides"];
 	[coder encodeObject:_transitions forKey:@"transitions"];
+	[coder encodeObject:_theme forKey:@"theme"];
 	[coder encodeObject:_name forKey:@"name"];
 }
 

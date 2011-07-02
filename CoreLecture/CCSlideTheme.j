@@ -19,6 +19,11 @@
 	return [[CCSlideTheme alloc] initWithBackgroundPath:path fontColor:color thumbnailURL:thumbnailURL title:title];
 }
 
++(id)defaultTheme
+{
+	return [CCSlideTheme themeWithBackgroundPath:"/app/livelecture/Editor/Resources/Themes/keynote.png" fontColor:"#FFFFFF" thumbnailURL:"app/livelecture/Editor/Resources/Themes/keynote_thumbnail.png" title:"Stevenote"];
+}
+
 -(id)initWithTheme:(CCSlideTheme)theme
 {
 	if(self = [self init])

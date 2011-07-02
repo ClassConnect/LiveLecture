@@ -145,6 +145,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	
 	BOOL _showsAnswers @accessors(property=showsAnswers);
 	CALayer _showAnswersLink;
+	CCSlideTheme _themeCache;
 }
 
 +(id)initialize
@@ -196,7 +197,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	if(_isPresenting == isPresenting)
 		return;
 	_isPresenting = isPresenting;
-	//	We need to remake the answer layers
+	
 	[self makeAnswerLayers];
 }
 
@@ -207,6 +208,13 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		return;
 	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,([self bounds].size.height - 40) / ([_widget numberOfPossibleAnswers]+1))];
 	[self makeAnswerLayers];
+	//	TODO: This is just a patchy solution to the fact that I remake the answer layers every
+	//	time the user stretches the bounds. What I really need to do is reposition all the layers
+	if(_themeCache)
+	{
+		[_showAnswersLink slideThemeDidChangeToTheme:_themeCache];
+		[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:_themeCache];
+	}
 }
 
 -(void)setWidget:(CCWidget)widget
@@ -223,6 +231,12 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 
 -(void)mouseDown:(CCEvent)event
 {
+	//	This should only be sent when the user double clicked to get
+	//	into editing mode, but we don't want to do anything during 'editing'
+	//	mode, just use it as a way to detect double clicks, so we ignore the
+	//	event.
+	if([self isEditing])
+		return;
 	if([[LLUser currentUser] isTeacher])
 	{
 		//	All we care about is if they hit the show answers link
@@ -263,11 +277,21 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	return YES;
 }
 
+-(void)beginEditing
+{
+	[super beginEditing];
+	if(!_isPresenting && window.LLInspectorPanel != undefined)
+		[[CPApplication sharedApplication] orderFrontInspectorPanel];
+	[self endEditing];
+}
+
 -(void)slideThemeDidChangeToTheme:(CCSlideTheme)theme
 {
 	//	When the theme changes we want to change the text of the quiz widget
 	[_questionLayer slideThemeDidChangeToTheme:theme];
+	[_showAnswersLink slideThemeDidChangeToTheme:theme];
 	[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:theme];
+	_themeCache = theme;
 }
 
 -(void)drawInContext:(CGContext)context
@@ -301,8 +325,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	[_answerLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
 	[_answerLayers removeAllObjects];
 	//	Before we do the Answer Layers, lets make the 'show answers' button
-	CPLog([[LLUser currentUser] isTeacher]+" "+!_isThumbnail+" "+_isPresenting);
-	if([[LLUser currentUser] isTeacher] && !_isThumbnail && _isPresenting)
+	if([[LLUser currentUser] isTeacher] && !_isThumbnail)
 	{
 		if(_showAnswersLink)
 		{
@@ -314,6 +337,8 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[_showAnswersLink setSelected:NO];
 		[_showAnswersLink setBounds:CGRectMake(0,0,300,40)];
 		[_showAnswersLink setPosition:CGPointMake(CGRectGetWidth([self bounds])-300,rectHeight)];
+		//	TODO: This is just a patchy solution to the fact that I remake the answer layers every
+		//	time the user stretches the bounds. What I really need to do is reposition all the layers
 		[self addSublayer:_showAnswersLink];
 	}
 	_answerLayers = [CPArray array];

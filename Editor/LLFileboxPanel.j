@@ -24,6 +24,7 @@ function is_folder(object)
 	CPButton _backButton;
 
 	CPView _loadingView;
+	CPTextField _nothingLabel;
 }
 
 +(id)sharedPanel
@@ -47,7 +48,7 @@ function is_folder(object)
 		//	Load the API Manager
 		_api = [LLFileboxAPIManager defaultManager];
 		
-		[contentView setBackgroundColor:[CPColor colorWithCSSString:"#DDDDDD"]];
+//		[contentView setBackgroundColor:[CPColor colorWithHexString:"DDDDDD"]];
 		
 		//	Set up top bar
 		[_backButton setTarget:self];
@@ -75,6 +76,10 @@ function is_folder(object)
 		[_collection setItemPrototype:itemPrototype];
 		[sv setDocumentView:_collection];
 		
+		_nothingLabel = [CPTextField labelWithTitle:"This folder is empty"];
+		[_nothingLabel setCenter:[contentView center]];
+		[contentView addSubview:_nothingLabel];
+		[_nothingLabel setHidden:YES];
 		
 		//	Loading View
 		_loadingView = [[CPView alloc] initWithFrame:[_collection bounds]];
@@ -116,9 +121,18 @@ function is_folder(object)
 	[_backButton setEnabled:(""+[_api currentFolder] != "0")];
 	var contents = [[_api folders] copy];
 	contents = [contents arrayByAddingObjectsFromArray:[[_api files] copy]];
-	[_collection setContent:contents];
 	[_loadingView setHidden:YES];
-	[_collection setHidden:NO];
+	if([contents count])
+	{
+		[_collection setHidden:NO];
+		[_collection setContent:contents];
+		[_nothingLabel setHidden:YES];
+	}
+	else
+	{
+		[_nothingLabel setHidden:NO];
+		[_collection setHidden:YES];
+	}
 	[_titleLabel setStringValue:[_api parentName]];
 }
 
@@ -149,7 +163,6 @@ function is_folder(object)
 		case kLLFileboxFileTypeWebsite: obj = [file content];
 		break;
 	}
-	CPLog("obj: "+obj);
 	return [CPKeyedArchiver archivedDataWithRootObject:[obj]];
 }
 

@@ -42,7 +42,7 @@
 -(id)init {
 	if([super init]) {
 		_widgets = [CPArray array];
-		_theme = [CCSlideTheme themeWithBackgroundPath:"/app/livelecture/Editor/Resources/Themes/keynote.png" fontColor:"#FFFFFF" thumbnailURL:"app/livelecture/Editor/Resources/Themes/keynote_thumbnail.png" title:"Stevenote"];
+		_theme = [CCSlideTheme defaultTheme];
 	}
 	return self;
 }
@@ -89,7 +89,7 @@
 -(BOOL)isEqual:(CCSlide)rhs
 {
 	return 	[_theme isEqual:[rhs theme]]		&&
-					[_widgets isEqual:[rhs widgets]];
+			[_widgets isEqual:[rhs widgets]];
 }
 
 -(id)copy

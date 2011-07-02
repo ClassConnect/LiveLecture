@@ -450,11 +450,15 @@ var TextLayerIsMSIE = NO;
 								[self deleteSelection];
 								break;
 							}
-				case 36:	[self moveCaret:kHome extendSelection:(flags & CPShiftKeyMask)];
+				case 36:	if(character == '$')
+								break;
+							[self moveCaret:kHome extendSelection:(flags & CPShiftKeyMask)];
 							[self positionCaret];
 							[self redrawSelection];
 							return;
-				case 35:	[self moveCaret:kEnd extendSelection:(flags & CPShiftKeyMask)];
+				case 35:	if(character == '#')
+								break;
+							[self moveCaret:kEnd extendSelection:(flags & CPShiftKeyMask)];
 							[self positionCaret];
 							[self redrawSelection];
 							return;
@@ -508,9 +512,15 @@ var TextLayerIsMSIE = NO;
 						else
 							[self insertCharacter:'.' stillInserting:NO];
 						break;
-			case 36:	[self moveCaret:kHome extendSelection:(flags & CPShiftKeyMask)];
+			case 36:	if(character != '$')
+							[self moveCaret:kHome extendSelection:(flags & CPShiftKeyMask)];
+						else
+							[self insertCharacter:"$" stillInserting:NO];
 						break;
-			case 35:	[self moveCaret:kEnd extendSelection:(flags & CPShiftKeyMask)];
+			case 35:	if(character != "#")
+							[self moveCaret:kEnd extendSelection:(flags & CPShiftKeyMask)];
+						else
+							[self insertCharacter:"#" stillInserting:NO];
 						break;
 			case 37:
 			case 38:
@@ -2364,8 +2374,6 @@ var TextLayerIsMSIE = NO;
             style.fontFamily = fontFamily;
         if (initial || parseFontSize(style.fontSize) == oldDefaultFontSize)
             setFontSize(character, fontSize);
-		// if(!_isThumbnail)
-		// 	debugger;
         if (initial || colorsAreEqual(style.color, oldDefaultColor))
             style.color = color;
         if (initial || style.fontWeight == oldDefaultFontWeight)

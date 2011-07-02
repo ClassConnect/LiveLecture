@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>LLOnlinePersistenceHandler.j</string>
+	<string>AppController.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -37,6 +37,20 @@
 	<integer>204</integer>
 	<key>metaData</key>
 	<dict>
+		<key>../CoreLecture/CCMovieWidgetLayer.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>3</integer>
+				<key>line</key>
+				<integer>55</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>30</integer>
+		</dict>
 		<key>../CoreLecture/CCSlide.j</key>
 		<dict>
 			<key>caret</key>
@@ -51,19 +65,35 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>../CoreLecture/CCSlideView.j</key>
+		<key>../CoreLecture/CCWebWidgetLayer.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>1</integer>
 				<key>line</key>
-				<integer>280</integer>
+				<integer>80</integer>
 			</dict>
+			<key>columnSelection</key>
+			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>229</integer>
+			<integer>47</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>42</integer>
+				<key>line</key>
+				<integer>81</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>80</integer>
+			</dict>
 		</dict>
 		<key>../LLSharedUtilities/LLQuizWidget.j</key>
 		<dict>
@@ -84,37 +114,51 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>0</integer>
+				<integer>34</integer>
 				<key>line</key>
-				<integer>0</integer>
+				<integer>196</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>78</integer>
+			<integer>179</integer>
 		</dict>
 		<key>AppController.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>18</integer>
+				<integer>44</integer>
 				<key>line</key>
-				<integer>20</integer>
+				<integer>289</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>5</integer>
+			<integer>270</integer>
+		</dict>
+		<key>LLFileboxPanel.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>4</integer>
+				<key>line</key>
+				<integer>46</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>32</integer>
 		</dict>
 		<key>LLOnlinePersistenceHandler.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>20</integer>
+				<integer>14</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
@@ -126,38 +170,40 @@
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>25</integer>
+				<integer>43</integer>
 				<key>line</key>
-				<integer>307</integer>
+				<integer>97</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>290</integer>
+			<integer>97</integer>
 		</dict>
 		<key>LLSlideNavigationViewController.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>2</integer>
+				<integer>57</integer>
 				<key>line</key>
-				<integer>121</integer>
+				<integer>71</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>110</integer>
+			<integer>66</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>../CoreLecture/CCSlideView.j</string>
-		<string>../LLSharedUtilities/LLQuizWidgetLayer.j</string>
-		<string>LLPresentationController.j</string>
 		<string>AppController.j</string>
 		<string>LLOnlinePersistenceHandler.j</string>
 		<string>LLSlideNavigationViewController.j</string>
+		<string>LLPresentationController.j</string>
+		<string>../LLSharedUtilities/LLQuizWidgetLayer.j</string>
+		<string>../CoreLecture/CCWebWidgetLayer.j</string>
+		<string>../CoreLecture/CCMovieWidgetLayer.j</string>
+		<string>LLFileboxPanel.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>

@@ -54,6 +54,7 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 	}];
 	_saveConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
 	[_saveConnection start];
+	[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Saving" message:"Your presentation is now saving..." icon:TNGrowlIconInfo];
 }
 
 -(void)load
@@ -89,6 +90,13 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 				presentation = [CPKeyedUnarchiver unarchiveObjectWithData:[CPData dataWithRawString:data]];
 			}
 			[[LLPresentationController sharedController] setPresentation:presentation];
+		}
+		else
+		{
+			//	There is nothing in this LiveLecture.
+			//	To make sure they save on their way out,
+			//	 we set the Lecture as Dirty
+			[[LLPresentationController sharedController] setDirty:YES];
 		}
 	}
 }

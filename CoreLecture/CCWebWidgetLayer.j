@@ -78,6 +78,10 @@ var _GLOBE_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pat
 		_contentLayer._DOMElement.innerHTML = html;
 		_displayedURL = [_widget URL];
 	}
+	CGContextSetFillColor(context,[CPColor grayColor]);
+	CGContextSetStrokeColor(context,[CPColor whiteColor]);
+	CGContextFillRect(context,[self bounds]);
+	CGContextStrokeRect(context,[self bounds]);
 }
 
 -(void)setTextScale:(float)scale

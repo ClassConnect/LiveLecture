@@ -221,12 +221,12 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		case LLToolbarNewSlideItemIdentifier:			target = _controller;
 														action = @selector(newSlide);
 														label = "New Slide";
-														imagename = "Icon.png";
+														imagename = "icon_slide_new.png";
 														break;
 		case LLToolbarDeleteSlideItemIdentifier:		target = _controller;
 														action = @selector(deleteCurrentSlide);
 														label = "Delete Slide";
-														imagename = "Icon.png";
+														imagename = "icon_slide_delete.png";
 														break;
 		case LLToolbarSelectThemeItemIdentifier:		target = _controller;
 														action = @selector(showThemeSelectionPanel);
@@ -281,7 +281,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	}
 	
 	//	Set up the item
-	var image = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:imagename]];
+	var image = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:imagename] size:CGSizeMake(32,32)];
 	[toolbarItem setImage:image];
 	[toolbarItem setTarget:target];
 	[toolbarItem setAction:action];
@@ -311,9 +311,15 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		[_previewView setHidden:NO];
 	}
 	[_previewWindow orderFront:self];
+	
+	//	Hide all of the media panels
+	[[LLFileboxPanel sharedPanel] close];
+	[[LLInspectorPanel sharedPanel] close];
+	[[MKMediaPanel sharedMediaPanel] close];
+	
 	[_controller setMainSlideView:_previewView];
 	[_previewView setSlide:[_controller currentSlide]];
-//	[_previewView becomeFirstResponder];
+	[_previewView becomeFirstResponder];
 	[CPMenu setMenuBarVisible:NO];
 }
 

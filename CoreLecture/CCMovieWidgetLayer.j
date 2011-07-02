@@ -54,6 +54,10 @@
 			
 			_isDirty = NO;
 		}
+		CGContextSetFillColor(context,[CPColor grayColor]);
+		CGContextSetStrokeColor(context,[CPColor whiteColor]);
+		CGContextFillRect(context,[self bounds]);
+		CGContextStrokeRect(context,[self bounds]);
 	}
 }
 
@@ -61,6 +65,33 @@
 	[super setWidget:widget];
 	_isDirty = YES;
 	[self setNeedsDisplay];
+}
+
+-(void)setBounds:(CGRect)rect
+{
+	[super setBounds:rect];
+	_isDirty = YES;
+	[self setNeedsDisplay];
+}
+
+-(void)mouseDown:(CCEvent)event
+{
+	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+}
+
+-(void)mouseDragged:(CCEvent)event
+{
+	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+}
+
+-(void)mouseUp:(CCEvent)event
+{
+	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+}
+
+-(void)mouseMoved:(CCEvent)event
+{
+	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 @end

@@ -90,7 +90,14 @@ var LLSlideDragType = "LLSlideDragType";
 -(void)addSlide:(CCSlide)slide
 {
 	var item = [collection newItemForRepresentedObject:[slide copy]];
-	[collection addItem:item];
+	[collection addItem:item atIndex:[[LLPresentationController sharedController] currentSlideIndex]];
+	for(var i = 0 ; i < [[collection items] count] ; i++)
+	{
+		[[[collection itemAtIndex:i] view] setSlideIndex:i];
+		[[collection itemAtIndex:i] setSelected:NO];
+	}
+	[collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:[[LLPresentationController sharedController] currentSlideIndex]]];
+	[collection _scrollToSelection];
 }
 
 -(void)removeSlideAtIndex:(CPInteger)index
@@ -99,6 +106,9 @@ var LLSlideDragType = "LLSlideDragType";
 	
 	for(var i = index ; i < [[collection items] count] ; i++)
 		[[[collection itemAtIndex:i] view] setSlideIndex:i];
+	[collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:[[LLPresentationController sharedController] currentSlideIndex]]];
+	if([[LLPresentationController sharedController] numberOfSlides])
+		[collection _scrollToSelection];
 }
 
 -(void)slideContentChanged

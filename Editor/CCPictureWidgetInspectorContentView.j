@@ -11,13 +11,13 @@
 
 +(CGSize)contentSize
 {
-	return CGSizeMake(300,200);
+	return CGSizeMake(250,300);
 }
 
 -(void)createView
 {
 	var label = [CPTextField labelWithTitle:@"Picture URL:"],
-		editableField = [CPTextField textFieldWithStringValue:@"" placeholder:@"Ex: http://classconnect.com/site_img/logo.png" width:290],
+		editableField = [CPTextField textFieldWithStringValue:@"" placeholder:@"Ex: http://classconnect.com/site_img/logo.png" width:240],
 		lframe = [label frame],
 		eframe = [editableField frame],
 		csize  = [[self class] contentSize];
@@ -30,6 +30,11 @@
 	[_sourceField setAction:@selector(didPressReturn)];
 }
 
+-(void)widgetWillChange
+{
+	[self updateWidget];
+}
+
 -(void)widgetDidChange
 {
 	[_sourceField setStringValue:[_widget imagePath]];
@@ -37,9 +42,14 @@
 
 -(void)didPressReturn
 {
-	var newPath = [_sourceField stringValue];
-	[_widget setImagePath:newPath];
+	[self updateWidget];
+}
+
+-(void)updateWidget
+{
+	[_widget setImagePath:[_sourceField stringValue]];
 	[_layer setWidget:_widget];
+	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 
 @end

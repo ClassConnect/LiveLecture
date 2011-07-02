@@ -111,7 +111,7 @@
 
 -(void)addWidgetToSlide:(CCWidget)widget 
 {
-	[widget setZIndex:_CCWidgetLayerHighestZ];
+	[widget setZIndex:++_CCWidgetLayerHighestZ];
 	[_slide addWidget:widget];
 	[self addWidgetLayerToSlide:[self configuredLayerForWidget:widget]];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
@@ -164,19 +164,23 @@
 	//	there are any that we can reuse.
 	[_widgetLayers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
 	var cached = _widgetLayers,
-		widgets_to_create = [[slide widgets] copy],
+		widgets_to_create = [ ],
 		oldSlide = _slide;
 	_widgetLayers = [ ];
 	//	Do the actual copy before we start
-	_slide = slide;
+	_slide = [slide copy];
+	widgets_to_create = [[_slide widgets] copy];
 	for(var i = 0 ; i < [cached count] ; i++)
 	{
-		var current = cached[i];
-		if([widgets_to_create containsObject:[current widget]])
+		var current = cached[i],
+			currentWidget = [current widget];
+		if([widgets_to_create containsObject:currentWidget])
 		{
-			[current setWidgetIndex:[slide indexOfWidget:[current widget]]];
+			var widgetIndex = [_slide indexOfWidget:currentWidget];
+			_slide._widgets[widgetIndex] = currentWidget;
+			[current setWidgetIndex:[_slide indexOfWidget:currentWidget]];
 			[self addWidgetLayerToSlide:current];
-			[widgets_to_create removeObject:[current widget]];
+			[widgets_to_create removeObject:currentWidget];
 		}
 	}
 	//	Now we are going to go through the new slide and make sure we didn't
@@ -224,22 +228,24 @@
 	[_slide deleteWidget:[layer widget]];
 	[_widgetLayers removeObject:layer];
 	[layer removeFromSuperlayer];
+	for(var i = 0 ; i < [_slide numberOfWidgets] ; i++)
+		[_widgetLayers[i] setWidgetIndex:i];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 
--(void)remakeSlideFromWidgetLayers
-{
-	var newSlide = [[CCSlide alloc] init],
-		widgets = [CPArray array];
-	for(var i = 0 ; i < [_widgetLayers count] ; i++)
-	{
-		[widgets addObject:[[_widgetLayers objectAtIndex:i] widget]];
-	}
-	newSlide._widgets = widgets;
-	//	Force the update of the widgets
-	_slide = newSlide;
-	[[LLPresentationController sharedController] mainSlideContentDidChange];
-}
+// -(void)remakeSlideFromWidgetLayers
+// {
+// 	var newSlide = [[CCSlide alloc] init],
+// 		widgets = [CPArray array];
+// 	for(var i = 0 ; i < [_widgetLayers count] ; i++)
+// 	{
+// 		[widgets addObject:[[_widgetLayers objectAtIndex:i] widget]];
+// 	}
+// 	newSlide._widgets = widgets;
+// 	//	Force the update of the widgets
+// 	_slide = newSlide;
+// 	[[LLPresentationController sharedController] mainSlideContentDidChange];
+// }
 
 //	HitTest Replacements
 -(CCWidget)widgetAtPoint:(CPPoint)point
