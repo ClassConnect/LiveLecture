@@ -221,19 +221,42 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)showMediaPanel
 {
+	if(![[MKMediaPanel sharedMediaPanel] target])
+	{
+		[[MKMediaPanel sharedMediaPanel] setTarget:self];
+		var sel = @selector(addWidgetFromMediaPanelToCenter);
+		[[MKMediaPanel sharedMediaPanel] setAction:sel];
+	}
 	[[CPApplication sharedApplication] orderFrontMediaPanel:self];
 }
 
--(void)showMediaPanelWithImagesSelected
+-(void)addWidgetFromMediaPanelToCenter
 {
-	[self showMediaPanel];
-	[[MKMediaPanel sharedMediaPanel] setImagesAsSelectedFilter];
-}
-
--(void)showMediaPanelWithVideosSelected
-{
-	[self showMediaPanel];
-	[[MKMediaPanel sharedMediaPanel] setVideosAsSelectedFilter];
+	var panel = [MKMediaPanel sharedMediaPanel],
+		widget;
+	if([panel selectedImage])
+	{
+		var img = [panel selectedImage],
+			size = [img size];
+		widget = [[CCPictureWidget alloc] initWithPathToImage:[img filename]];
+		if(size.width > 1024) 
+			size.width = 1024;
+		if(size.height > 768)
+			size.height = 768;
+		[widget setSize:CGRectMake(0,0,size.width,size.height)];
+	}
+	else //	Video
+	{
+		widget = [[CCMovieWidget alloc] initWithMovie:[panel selectedVideo]];
+		[widget setSize:CGRectMake(0,0,720,480)];
+	}
+	//	Put it in the center
+	//	We also don't have to worry about it going out of bounds, since the
+	//	size took care of that. Yay!
+	var x = (512 - ([widget size].size.width / 2)),
+		y = (384 - ([widget size].size.height / 2));
+	[widget setLocation:CGPointMake(x,y)];
+	[[mainSlideView slideLayer] addWidgetToSlide:widget];
 }
 
 -(void)showModalAlertWithText:(CPString)text informativeText:informative_text placeholder:(CPString)placeholder imageName:(CPString)image callback:(Function)callback

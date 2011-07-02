@@ -76,22 +76,26 @@
 
 -(void)mouseDown:(CCEvent)event
 {
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+	if(_isPresenting)
+		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseDragged:(CCEvent)event
 {
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+	if(_isPresenting)
+		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseUp:(CCEvent)event
 {
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+	if(_isPresenting)
+		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseMoved:(CCEvent)event
 {
-	[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
+	if(_isPresenting)
+		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 @end

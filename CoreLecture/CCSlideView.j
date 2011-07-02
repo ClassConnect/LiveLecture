@@ -110,22 +110,23 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 
 -(void)performDragOperation:(CPDraggingInfo)info
 {
-	var type = [[[info draggingPasteboard] types] lastObject];
-	var data = [[CPKeyedUnarchiver unarchiveObjectWithData:[[info draggingPasteboard] dataForType:type]] objectAtIndex:0];
-	var wid;
+	var type = [[[info draggingPasteboard] types] lastObject],
+		data = [[info draggingPasteboard] dataForType:type],
+		obj = [CPKeyedUnarchiver unarchiveObjectWithData:data][0];
+	var	wid;
 	if(type == CPImagesPboardType)
 	{
-		wid = [[CCPictureWidget alloc] initWithPathToImage:[data filename]];
-		[wid setSize:CGRectMake(0,0,((data._size.width > 1024) ? 1024 : data._size.width ),((data._size.height > 768) ? 768 : data._size.height))];
+		wid = [[CCPictureWidget alloc] initWithPathToImage:[obj filename]];
+		[wid setSize:CGRectMake(0,0,((obj._size.width > 1024) ? 1024 : obj._size.width ),((obj._size.height > 768) ? 768 : obj._size.height))];
 	}
 	else if(type == CPVideosPboardType)
 	{
-		wid = [[CCMovieWidget alloc] initWithMovie:data];
+		wid = [[CCMovieWidget alloc] initWithMovie:obj];
 		[wid setSize:CGRectMake(0,0,720,480)];
 	}
 	else //	type == CPWebsitesPboardType
 	{
-		wid = [[CCWebWidget alloc] initWithURL:data];
+		wid = [[CCWebWidget alloc] initWithURL:obj];
 		[wid setSize:CGRectMake(0,0,720,480)];
 	}
 	//	Set the center of the content to be the mouse point
