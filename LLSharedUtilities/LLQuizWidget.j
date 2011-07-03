@@ -86,7 +86,8 @@
 
 -(BOOL)isEqual:(LLQuizWidget)rhs
 {
-	return	([_question isEqual:rhs._question]			&&
+	return	([super isEqual:rhs]						&&
+			 [_question isEqual:rhs._question]			&&
 			 [_answers isEqual:rhs._answers]			&&
 		 	 [_answerCount isEqual:rhs._answerCount]	&&			
 			 _selectedAnswer == rhs._selectedAnswer);
