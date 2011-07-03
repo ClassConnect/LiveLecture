@@ -106,11 +106,21 @@
 	[self setMovie:[CPFlashMovie flashMovieWithFile:[CCMovieWidget _filenameFromYoutubeID:yid]]];
 }
 
+-(CPString)previewURL
+{
+	return "http://img.youtube.com/vi/"+_youtubeID+"/0.jpg";
+}
+
+-(CPString)thumbnailURL
+{
+	return "http://img.youtube.com/vi/"+_youtubeID+"1.jpg";
+}
+
 -(BOOL)isEqual:(CCMovieWidget)rhs
 {
 	return	[super isEqual:rhs] 			&&
-					[_movie isEqual:[rhs movie]]	&&
-					[_youtubeID isEqual:[rhs youtubeID]];
+			[_movie isEqual:[rhs movie]]	&&
+			[_youtubeID isEqual:[rhs youtubeID]];
 }
 
 -(id)copy

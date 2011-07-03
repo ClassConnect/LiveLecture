@@ -13,17 +13,17 @@ kLLFileboxFileTypeWebsiteDragType = "kLLFileboxFileTypeWebsiteDragType";
 
 function _iapi_url_for_folder(folder)
 {
-	return HOST+"/app/livelecture/iapi_filebox.cc?fid="+folder;
+	return "/app/livelecture/iapi_filebox.cc?fid="+folder;
 }
 
 function _iapi_folders_url_for_folder(folder)
 {
-	return HOST+"/app/livelecture/iapi_filebox_folders.cc?fid="+folder;
+	return "/app/livelecture/iapi_filebox_folders.cc?fid="+folder;
 }
 
 function _iapi_files_url_for_folder(folder)
 {
-	return HOST+"/app/livelecture/iapi_filebox_files.cc?fid="+folder;
+	return "/app/livelecture/iapi_filebox_files.cc?fid="+folder;
 }
 
 ///////////////////////////////////////////////////////////
@@ -167,6 +167,8 @@ function _iapi_files_url_for_folder(folder)
 
 -(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
 {
+	if(data == "")
+		return;
 	var obj = [data objectFromJSON],
 			cache_key = ""+_current_folder,
 			num_folders = [obj["folders"] count],

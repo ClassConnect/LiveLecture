@@ -8,6 +8,8 @@
 @import <AppKit/AppKit.j>
 @import "CCWidgetLayer.j"
 
+var kCCMovieWidgetLayerPlayButton = nil;
+
 /*
  *	I WAS going to use CAFlashLayer, but there is a bug in the current version of Cappuccino, where they try to access _fileName in CPFlashMovie,
  *	as opposed to the REAL variable _filename. Stupid mistake, and one that should have been caught by any kind of quality checking. Seriously, I love
@@ -15,13 +17,18 @@
  */
 @implementation CCMovieWidgetLayer : CCWidgetLayer {
 	DOMElement _contentElement;
+	CPImage _thumbnailImage;
 	
 	BOOL _isDirty;
-	//	This variable is here because normally when the bounds are set
-	//	I want to redraw the video, but when it is being reset very often
-	//	(aka when resizing), I want it to just show a gray box instead,
-	//	and only draw the video when it is done.
-	BOOL _resizing;
+}
+
++(id)initialize
+{
+	if([self class] != [CCMovieWidgetLayer class])
+		return;
+	
+	var path = [[CPBundle bundleForClass:self] pathForResource:"widget_resource_movie_play.png"];
+	kCCMovieWidgetLayerPlayButton = [[CPImage alloc] initWithContentsOfFile:path];
 }
 
 -(id)init {
@@ -31,77 +38,57 @@
 		_contentElement.style.width = "100%";
 		_contentElement.style.height = "100%";
 		_DOMElement.appendChild(_contentElement);
+		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:kCCMovieWidgetLayerPlayButton];
 	}
 	
 	return self;
 }
 
--(void)drawInContext:(CGContext)context
+-(void)drawWhileEditing:(CGContext)context
 {
-	if(_widget == nil)
-		return;
-	
-	if(_isThumbnail)
+	if([_thumbnailImage loadStatus] != CPImageLoadStatusCompleted)
 	{
-		CGContextSetFillColor(context, [CPColor whiteColor]);
-		CGContextFillRect(context,[self bounds]); 
-		CGContextSetFillColor(context, [CPColor blackColor]);
-		CGContextFillRect(context, CGRectInset([self bounds], 5.0, 5.0));
+		CGContextSetFillColor(context,[CPColor grayColor]);
+		CGContextSetStrokeColor(context,[CPColor whiteColor]);
+		CGContextFillRect(context,[self bounds]);
+		CGContextStrokeRect(context,[self bounds]);
 	}
 	else
 	{
-		//	We don't want the gray to draw EVERY TIME that drawInContext
-		//	is called, only when the youtube video is loading, which
-		//	happens to be when it is either dirty or resizing
-		if(_isDirty || _resizing)
-		{
-			CGContextSetFillColor(context,[CPColor grayColor]);
-			CGContextSetStrokeColor(context,[CPColor whiteColor]);
-			CGContextFillRect(context,[self bounds]);
-			CGContextStrokeRect(context,[self bounds]);
-		}
-		if(_isDirty)
-		{
-			var html = "<object width=\"100%\" height=\"100%\">";
-			html 	+= "<param name=\"movie\" value=\"" + [[_widget movie] filename] +"\">";
-			html	+= "<param name=\"wmode\" value=\"transparent\">";
-			html	+= "<embed src=\"" + [[_widget movie] filename] + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"100%\" height=\"100%\"></object>";
+		var bounds = [self bounds];
+		CGContextDrawImage(context,bounds,_thumbnailImage);
+		var playLocation = CGPointMake((bounds.size.width/2)-64,(bounds.size.height/2)-64);
+		CGContextDrawImage(context,CGRectMake(playLocation.x,playLocation.y,128,128),kCCMovieWidgetLayerPlayButton);
+	}
+}
 
-			_contentElement.innerHTML = html;
-			
-			_isDirty = NO;
-		}
+-(void)drawThumbnail:(CGContext)context
+{
+	[self drawWhileEditing:context];
+}
+
+-(void)drawWhilePresenting:(CGContext)context
+{
+	if(_isDirty)
+	{
+		var html = "<object width=\"100%\" height=\"100%\">";
+		html 	+= "<param name=\"movie\" value=\"" + [[_widget movie] filename] +"\">";
+		html	+= "<param name=\"wmode\" value=\"transparent\">";
+		html	+= "<embed src=\"" + [[_widget movie] filename] + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"100%\" height=\"100%\"></object>";
+
+		_contentElement.innerHTML = html;
+		
+		_isDirty = NO;	
 	}
 }
 
 -(void)setWidget:(CCMovieWidget)widget {
-	var oldYID = [_widget youtubeID];
+	if([_widget isEqual:widget])
+		return;
 	[super setWidget:widget];
-	_isDirty = !(oldYID == [_widget youtubeID]);
-	[self setNeedsDisplay];
-}
-
--(void)setBounds:(CGRect)bounds
-{
-	[super setBounds:bounds];
-	if(!_resizing)
-		_isDirty = YES;
-	[self setNeedsDisplay];
-}
-
--(void)editingControlDidBeginEditing:(CCWidgetEditingControl)control
-{
-	_resizing = YES;
-	_contentElement.innerHTML = "";
-	[super editingControlDidBeginEditing:control];
-}
-
--(void)editingControlDidFinishEditing:(CCWidgetEditingControl)control
-{
-	_resizing = NO;
+	_thumbnailImage = [[CPImage alloc] initWithContentsOfFile:[_widget previewURL]];
+	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_thumbnailImage];
 	_isDirty = YES;
-	[self setNeedsDisplay];
-	[super editingControlDidFinishEditing:control];
 }
 
 -(void)mouseDown:(CCEvent)event

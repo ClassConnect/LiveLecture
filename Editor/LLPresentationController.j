@@ -352,7 +352,8 @@ var __LLPRESENTATION_SHARED__ = nil;
 //	Navigation/Main Slide Connectivity
 //	----------------------------
 
--(void)mainSlideContentDidChange {
+-(void)mainSlideContentDidChange
+{
 	[[_presentation slides] replaceObjectAtIndex:_currentSlideIndex withObject:[[mainSlideView slide] copy]];
 	[navigationController slideContentChanged];
 	[self setDirty:YES];

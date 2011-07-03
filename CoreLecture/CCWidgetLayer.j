@@ -373,6 +373,13 @@ var kMinimumWidgetSize = 15;
 
 -(void)drawInContext:(CGContext)context
 {
+	if(!_widget)
+	{
+		//	Just fill it with gray
+		CGContextSetFillColor(context,[CPColor grayColor]);
+		CGContextFillRect(context,[self bounds]);
+		return;
+	}
 	if(_isPresenting)
 	{
 		[self drawWhilePresenting:context];

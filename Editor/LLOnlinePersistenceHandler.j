@@ -53,6 +53,7 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 		data:[data rawString]
 	}];
 	_saveConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
+	[[LLPresentationController sharedController] setDirty:YES];
 	[_saveConnection start];
 	[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Saving" message:"Your presentation is now saving..." icon:TNGrowlIconInfo];
 }
