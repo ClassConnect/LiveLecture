@@ -208,13 +208,6 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		return;
 	[_questionLayer setBounds:CGRectMake(0,0,[self bounds].size.width,([self bounds].size.height - 40) / ([_widget numberOfPossibleAnswers]+1))];
 	[self makeAnswerLayers];
-	//	TODO: This is just a patchy solution to the fact that I remake the answer layers every
-	//	time the user stretches the bounds. What I really need to do is reposition all the layers
-	if(_themeCache)
-	{
-		[_showAnswersLink slideThemeDidChangeToTheme:_themeCache];
-		[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:_themeCache];
-	}
 }
 
 -(void)setWidget:(CCWidget)widget
@@ -266,8 +259,8 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[_widget setSelectedAnswer:selectedIndex];
 		if(_isPresenting)
 		{
-			var widgetIndex = [[[LLPresentationController sharedController] currentSlide] indexOfWidget:_widget];
-			LLQuizWidgetLayerResponse(widgetIndex,oldAnswer);
+			//var widgetIndex = [[[LLPresentationController sharedController] currentSlide] indexOfWidget:_widget];
+			LLQuizWidgetLayerResponse([self widgetIndex],oldAnswer);
 		}
 	}
 }
@@ -337,6 +330,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[_showAnswersLink setSelected:NO];
 		[_showAnswersLink setBounds:CGRectMake(0,0,300,40)];
 		[_showAnswersLink setPosition:CGPointMake(CGRectGetWidth([self bounds])-300,rectHeight)];
+		[_showAnswersLink setTextScale:_textScaleCache];
 		//	TODO: This is just a patchy solution to the fact that I remake the answer layers every
 		//	time the user stretches the bounds. What I really need to do is reposition all the layers
 		[self addSublayer:_showAnswersLink];
@@ -360,6 +354,13 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[current setTextScale:_textScaleCache];
 		[current setNeedsDisplay];
 		currentHeight += rectHeight;
+	}
+	//	TODO: This is just a patchy solution to the fact that I remake the answer layers every
+	//	time the user does something, event when only one of them changed.
+	if(_themeCache)
+	{
+		[_showAnswersLink slideThemeDidChangeToTheme:_themeCache];
+		[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:_themeCache];
 	}
 }
 
