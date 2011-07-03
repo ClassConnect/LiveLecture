@@ -61,6 +61,7 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 {
 	if([_firstResponder respondsToSelector:@selector(resignFirstResponder)])
 		[_firstResponder resignFirstResponder];
+	_firstResponder = nil;
 }
 
 //	----------------------------------------------------
