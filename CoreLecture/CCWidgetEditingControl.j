@@ -99,6 +99,7 @@ var CCWidgetEditingControlOutlineWidth = .1;
 -(void)mouseDown:(CCEvent)event
 {
 	_lastPoint = [event slideLayerPoint];
+	[_layer editingControlDidBeginEditing:self];
 }
 
 -(void)mouseDragged:(CCEvent)event

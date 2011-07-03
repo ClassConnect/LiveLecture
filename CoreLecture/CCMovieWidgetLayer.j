@@ -17,12 +17,19 @@
 	DOMElement _contentElement;
 	
 	BOOL _isDirty;
+	//	This variable is here because normally when the bounds are set
+	//	I want to redraw the video, but when it is being reset very often
+	//	(aka when resizing), I want it to just show a gray box instead,
+	//	and only draw the video when it is done.
+	BOOL _resizing;
 }
 
 -(id)init {
 	if(self = [super init])
 	{
 		_contentElement = document.createElement("div");
+		_contentElement.style.width = "100%";
+		_contentElement.style.height = "100%";
 		_DOMElement.appendChild(_contentElement);
 	}
 	
@@ -43,6 +50,16 @@
 	}
 	else
 	{
+		//	We don't want the gray to draw EVERY TIME that drawInContext
+		//	is called, only when the youtube video is loading, which
+		//	happens to be when it is either dirty or resizing
+		if(_isDirty || _resizing)
+		{
+			CGContextSetFillColor(context,[CPColor grayColor]);
+			CGContextSetStrokeColor(context,[CPColor whiteColor]);
+			CGContextFillRect(context,[self bounds]);
+			CGContextStrokeRect(context,[self bounds]);
+		}
 		if(_isDirty)
 		{
 			var html = "<object width=\"100%\" height=\"100%\">";
@@ -54,24 +71,37 @@
 			
 			_isDirty = NO;
 		}
-		CGContextSetFillColor(context,[CPColor grayColor]);
-		CGContextSetStrokeColor(context,[CPColor whiteColor]);
-		CGContextFillRect(context,[self bounds]);
-		CGContextStrokeRect(context,[self bounds]);
 	}
 }
 
 -(void)setWidget:(CCMovieWidget)widget {
+	var oldYID = [_widget youtubeID];
 	[super setWidget:widget];
-	_isDirty = YES;
+	_isDirty = !(oldYID == [_widget youtubeID]);
 	[self setNeedsDisplay];
 }
 
--(void)setBounds:(CGRect)rect
+-(void)setBounds:(CGRect)bounds
 {
-	[super setBounds:rect];
+	[super setBounds:bounds];
+	if(!_resizing)
+		_isDirty = YES;
+	[self setNeedsDisplay];
+}
+
+-(void)editingControlDidBeginEditing:(CCWidgetEditingControl)control
+{
+	_resizing = YES;
+	_contentElement.innerHTML = "";
+	[super editingControlDidBeginEditing:control];
+}
+
+-(void)editingControlDidFinishEditing:(CCWidgetEditingControl)control
+{
+	_resizing = NO;
 	_isDirty = YES;
 	[self setNeedsDisplay];
+	[super editingControlDidFinishEditing:control];
 }
 
 -(void)mouseDown:(CCEvent)event

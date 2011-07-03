@@ -219,6 +219,11 @@ var kMinimumWidgetSize = 15;
 	return ret;
 }
 
+-(void)editingControlDidBeginEditing:(CCWidgetEditingControl)control
+{
+	//	Do nothing
+}
+
 -(void)editingControl:(CCWidgetEditingControl)control didOffsetByPoint:(CGPoint)offset
 {
 	var pos = CGPointMakeCopy([self position]),
