@@ -36,7 +36,7 @@
 	var stopButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
 		stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
 	[stopButton setBordered:NO];
-	[stopButton setImage:lockImage];
+	[stopButton setImage:stopImage];
 	[stopButton setImagePosition:CPImageOnly];
 	[stopButton setTarget:[LLPresentationController sharedController]];
 	[stopButton setAction:@selector(stopHostingLiveLecture)];
