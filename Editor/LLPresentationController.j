@@ -270,6 +270,8 @@ var __LLPRESENTATION_SHARED__ = nil;
 	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:300];
 	[alert addButtonWithTitle:"Add "+widgetname];
 	[alert addButtonWithTitle:"Cancel"];
+	if(widgetname == "Picture" || widgetname == "Video")
+		[alert addButtonWithTitle:"Search for "+widgetname+"s"];
 	[alert setMessageText:text];
 	[alert setInformativeText:informative_text];
 	[alert setAccessoryView:_alert_text_field];
@@ -279,10 +281,20 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)alert:(CPAlert)alert didEndWithReturnCode:(int)returnCode
 {
-	if([_alert_text_field stringValue] == "")
-		return;
-	if(!returnCode)
+	if(returnCode == 0 && [_alert_text_field stringValue] != "")
 		_alert_callback([_alert_text_field stringValue]);
+	else
+	{
+		if(returnCode == 2)
+		{
+			[[CPApplication sharedApplication] orderFrontMediaPanel:self];
+			var title = [[alert buttons][0] title];
+			if(title == "Search for Pictures")
+				[[MKMediaPanel sharedMediaPanel] setImagesAsSelectedFilter];
+			if(title == "Search for Videos")
+				[[MKMediaPanel sharedMediaPanel] setVideosAsSelectedFilter];
+		}
+	}
 	_alert_callback = function(){};
 }
 
