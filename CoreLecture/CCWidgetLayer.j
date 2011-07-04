@@ -11,7 +11,7 @@
 
 _CCWidgetLayerHighestZ = 1;
 
-var kMinimumWidgetSize = 15;
+var kMinimumWidgetSize = 50;
 
 @implementation CCWidgetLayer : CALayer {
 	//	I have to put this property here JUST BECAUSE OF THE TEXTLAYER! AJKLDFJS

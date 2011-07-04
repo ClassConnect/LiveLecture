@@ -75,7 +75,19 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 			[[LLPresentationController sharedController] setDirty:NO];
 		}
 		else
-			[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Save Failed" message:obj["errorString"] icon:TNGrowlIconError];
+		{
+			if(obj["needsLogin"] == true)
+			{
+				[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Save Failed" 
+																 message:"You need to log in to save. Click here to log in, then try again" 
+															  customIcon:TNGrowlIconError 
+																  target:self 
+																  action:@selector(openLoginWindow)
+														actionParameters:nil];
+			}
+			else
+				[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Save Failed" message:obj["errorString"] icon:TNGrowlIconError];
+		}
 	}
 	else
 	{
@@ -100,6 +112,11 @@ LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";
 			[[LLPresentationController sharedController] setDirty:YES];
 		}
 	}
+}
+
+-(void)openLoginWindow
+{
+	window.open("/app/login.cc");
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection

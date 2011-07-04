@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>AppController.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -65,28 +63,10 @@
 			<key>firstVisibleLine</key>
 			<integer>393</integer>
 		</dict>
-		<key>AppController.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>43</integer>
-				<key>line</key>
-				<integer>63</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>43</integer>
-		</dict>
 	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>AppController.j</string>
-	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{0, 79}, {1440, 799}}</string>
+	<string>{{0, 4}, {1440, 874}}</string>
 </dict>
 </plist>

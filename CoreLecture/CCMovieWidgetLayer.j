@@ -91,6 +91,12 @@ var kCCMovieWidgetLayerPlayButton = nil;
 	_isDirty = YES;
 }
 
+-(void)forceRedraw
+{
+	_contentElement.innerHTML = "";
+	_isDirty = YES;
+}
+
 -(void)mouseDown:(CCEvent)event
 {
 	if(_isPresenting)

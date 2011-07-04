@@ -231,7 +231,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		case LLToolbarSelectThemeItemIdentifier:		target = _controller;
 														action = @selector(showThemeSelectionPanel);
 														label = "Theme";
-														imagename = "Icon.png";
+														imagename = "icon_slide_theme.png";
 														break;
 		case LLToolbarNewTextWidgetItemIdentifier:		target = _controller;
 														action = @selector(newTextWidget);
@@ -333,6 +333,13 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	[_previewView resignFirstResponder];
 	[_editorView becomeFirstResponder];
 	[_previewView setHidden:YES];
+	//	
+	var widgetLayers = [[_previewView slideLayer] widgetLayers];
+	for(var i = 0 ; i < [widgetLayers count] ; i++)
+	{
+		if([widgetLayers[i] class] == [CCMovieWidgetLayer class])
+			[widgetLayers[i] forceRedraw];
+	}
 	[CPMenu setMenuBarVisible:YES];
 }
 

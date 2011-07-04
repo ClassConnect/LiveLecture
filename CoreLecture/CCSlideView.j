@@ -23,6 +23,8 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 		[delegate performSelector:selector withObject:object1 withObject:object2];
 }
 
+
+
 @implementation CCSlideView : CPView
 {
 	CCSlideLayer _slideLayer @accessors(readonly,property=slideLayer);
