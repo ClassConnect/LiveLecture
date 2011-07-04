@@ -20,6 +20,36 @@
 	CCSlideTheme _theme @accessors(property=theme);
 }
 
++(id)titleSlide
+{
+	var s = [[CCSlide alloc] init],
+		w1 = [[CCTextWidget alloc] initWithString:@"Double-click to add title" alignment:TextLayerCenterAlignmentMask fontSize:48],
+		w2 = [[CCTextWidget alloc] initWithString:@"Double-click to add subtitle" alignment:TextLayerCenterAlignmentMask fontSize:36];
+	//	Magic numbers are taken from putting the top one right above the middle, and bottom right under the middle
+	[w1 setLocation:CGPointMake(50,274)];
+	[w1 setSize:CGRectMake(0,0,924,100)];
+	[w2 setLocation:CGPointMake(100,394)];
+	[w2 setSize:CGRectMake(0,0,824,349)];
+	[s addWidget:w1];
+	[s addWidget:w2];
+	return s;
+}
+
++(id)contentSlide
+{
+	var s = [[CCSlide alloc] init];
+		w1 = [[CCTextWidget alloc] initWithString:@"Double-click to add title" alignment:TextLayerCenterAlignmentMask fontSize:48],
+		w2 = [[CCTextWidget alloc] initWithString:@"Double-click to add text" alignment:TextLayerLeftAlignmentMask fontSize:24];
+	//	Magic numbers are from some intense in my head calculations. Yeah!
+	[w1 setLocation:CGPointMake(50,50)];
+	[w1 setSize:CGRectMake(0,0,924,100)];
+	[w2 setLocation:CGPointMake(50,170)];
+	[w2 setSize:CGRectMake(0,0,924,548)];
+	[s addWidget:w1];
+	[s addWidget:w2];
+	return s;
+}
+
 -(id)initWithSlide:(CCSlide)slide
 {
 	if(self = [self init])

@@ -43,19 +43,12 @@ var __LLPRESENTATION_SHARED__ = nil;
 	if(self = [super init]) {
 		_alert_callback = function(){};
 		_presentation = [[CCPresentation alloc] init];
-		//	We want to have an original slide that has a title and a subtitle
-		var s = [[CCSlide alloc] init],
-			w1 = [[CCTextWidget alloc] initWithString:@"Double-click to add title" alignment:TextLayerCenterAlignmentMask fontSize:48],
-			w2 = [[CCTextWidget alloc] initWithString:@"Double-click to add subtitle" alignment:TextLayerCenterAlignmentMask fontSize:36];
-		//	Magic numbers are taken from putting the top one right above the middle, and bottom right under the middle
-		[w1 setLocation:CGPointMake(50,274)];
-		[w1 setSize:CGRectMake(0,0,924,100)];
-		[w2 setLocation:CGPointMake(100,394)];
-		[w2 setSize:CGRectMake(0,0,824,349)];
-		[s addWidget:w1];
-		[s addWidget:w2];
-		[_presentation addSlide:s];
-		[self setCurrentSlideIndex:0];
+		_currentSlideIndex = -1;
+		// var s = [CCSlide titleSlide];
+		// [s setTheme:[_presentation theme]];
+		// [_presentation addSlide:s];
+		// [self setCurrentSlideIndex:0];
+		[self newSlide];
 	}
 	return self;
 }
@@ -109,19 +102,25 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)newSlide
 {
-	var s = [[CCSlide alloc] init];
-		w1 = [[CCTextWidget alloc] initWithString:@"Double-click to add title" alignment:TextLayerCenterAlignmentMask fontSize:48],
-		w2 = [[CCTextWidget alloc] initWithString:@"Double-click to add text" alignment:TextLayerLeftAlignmentMask fontSize:24];
-	//	Magic numbers are from some intense in my head calculations. Yeah
-	[w1 setLocation:CGPointMake(50,50)];
-	[w1 setSize:CGRectMake(0,0,924,100)];
-	[w2 setLocation:CGPointMake(50,170)];
-	[w2 setSize:CGRectMake(0,0,924,548)];
-	[s addWidget:w1];
-	[s addWidget:w2];
+	var s;
+	//	When we make a new slide, if this is the ONLY slide, it should be layed
+	//	out like a title slide. If there are other slides already, it should be
+	//	layed out like a content slide
+	if([[_presentation slides] count])
+		s = [CCSlide contentSlide];
+	else
+		s = [CCSlide titleSlide];
 	[s setTheme:[_presentation theme]];
-	[[_presentation slides] insertObject:s atIndex:_currentSlideIndex+1];
-	[self setCurrentSlideIndex:_currentSlideIndex+1];
+	if([[_presentation slides] count])
+	{
+		[[_presentation slides] insertObject:s atIndex:_currentSlideIndex+1];
+		[self setCurrentSlideIndex:_currentSlideIndex+1];
+	}
+	else
+	{
+		[[_presentation slides] addObject:s];
+		[self setCurrentSlideIndex:0];
+	}
 	[navigationController addSlide:s];
 }
 
@@ -129,7 +128,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 {
 	[[_presentation slides] removeObjectAtIndex:_currentSlideIndex];
 	var oldCurr = _currentSlideIndex;
-	if((_currentSlideIndex == [self numberOfSlides]) && [self numberOfSlides])
+	if(_currentSlideIndex == [self numberOfSlides])
 	{
 		[self setCurrentSlideIndex:_currentSlideIndex-1];
 	}

@@ -186,7 +186,7 @@ function is_folder(object)
 	// }
 	var num_folders = [[_api folders] count];
 	if([indices firstIndex] < num_folders)
-		return [ ];
+		return nil;
 	return [[[[_api files] objectAtIndex:([indices firstIndex] - num_folders)] dragType]];
 }
 
