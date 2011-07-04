@@ -262,13 +262,13 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
 }
 
--(void)showModalAlertWithText:(CPString)text informativeText:informative_text placeholder:(CPString)placeholder imageName:(CPString)image callback:(Function)callback
+-(void)showModalAlertWithText:(CPString)text informativeText:informative_text placeholder:(CPString)placeholder widgetName:(CPString)widgetname imageName:(CPString)image callback:(Function)callback
 {
 	var alert = [[CPAlert alloc] init],
 			window = [[CPApplication sharedApplication] mainWindow];
 	_alert_callback = callback;
 	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:300];
-	[alert addButtonWithTitle:"Add Widget"];
+	[alert addButtonWithTitle:"Add "+widgetname];
 	[alert addButtonWithTitle:"Cancel"];
 	[alert setMessageText:text];
 	[alert setInformativeText:informative_text];
@@ -291,6 +291,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[self showModalAlertWithText:"Picture URL:"
 				 informativeText:"Make sure to include 'http://'"
 					 placeholder:"http://www.google.com/images/logos/ps_logo2.png"
+					  widgetName:"Picture"
 					   imageName:"alert_icon_picture.png"
 						callback:function(text){
 		//	Make new Picture Widget with the given URL
@@ -307,6 +308,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[self showModalAlertWithText:"Youtube Video:"
 				 informativeText:"Paste the full URL of the Youtube Video Here"
 					 placeholder:"http://www.youtube.com/watch?v=bESGLojNYSo"
+					  widgetName:"Video"
 					   imageName:"alert_icon_movie.png"
 						callback:function(text){
 		//	Make new Movie Widget with the given URL
@@ -329,6 +331,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[self showModalAlertWithText:"Website URL:"
 				 informativeText:""
 					 placeholder:"http://www.google.com"
+					  widgetName:"Website"
 					   imageName:"alert_icon_website.png"
 						callback:function(text){
 		//	Make new Web Widget with the given URL
