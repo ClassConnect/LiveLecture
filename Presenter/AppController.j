@@ -184,7 +184,7 @@ HOST = ""
 			[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[0]];
 		}
 		window.onbeforeunload = function() {
-			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher] && ![[LLPresentationController sharedController] isFile])
+			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher] && [[LLUser currentUser] RTEEnabled] && ![[LLPresentationController sharedController] isFile])
 				return "Your LiveLecture is still running. Are you sure you want to leave without stopping it?\n(To stop hosting, open the sidebar and click the x at the bottom)";
 		};
 	}
