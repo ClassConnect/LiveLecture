@@ -13,14 +13,16 @@
 @import "CCSlideTheme.j"
 
 @implementation CCPresentation : CPObject {
-	CPMutableArray _slides @accessors(readonly, property=slides);
-	CPMutableArray _transitions @accessors(readonly, property=transitions);
 	CCSlideTheme _theme @accessors(property=theme);
-	CPString _name @accessors(property=projectName);
+	CPMutableArray _slides @accessors(readonly, property=slides);
+	
+	//	Not Yet Used
+	CPMutableArray _transitions @accessors(readonly, property=transitions);
 }
 
 -(id)init {
 	if([super init]) {
+		_theme = [CCSlideTheme defaultTheme];
 		_slides = [[CPMutableArray alloc] init];
 		_transitions = [[CPMutableArray alloc] init];
 	}
@@ -43,7 +45,6 @@
 		else
 			return [CCSlideTheme defaultTheme];
 	}
-//	return [_slides[0] theme];
 }
 
 -(void)setTheme:(CCSlideTheme)theme
@@ -65,7 +66,6 @@
 		_slides = [coder decodeObjectForKey:@"slides"];
 		_transitions = [coder decodeObjectForKey:@"transitions"];
 		_theme = [coder decodeObjectForKey:@"theme"];
-		_name = [coder decodeObjectForKey:@"name"];
 	}
 	return self;
 }
@@ -75,7 +75,6 @@
 	[coder encodeObject:_slides forKey:@"slides"];
 	[coder encodeObject:_transitions forKey:@"transitions"];
 	[coder encodeObject:_theme forKey:@"theme"];
-	[coder encodeObject:_name forKey:@"name"];
 }
 
 @end

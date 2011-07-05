@@ -10,18 +10,6 @@
 
 var _toprightimage = nil;
 
-function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
-{
-	var quizwidget = [[[LLPresentationController sharedController] currentSlide] widgetAtIndex:widgetIndex];
-	if([quizwidget class] != [LLQuizWidget class])
-	{
-		//	TODO: Send an error report
-		alert("ERRAWR! LLQuizWidgetLayerResponse");
-		return;
-	}
-	[[LLRTE sharedInstance] widget:[LLQuizWidget class] sendData:[widgetIndex,oldanswer,[quizwidget selectedAnswer]]];
-}
-
 @implementation LLQuizWidgetLayerAnswer : CALayer
 {
 	LLQuizWidgetLayer _owner @accessors(property=owner);
@@ -249,8 +237,16 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 	}
 	var oldAnswer = [_widget selectedAnswer];
 	var pointInCurrentCoords = [self convertPoint:[event slideLayerPoint] fromLayer:[self superlayer]],
-		rectHeight = [self bounds].size.height / ([_widget numberOfPossibleAnswers]+1),
-		selectedIndex = parseInt((pointInCurrentCoords.y - 40) / rectHeight)-1;
+		selectedIndex = -1;
+	for(var i = 0 ; i < [_answerLayers count] ; i++)
+	{
+		var current = _answerLayers[i];
+		if(CGRectContainsPoint([current bounds],[self convertPoint:pointInCurrentCoords toLayer:current]))
+		{
+			selectedIndex = i;
+			break;
+		}
+	}
 	if(selectedIndex != -1)
 	{
 		if([_widget selectedAnswer] != -1)
@@ -259,8 +255,10 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[_widget setSelectedAnswer:selectedIndex];
 		if(_isPresenting)
 		{
-			//var widgetIndex = [[[LLPresentationController sharedController] currentSlide] indexOfWidget:_widget];
-			LLQuizWidgetLayerResponse([self widgetIndex],oldAnswer);
+			[self sendData:{
+				oldAnswer:oldAnswer,
+				newAnswer:selectedIndex
+			}];
 		}
 	}
 }
@@ -345,9 +343,7 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[current setPosition:CGPointMake(0,currentHeight)];
 		[_answerLayers addObject:current];
 		if(isTeacher)
-		{
 			[current setNumberOfResponses:[_widget numberOfResponsesForAnswerAtIndex:i]];
-		}
 		if(i == [_widget selectedAnswer])
 			[current setSelected:YES];
 		[self addSublayer:current];
@@ -362,6 +358,12 @@ function LLQuizWidgetLayerResponse(widgetIndex,oldanswer)
 		[_showAnswersLink slideThemeDidChangeToTheme:_themeCache];
 		[_answerLayers makeObjectsPerformSelector:@selector(slideThemeDidChangeToTheme:) withObject:_themeCache];
 	}
+}
+
+-(void)updateAfterReceivingData:(JSObject)data
+{
+	for(var i = 0 ; i < [_widget numberOfPossibleAnswers] ; i++)
+		[_answerLayers[i] setNumberOfResponses:[_widget numberOfResponsesForAnswerAtIndex:i]];
 }
 
 @end

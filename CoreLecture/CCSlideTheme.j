@@ -9,6 +9,11 @@
 	CPString _title @accessors(property=title);
 }
 
++(id)defaultTheme
+{
+	return [CCSlideTheme themeWithBackgroundPath:"/app/livelecture/Editor/Resources/Themes/keynote.png" fontColor:"#FFFFFF" thumbnailURL:"app/livelecture/Editor/Resources/Themes/keynote_thumbnail.png" title:"Stevenote"];
+}
+
 +(CCSlideTheme)themeFromJSObject:(JSObject)jsobj
 {
 	return [CCSlideTheme themeWithBackgroundPath:jsobj["backgroundPath"] fontColor:jsobj["fontColor"] thumbnailURL:jsobj["thumbnailURL"] title:jsobj["title"]];
@@ -17,11 +22,6 @@
 +(CCSlideTheme)themeWithBackgroundPath:(CPString)path fontColor:(CPColor)color thumbnailURL:(CPString)thumbnailURL title:(CPString)title
 {
 	return [[CCSlideTheme alloc] initWithBackgroundPath:path fontColor:color thumbnailURL:thumbnailURL title:title];
-}
-
-+(id)defaultTheme
-{
-	return [CCSlideTheme themeWithBackgroundPath:"/app/livelecture/Editor/Resources/Themes/keynote.png" fontColor:"#FFFFFF" thumbnailURL:"app/livelecture/Editor/Resources/Themes/keynote_thumbnail.png" title:"Stevenote"];
 }
 
 -(id)initWithTheme:(CCSlideTheme)theme

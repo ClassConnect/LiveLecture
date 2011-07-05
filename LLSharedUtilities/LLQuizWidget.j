@@ -17,35 +17,6 @@
 	CPArray _answerCount;
 }
 
-+(BOOL)shouldSendData:(CPArray)data
-{
-	//	Dont care what the data is. I only want students to send data to teachers
-	return ![[LLUser currentUser] isTeacher];
-}
-
-+(BOOL)shouldReceiveData:(CPArray)data
-{
-	//	Only Teachers should receive the data about what students answered what
-	return [[LLUser currentUser] isTeacher];
-}
-
-+(void)didReceiveData:(CPArray)data
-{
-	if(![[LLUser currentUser] isTeacher])
-		return;
-	
-	var widgetIndex = [data objectAtIndex:0],
-		oldAnswer = [data objectAtIndex:1],
-		answerIndex = [data objectAtIndex:2],
-		widget = [[[LLPresentationController sharedController] currentSlide] widgetAtIndex:widgetIndex];
-	
-	[widget incrementAnswerCountAtIndex:answerIndex];
-	[widget decrementAnswerCountAtIndex:oldAnswer];
-	
-	var layer = [[[[[LLPresentationController sharedController] mainSlideView] slideLayer] widgetLayers] objectAtIndex:widgetIndex];
-	[layer drawInContext:nil];
-}
-
 -(id)initWithWidget:(LLQuizWidget)widget
 {
 	if(self = [super initWithWidget:widget])
@@ -197,6 +168,30 @@
 		escapedAnswers[i] = escape(_answers[i]);
 	[coder encodeObject:escapedAnswers forKey:@"answers"];
 	[coder encodeObject:[CPNumber numberWithInt:_selectedAnswer] forKey:@"selectedAnswer"];
+}
+
+@end
+
+@implementation LLQuizWidget (LLRTEAdditions)
+
+-(BOOL)allowedToSendData:(JSObject)data
+{
+	//	Only students should send data
+	return ![[LLUser currentUser] isTeacher];
+}
+
+-(CPString)receiverChannelForData:(JSObject)data
+{
+	return kLLRTEChannelTeachers;
+}
+
+-(void)didReceiveData:(JSObject)data
+{	
+	var	oldAnswer = data.oldAnswer,
+		answerIndex = data.newAnswer;
+	
+	[self incrementAnswerCountAtIndex:answerIndex];
+	[self decrementAnswerCountAtIndex:oldAnswer];
 }
 
 @end

@@ -9,8 +9,13 @@
 @import "../CoreLecture/CoreLecture.j"
 @import "LLUser.j"
 @import "LLStudentListManager.j"
+@import "CCWidget+LLRTEAdditions.j"
 
 @import "faye.js"
+
+kLLRTEChannelEveryone = "kLLRTEChannelEveryone"
+kLLRTEChannelTeachers = "kLLRTEChannelTeachers"
+kLLRTEChannelStudents = "kLLRTEChannelStudents"
 
 //	Controls
 kLLRTESlideAction = "kLLRTESlideAction"
@@ -65,6 +70,17 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 +(BOOL)isEnabled
 {
 	return [[LLUser currentUser] RTEEnabled];
+}
+
+-(CPString)_channelFromConstant:(CPString)constant
+{
+	switch(constant)
+	{
+		case kLLRTEChannelEveryone:	return _everyone;
+		case kLLRTEChannelTeachers: return _teachers;
+		case kLLRTEChannelStudents: return _students;
+		default:					return "";
+	}
 }
 
 +(CPString)channelNameForUserID:(CPInteger)uid
@@ -156,11 +172,15 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 	});
 }
 
--(void)widget:(Class)widgetClass sendData:(CPArray)args
+-(void)widget:(CCWidget)widget atIndex:(CPInteger)index sendData:(JSObject)data
 {
-	if([widgetClass shouldSendData:args])
+	if([widget allowedToSendData:data])
 	{
-		[self _publishSlideActionWithType:kLLRTEWidgetAction action:CPStringFromClass(widgetClass) withArguments:args];
+		_connection.publish([self _channelFromConstant:[widget receiverChannelForData:data]],{
+			type:kLLRTEWidgetAction,
+			index:index,
+			data:data
+		});
 	}
 }
 
@@ -207,10 +227,7 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 		}
 	}
 	if(message.type == kLLRTEWidgetAction)
-	{
-		var args = [message.arguements componentsSeparatedByString:@":LLARG:"];
-		[CPClassFromString(message.data) didReceiveData:args];
-	}
+		[self handleWidgetAction:message];
 	if(message.type == kLLRTEStudentJoinedNotification)
 	{
 		if(message.u != [[LLUser currentUser] userID])
@@ -236,6 +253,8 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 												//[self sendCurrentSlideMessageToStudent:message.u];
 												break;
 		case kLLRTECurrentSlideRequest:			[self sendCurrentSlideMessageToStudent:message.u];
+												break;
+		case kLLRTEWidgetAction:				[self handleWidgetAction:message];
 												break;
 	}
 }
@@ -264,6 +283,8 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 												break;
 		case kLLRTEVideoDisabledMessage:		[[CPNotificationCenter defaultCenter] postNotificationName:LLPresentationVideoDisabled object:nil];
 												break;
+		case kLLRTEWidgetAction:				[self handleWidgetAction:message];
+												break;
 		default:								CPLog("Received Student Message in Error");
 												break;
 	}
@@ -280,6 +301,13 @@ var kLLRTEURL = "http://www.ccrte.com:8124/faye"
 		default:								CPLog("Received Personal Message in Error");
 												break;
 	}
+}
+
+-(void)handleWidgetAction:(JSObject)message
+{
+	var layer = [[[[LLPresentationController sharedController] mainSlideView] slideLayer] widgetLayers][message.index];
+	[[layer widget] didReceiveData:message.data];
+	[layer updateAfterReceivingData:message.data];
 }
 
 @end

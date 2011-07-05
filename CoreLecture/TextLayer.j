@@ -1931,9 +1931,6 @@ var TextLayerIsMSIE = NO;
     {
         if(!TextLayerDidAlert)
         {
-//            alert("Whoops.  We've encountered a bug. \n\n"
-//                 +"We're trying our best to recover from it, but if you encounter "
-//                 +"any problems with your document, please let us know!");
 			  alert("We've encountered a bug");
         }
 
@@ -1943,13 +1940,9 @@ var TextLayerIsMSIE = NO;
         {
             var text = _contentLayer._DOMElement.innerText;
             textObject = [[self class] simpleRossTFObjectForString:text];
-
-//            [BugReporter sendFeedback:("Error saving text: "+e+" text: "+text) title:"Text Save Error" delegate:nil];
         }
         catch (f)
         {
-//            alert("We were unable to recover from the following errors: \n\n"+e+"\n\n"+f+
-//                  "\n\nPlease send this feedback to feedback@280north.com");
 			  alert("We were unable to recover from an error");
         }
     }
