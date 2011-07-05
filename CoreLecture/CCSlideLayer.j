@@ -109,6 +109,33 @@
 	[self setNeedsDisplay];
 }
 
+-(void)sendWidgetLayerToBack:(CCWidgetLayer)layer
+{
+	var index = [_widgetLayers indexOfObject:layer];
+	if(index == -1)
+		return;
+	[layer setZPosition:++_CCWidgetLayerHighestZ];
+	[[layer widget] setZIndex:_CCWidgetLayerHighestZ];
+	for(var i = 0 ; i < [_widgetLayers count] ; i++)
+	{
+		if(i == index)
+			continue;
+		var current = _widgetLayers[i];
+		[current setZPosition:++_CCWidgetLayerHighestZ];
+		[[current widget] setZIndex:_CCWidgetLayerHighestZ];
+	}
+	[self setNeedsDisplay];
+}
+
+-(void)sendWidgetLayerToFront:(CCWidgetLayer)layer
+{
+	var index = [_widgetLayers indexOfObject:layer];
+	if(index == -1)
+		return;
+	[layer setZPosition:++_CCWidgetLayerHighestZ];
+	[[layer widget] setZIndex:_CCWidgetLayerHighestZ];
+}
+
 -(void)addWidgetToSlide:(CCWidget)widget 
 {
 	[widget setZIndex:++_CCWidgetLayerHighestZ];
@@ -234,20 +261,6 @@
 		[_widgetLayers[i] setWidgetIndex:i];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
-
-// -(void)remakeSlideFromWidgetLayers
-// {
-// 	var newSlide = [[CCSlide alloc] init],
-// 		widgets = [CPArray array];
-// 	for(var i = 0 ; i < [_widgetLayers count] ; i++)
-// 	{
-// 		[widgets addObject:[[_widgetLayers objectAtIndex:i] widget]];
-// 	}
-// 	newSlide._widgets = widgets;
-// 	//	Force the update of the widgets
-// 	_slide = newSlide;
-// 	[[LLPresentationController sharedController] mainSlideContentDidChange];
-// }
 
 //	HitTest Replacements
 -(CCWidget)widgetAtPoint:(CPPoint)point

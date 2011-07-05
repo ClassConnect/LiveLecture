@@ -153,6 +153,16 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	[_firstResponder becomeFirstResponder];
 }
 
+-(void)sendSelectedWidgetToBack
+{
+	[_slideLayer sendWidgetLayerToBack:_firstResponder];
+}
+
+-(void)sendSelectedWidgetToFront
+{
+	[_slideLayer sendWidgetLayerToFront:_firstResponder];
+}
+
 //	----------------------------------------------------
 //					Point Conversion
 //	----------------------------------------------------

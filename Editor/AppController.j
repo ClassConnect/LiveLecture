@@ -44,6 +44,9 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	LLToolbarNewMovieWidgetItemIdentifier = "LLToolbarNewMovieWidgetItemIdentifier",
 	LLToolbarNewWebWidgetItemIdentifier = "LLToolbarNewWebWidgetItemIdentifier",
 	LLToolbarOtherWidgetItemIdentifier = "LLToolbarOtherWidgetItemIdentifier",
+	//	Widget Z Index
+	LLToolbarWidgetFrontIdentifier = "LLToolbarWidgetFrontIdentifier"
+	LLToolbarWidgetBackIdentifier = "LLToolbarWidgetBackIdentifier"
 	//	Extra
 	LLToolbarInspectorItemIdentifier = "LLToolbarInspectorItemIdentifier",
     LLToolbarPreviewItemIdentifier = "LLToolbarPreviewItemIdentifier";
@@ -179,13 +182,13 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 			LLToolbarNewSlideItemIdentifier,
 			LLToolbarDeleteSlideItemIdentifier,
 			LLToolbarSelectThemeItemIdentifier,
-			LLToolbarFileboxItemIdentifier,
-			LLToolbarSearchboxItemIdentifier,
 			LLToolbarNewTextWidgetItemIdentifier,
 			LLToolbarNewPictureWidgetItemIdentifier,
 			LLToolbarNewMovieWidgetItemIdentifier,
 			LLToolbarNewWebWidgetItemIdentifier,
 			LLToolbarOtherWidgetItemIdentifier,
+			LLToolbarFileboxItemIdentifier,
+			LLToolbarSearchboxItemIdentifier,
 			LLToolbarInspectorItemIdentifier,
 			LLToolbarPreviewItemIdentifier];
 }
@@ -205,6 +208,9 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 			CPToolbarSpaceItemIdentifier,
 			LLToolbarFileboxItemIdentifier,
 			LLToolbarSearchboxItemIdentifier,
+			CPToolbarSpaceItemIdentifier,
+			LLToolbarWidgetFrontIdentifier,
+			LLToolbarWidgetBackIdentifier,
    			CPToolbarFlexibleSpaceItemIdentifier,
 			LLToolbarInspectorItemIdentifier,
    			LLToolbarPreviewItemIdentifier];
@@ -267,6 +273,16 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 														action = @selector(showMediaPanel);
 														label = "Searchbox";
 														imagename = "icon_searchbox.png";
+														break;
+		case LLToolbarWidgetFrontIdentifier:			target = _editorView;
+														action = @selector(sendSelectedWidgetToFront);
+														label = "Front";
+														imagename = "Icon.png";
+														break;
+		case LLToolbarWidgetBackIdentifier:				target = _editorView;
+														action = @selector(sendSelectedWidgetToBack);
+														label = "Back";
+														imagename = "Icon.png";
 														break;
 		case LLToolbarInspectorItemIdentifier:			target = _controller;
 														action = @selector(showInspectorPanel);
