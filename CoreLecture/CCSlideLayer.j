@@ -113,7 +113,9 @@
 {
 	[widget setZIndex:++_CCWidgetLayerHighestZ];
 	[_slide addWidget:widget];
-	[self addWidgetLayerToSlide:[self configuredLayerForWidget:widget]];
+	var widgetLayer = [self configuredLayerForWidget:widget];
+	[self addWidgetLayerToSlide:widgetLayer];
+	[[[LLPresentationController sharedController] mainSlideView] setFirstResponder:widgetLayer];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 

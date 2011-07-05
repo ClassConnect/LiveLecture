@@ -64,6 +64,7 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	if([_firstResponder respondsToSelector:@selector(resignFirstResponder)])
 		[_firstResponder resignFirstResponder];
 	_firstResponder = nil;
+	_receiverLayer = nil;
 }
 
 //	----------------------------------------------------
@@ -142,6 +143,14 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	point.y = ((point.y < 0) ? 0 : ((point.y > farthestDown) ? farthestDown : point.y));
 	[wid setLocation:point];
 	[_slideLayer addWidgetToSlide:wid];
+}
+
+-(void)setFirstResponder:(CCWidgetLayer)firstResponder
+{
+	[_firstResponder resignFirstResponder];
+	_firstResponder = firstResponder;
+	_receiverLayer = firstResponder;
+	[_firstResponder becomeFirstResponder];
 }
 
 //	----------------------------------------------------
