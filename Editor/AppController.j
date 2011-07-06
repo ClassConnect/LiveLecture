@@ -25,6 +25,7 @@ HOST = ""
 @import "LLPresentationController.j"
 @import "LLOnlinePersistenceHandler.j"
 @import "LLSlideNavigationViewController.j"
+@import "EKGradientView.j"
 
 @import "../LLSharedUtilities/LLSlideCollectionItem.j"
 @import "../LLSharedUtilities/LLQuizWidget.j"
@@ -115,6 +116,11 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	//	Add all the subviews
 	[_contentView addSubview:[nav view]];
+	
+	var gradient = [[EKGradientView alloc] initWithFrame:[_editorView frame]];
+	[gradient setColor1:[CPColor colorWithHexString:"A2A2A2"]];
+	[gradient setColor2:[CPColor colorWithHexString:"F3F3F3"]];
+	[_contentView addSubview:gradient];
 	[_contentView addSubview:_editorView];
 	
 	[_controller setNavigationController:nav];

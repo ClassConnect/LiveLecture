@@ -48,7 +48,7 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 		_slideLayer = [CCSlideLayer layer];
 		[rootLayer addSublayer:_slideLayer];
 		[_slideLayer resize];
-		[self setBackgroundColor:[CPColor grayColor]];
+		[self setBackgroundColor:[CPColor clearColor]];
 		[self registerForDraggedTypes:[CPImagesPboardType,CPVideosPboardType,CPWebsitesPboardType]];
     }
     return self;
@@ -109,7 +109,7 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	_isPresenting = isPresenting;
 	
 	[_slideLayer setIsPresenting:isPresenting];
-	[self setBackgroundColor:((isPresenting) ? [CPColor blackColor] : [CPColor whiteColor])];
+	[self setBackgroundColor:((isPresenting) ? [CPColor blackColor] : [CPColor clearColor])];
 }
 
 -(void)performDragOperation:(CPDraggingInfo)info
