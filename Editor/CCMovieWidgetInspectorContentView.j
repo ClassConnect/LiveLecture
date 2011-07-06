@@ -47,6 +47,7 @@
 -(void)didPressReturn
 {
 	[self updateWidget];
+	[self updateLayer];
 }
 
 -(void)updateWidget
@@ -56,6 +57,10 @@
 		[_widget setYoutubeID:text];
 	else
 		[_widget setMovie:[CPFlashMovie flashMovieWithFile:text]];
+}
+
+-(void)updateLayer
+{
 	[_layer setWidget:_widget];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }

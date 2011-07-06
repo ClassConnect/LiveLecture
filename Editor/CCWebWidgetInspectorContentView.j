@@ -45,11 +45,16 @@
 -(void)didPressReturn
 {
 	[self updateWidget];
+	[self updateLayer];
 }
 
 -(void)updateWidget
 {
 	[_widget setURL:[_sourceField stringValue]];
+}
+
+-(void)updateLayer
+{
 	[_layer setWidget:_widget];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
