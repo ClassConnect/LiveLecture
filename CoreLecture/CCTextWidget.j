@@ -18,7 +18,7 @@
 {
 	if(self = [super initWithWidget:widget])
 	{
-		[self setFromStorage:[widget fromStorage]];
+		[self setFromStorage:[[widget fromStorage] copy]];
 		[self setHTML:[[widget HTML] copy]];
 		[self setIsEmpty:[[widget isEmpty] copy]];
 	}

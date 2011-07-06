@@ -566,7 +566,7 @@ var TextLayerIsMSIE = NO;
 		}
 		
 		[self textDidChange];
-			
+		
 		[self resize];
 		[self positionCaret];
 		[self redrawSelection];
@@ -700,15 +700,14 @@ var TextLayerIsMSIE = NO;
 		var contentElement = _contentLayer._DOMElement,
 			contentChildren = contentElement.childNodes,
 			isEmpty = contentChildren.length == 1 && contentChildren[0].className == TextLayerParagraphElement.className && contentChildren[0].childNodes.length == 1;
-			
+		
+		// _textBody = [_widget copy];
+		// [_textBody setHTML:contentElement.innerHTML];
+		// [_textBody setIsEmpty:isEmpty];
 		_textBody = [[CCTextWidget alloc] initFromStorage:NO withHTML:contentElement.innerHTML isEmpty:isEmpty];
 		[_textBody setLocation:[_widget location]];
 		[_textBody setSize:[_widget size]];
 		_widget = _textBody;
-		// var oldWidget = _widget;
-		// _widget = [[CCTextWidget alloc] initFromStorage:NO withHTML:contentElement.innerHTML isEmpty:isEmpty];
-		// [_widget setLocation:[oldWidget location]];
-		// [_widget setSize:[oldWidget size]];
 	}
 	return _textBody;
 }
@@ -716,6 +715,7 @@ var TextLayerIsMSIE = NO;
 -(void)setTextWidget:(id)widget {
 	[super setWidget:widget];
 	_textBody = widget;
+	_widget = widget;
 	if([widget respondsToSelector:@selector(HTML)])
 	{
 		_contentLayer._DOMElement.innerHTML = [widget HTML];
@@ -1389,7 +1389,7 @@ var TextLayerIsMSIE = NO;
     [self selectionDidChange];
 }
 
--(CPArray)returnTarget:(CPEvent)event {
+-(JSObject)returnTarget:(CPEvent)event {
 	var domEvent = [event _DOMEvent];
     var location = [[CPApp keyWindow] convertBaseToBridge:[event locationInWindow]];
 
@@ -1443,7 +1443,7 @@ var TextLayerIsMSIE = NO;
         return { character: NULL, paragraph: element };
 
     var character = [self binarySearch:element.childNodes compare:paragraphComparator args:CGPointMake(relativeX,relativeY)];
-
+	
     if(character)
     {
         if(relativeX - character.offsetLeft < character.offsetWidth / 2.0)
@@ -1453,37 +1453,34 @@ var TextLayerIsMSIE = NO;
     }
 
     character = [self binarySearch:element.childNodes compare:targetComparator args:relativeY];
-		
-	if(character)//	CCEdit
-	{//	CCEdit
-	    var leftOffset = character.offsetLeft;
-	    var leftCharacter = character.previousSibling;
-	    while(leftCharacter && leftCharacter.offsetLeft < leftOffset)
-	    {
-	        leftOffset = leftCharacter.offsetLeft;
-	        leftCharacter = leftCharacter.previousSibling;
-	    }
+    
+    var leftOffset = character.offsetLeft;
+    var leftCharacter = character.previousSibling;
+    while(leftCharacter && leftCharacter.offsetLeft < leftOffset)
+    {
+        leftOffset = leftCharacter.offsetLeft;
+        leftCharacter = leftCharacter.previousSibling;
+    }
 
-	    if(relativeX < leftOffset)
-	    {
-	        if(leftCharacter && leftCharacter.innerHTML == TextLayerNewLineElement.innerHTML)
-	            leftCharacter = leftCharacter.previousSibling;
+    if(relativeX < leftOffset)
+    {
+        if(leftCharacter && leftCharacter.innerHTML == TextLayerNewLineElement.innerHTML)
+            leftCharacter = leftCharacter.previousSibling;
 
-	        character = leftCharacter;
-	    }
-	    else
-	    {
-	        leftOffset = character.offsetLeft;
-	        while(character && character.nextSibling && character.nextSibling.offsetLeft > leftOffset)
-	        {
-	            character = character.nextSibling;
-	            leftOffset = character.offsetLeft;
-	        }
+        character = leftCharacter;
+    }
+    else
+    {
+        leftOffset = character.offsetLeft;
+        while(character && character.nextSibling && character.nextSibling.offsetLeft > leftOffset)
+        {
+            character = character.nextSibling;
+            leftOffset = character.offsetLeft;
+        }
 
-	        if(character && character.innerHTML == TextLayerNewLineElement.innerHTML)
-	            character = character.previousSibling;
-	    }
-	}//	CCEdit
+        if(character && character.innerHTML == TextLayerNewLineElement.innerHTML)
+            character = character.previousSibling;
+    }
 
     return { character:character, paragraph:element };
 }
@@ -2542,6 +2539,7 @@ var TextLayerIsMSIE = NO;
 {
 	[super beginEditing];
 	[self adoptSharedCaret];
+	[[CPApplication sharedApplication] orderFrontInspectorPanel];
 }
 
 -(void)endEditing

@@ -207,7 +207,7 @@
 		{
 			var widgetIndex = [_slide indexOfWidget:currentWidget];
 			_slide._widgets[widgetIndex] = currentWidget;
-			[current setWidgetIndex:[_slide indexOfWidget:currentWidget]];
+			[current setWidgetIndex:widgetIndex];
 			[self addWidgetLayerToSlide:current];
 			[widgets_to_create removeObject:currentWidget];
 		}
@@ -293,8 +293,7 @@
 -(void)textDidChange:(TextLayer)textLayer
 {
 	var widgetIndex = [textLayer widgetIndex];
-	if(![[textLayer textWidget] isEqual:[_slide widgetAtIndex:widgetIndex]])
-		[_slide replaceWidgetAtIndex:widgetIndex withWidget:[textLayer textWidget]];
+	[_slide replaceWidgetAtIndex:widgetIndex withWidget:[textLayer textWidget]];
 	[[LLPresentationController sharedController] mainSlideContentDidChange];
 	[textLayer setTextScale:textLayer._scale];
 }
