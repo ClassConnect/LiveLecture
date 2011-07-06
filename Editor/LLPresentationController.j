@@ -146,8 +146,9 @@ var __LLPRESENTATION_SHARED__ = nil;
 	var slides = [_presentation slides];
 	var slide = [slides objectAtIndex:start];
 	[slides removeObjectAtIndex:start];
+	[navigationController removeSlideAtIndex:start];
 	[slides insertObject:slide atIndex:finish];
-	[navigationController moveSlideAtIndex:start toIndex:finish];
+	[navigationController addSlide:slide atIndex:finish];
 	[self setCurrentSlideIndex:finish];
 }
 

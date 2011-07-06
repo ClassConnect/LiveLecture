@@ -89,8 +89,22 @@ var LLSlideDragType = "LLSlideDragType";
 
 -(void)addSlide:(CCSlide)slide
 {
+	// var item = [collection newItemForRepresentedObject:[slide copy]];
+	// [collection addItem:item atIndex:[[LLPresentationController sharedController] currentSlideIndex]];
+	// for(var i = 0 ; i < [[collection items] count] ; i++)
+	// {
+	// 	[[[collection itemAtIndex:i] view] setSlideIndex:i];
+	// 	[[collection itemAtIndex:i] setSelected:NO];
+	// }
+	// [collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:[[LLPresentationController sharedController] currentSlideIndex]]];
+	// [collection _scrollToSelection];
+	[self addSlide:slide atIndex:[[LLPresentationController sharedController] currentSlideIndex]];
+}
+
+-(void)addSlide:(CCSlide)slide atIndex:(CPInteger)index
+{
 	var item = [collection newItemForRepresentedObject:[slide copy]];
-	[collection addItem:item atIndex:[[LLPresentationController sharedController] currentSlideIndex]];
+	[collection addItem:item atIndex:index];
 	for(var i = 0 ; i < [[collection items] count] ; i++)
 	{
 		[[[collection itemAtIndex:i] view] setSlideIndex:i];

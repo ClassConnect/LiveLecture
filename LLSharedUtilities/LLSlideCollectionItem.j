@@ -105,6 +105,8 @@ var slideDivider = nil;
 			moveToIndex = ((point.y < 100) ? _slideIndex : (_slideIndex + 1));
 	if(moveFromIndex == moveToIndex)
 		return;
+	if(moveToIndex > moveFromIndex)
+		moveToIndex--;
 	[[LLPresentationController sharedController] moveSlideAtIndex:moveFromIndex toIndex:moveToIndex];
 }
 
