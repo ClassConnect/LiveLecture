@@ -277,12 +277,12 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		case LLToolbarWidgetFrontIdentifier:			target = _editorView;
 														action = @selector(sendSelectedWidgetToFront);
 														label = "Front";
-														imagename = "Icon.png";
+														imagename = "icon_send_widget_to_front.png";
 														break;
 		case LLToolbarWidgetBackIdentifier:				target = _editorView;
 														action = @selector(sendSelectedWidgetToBack);
 														label = "Back";
-														imagename = "Icon.png";
+														imagename = "icon_send_widget_to_back.png";
 														break;
 		case LLToolbarInspectorItemIdentifier:			target = _controller;
 														action = @selector(showInspectorPanel);

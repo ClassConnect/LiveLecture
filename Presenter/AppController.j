@@ -22,6 +22,7 @@ HOST = ""
 @import "../LLSharedUtilities/LLQuizWidgetLayer.j"
 @import "CCSlideView+LLSidebarAdditions.j"
 @import "LLSidebarController.j"
+@import "LLAnnoyingGrayScreenView.j"
 
 @implementation AppController : CPObject {
 	CPView _contentView;
@@ -39,7 +40,7 @@ HOST = ""
         contentView = [theWindow contentView];
 	_contentView = contentView;
 	_controller = [LLPresentationController sharedController];
-	[theWindow orderFront:self];
+	[theWindow makeKeyAndOrderFront:self];
 	
 	var args = [[CPApplication sharedApplication] namedArguments];
 	[_contentView setBackgroundColor:[CPColor blackColor]];
@@ -157,6 +158,7 @@ HOST = ""
 		[_label removeFromSuperview];
 		[_progressBar removeFromSuperview];
 		[_contentView addSubview:view];
+		[[_contentView window] makeFirstResponder:view];
 		[[LLPresentationController sharedController] setShowsSidebar:NO animated:YES];
 		
 		//	Setup the arrow that will let the user click and open the sidebar
@@ -172,6 +174,7 @@ HOST = ""
 		//	Makes it stay on the bottom left when the frame changes
 		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin];
 		[view addSubview:sidebarButton];
+		
 		
 		if(![[LLUser currentUser] isTeacher])
 		{

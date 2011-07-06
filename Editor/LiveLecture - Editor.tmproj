@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>currentDocument</key>
-	<string>../LLSharedUtilities/LLQuizWidget.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -37,103 +35,24 @@
 	<integer>204</integer>
 	<key>metaData</key>
 	<dict>
-		<key>../CoreLecture/CCSlide.j</key>
+		<key>../CoreLecture/CCSlideView.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>70</integer>
+				<integer>31</integer>
 				<key>line</key>
-				<integer>42</integer>
+				<integer>155</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>11</integer>
-		</dict>
-		<key>../LLSharedUtilities/LLQuizWidget.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>30</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>5</integer>
-		</dict>
-		<key>../LLSharedUtilities/LLQuizWidgetLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>69</integer>
-				<key>line</key>
-				<integer>21</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>AppController.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>36</integer>
-				<key>line</key>
-				<integer>322</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>301</integer>
-		</dict>
-		<key>LLFileboxPanel.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>0</integer>
-				<key>line</key>
-				<integer>24</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>6</integer>
-		</dict>
-		<key>LLPresentationController.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>19</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>125</integer>
 		</dict>
 	</dict>
-	<key>openDocuments</key>
-	<array>
-		<string>AppController.j</string>
-		<string>LLFileboxPanel.j</string>
-		<string>../CoreLecture/CCSlide.j</string>
-		<string>LLPresentationController.j</string>
-		<string>../LLSharedUtilities/LLQuizWidgetLayer.j</string>
-		<string>../LLSharedUtilities/LLQuizWidget.j</string>
-	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{0, 4}, {1440, 874}}</string>
+	<string>{{4, 0}, {1436, 878}}</string>
 </dict>
 </plist>
