@@ -11,7 +11,7 @@
 
 +(id)defaultTheme
 {
-	return [CCSlideTheme themeWithBackgroundPath:"/app/livelecture/Editor/Resources/Themes/keynote.png" fontColor:"#FFFFFF" thumbnailURL:"app/livelecture/Editor/Resources/Themes/keynote_thumbnail.png" title:"Stevenote"];
+	return [CCSlideTheme themeWithBackgroundPath:"http://c645595.r95.cf2.rackcdn.com/rays.png" fontColor:"#FFFFFF" thumbnailURL:"http://c645595.r95.cf2.rackcdn.com/rays_thumbnail.png" title:"Rays"];
 }
 
 +(CCSlideTheme)themeFromJSObject:(JSObject)jsobj

@@ -2,6 +2,7 @@
 @import <AppKit/AppKit.j>
 @import "LLFileboxAPIManager.j"
 @import "LLFileboxCollectionItem.j"
+@import "EKActivityIndicatorView.j"
 
 var __shared__ = nil;
 
@@ -48,8 +49,6 @@ function is_folder(object)
 		//	Load the API Manager
 		_api = [LLFileboxAPIManager defaultManager];
 		
-//		[contentView setBackgroundColor:[CPColor colorWithHexString:"DDDDDD"]];
-		
 		//	Set up top bar
 		[_backButton setTarget:self];
 		[_backButton setAction:@selector(back)];
@@ -57,7 +56,7 @@ function is_folder(object)
 		[self setDefaultButton:_backButton];
 		_titleLabel = [CPTextField labelWithTitle:@"Home"];
 		var bbf = [_backButton frame];
-		[_titleLabel setFrame:CGRectMake(CGRectGetMaxX(bbf)+14,0,CGRectGetWidth([contentView bounds])-CGRectGetMaxX(bbf),44)];
+		[_titleLabel setFrame:CGRectMake(CGRectGetMaxX(bbf)+14,0,CGRectGetWidth([contentView bounds])-CGRectGetMaxX(bbf)-14,44)];
 		[_titleLabel setFont:[CPFont boldSystemFontOfSize:18]];
 		[_titleLabel setVerticalAlignment:CPCenterTextAlignment];
 		[border setBackgroundColor:[CPColor lightGrayColor]];
@@ -82,17 +81,13 @@ function is_folder(object)
 		[_nothingLabel setHidden:YES];
 		
 		//	Loading View
-		_loadingView = [[CPView alloc] initWithFrame:[_collection bounds]];
+		_loadingView = [[CPView alloc] initWithFrame:[sv bounds]];
 	   	[_loadingView setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
    
-	   	var progressIndicator = [CPProgressIndicator new];
-		
-	   	[progressIndicator setStyle:CPProgressIndicatorSpinningStyle];
-	   	[progressIndicator sizeToFit];
-   
-	    [progressIndicator setAutoresizingMask:CPViewMinXMargin|CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxYMargin];
-	   	[progressIndicator setCenter:[_loadingView center]];
-		[progressIndicator startAnimation:nil];
+		var progressIndicator = [[EKActivityIndicatorView alloc] initWithFrame:CGRectMake(0,0,32,32)];
+		[progressIndicator setAutoresizingMask:CPViewMinXMargin|CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxYMargin];
+		[progressIndicator setCenter:[_loadingView center]];
+		[progressIndicator startAnimating];
     
 	    [_loadingView addSubview:progressIndicator];
 		

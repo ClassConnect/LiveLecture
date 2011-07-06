@@ -32,7 +32,8 @@
 }
 
 -(void)setSelected:(BOOL)isSelected {
-	[self setBackgroundColor:(isSelected ? [CPColor blueColor] : nil)];
+	[self setBackgroundColor:(isSelected ? [CPColor colorWithHexString:"7F8DAA"] : nil)];
+	[_label setTextColor:(isSelected ? [CPColor whiteColor] : [CPColor blackColor])];
 }
 
 @end

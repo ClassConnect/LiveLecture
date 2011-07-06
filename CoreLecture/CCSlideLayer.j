@@ -125,6 +125,7 @@
 		[[current widget] setZIndex:_CCWidgetLayerHighestZ];
 	}
 	[self setNeedsDisplay];
+	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 
 -(void)sendWidgetLayerToFront:(CCWidgetLayer)layer
@@ -134,6 +135,7 @@
 		return;
 	[layer setZPosition:++_CCWidgetLayerHighestZ];
 	[[layer widget] setZIndex:_CCWidgetLayerHighestZ];
+	[[LLPresentationController sharedController] mainSlideContentDidChange];
 }
 
 -(void)addWidgetToSlide:(CCWidget)widget 
