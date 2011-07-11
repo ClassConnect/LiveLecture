@@ -26,6 +26,7 @@ HOST = ""
 @import "LLOnlinePersistenceHandler.j"
 @import "LLSlideNavigationViewController.j"
 @import "EKGradientView.j"
+@import "ERIC_EDIT_ME.j"
 
 @import "../LLSharedUtilities/LLSlideCollectionItem.j"
 @import "../LLSharedUtilities/LLQuizWidget.j"
@@ -120,6 +121,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	var gradient = [[EKGradientView alloc] initWithFrame:[_editorView frame]];
 	[gradient setColor1:[CPColor colorWithHexString:"A2A2A2"]];
 	[gradient setColor2:[CPColor colorWithHexString:"F3F3F3"]];
+	[gradient setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
 	[_contentView addSubview:gradient];
 	[_contentView addSubview:_editorView];
 	
@@ -171,15 +173,29 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	[[menu itemWithTitle:"Save"] setTarget:[LLOnlinePersistenceHandler sharedHandler]];
 	[[menu itemWithTitle:"Save"] setAction:@selector(save)];
 	
+	var helpItem = [[CPMenuItem alloc] initWithTitle:"Help" action:@selector(help) keyEquivalent:""];
+	[helpItem setTarget:self];
 	var backItem = [[CPMenuItem alloc] initWithTitle:"Back to ClassConnect" action:@selector(back) keyEquivalent:""];
 	[backItem setTarget:self];
 	[backItem setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_back.png"] size:CGSizeMake(16,16)]];
 	[menu addItem:backItem];
+	[menu addItem:helpItem];
 }
 
 -(void)back
 {
 	window.location = "/app/presentations.cc";
+}
+
+-(void)help
+{
+	var window = [[CPWindow alloc] initWithContentRect:CGRectMake(200,200,720,480) styleMask:CPTitledWindowMask|CPClosableWindowMask];
+	[window setTitle:"Help"];
+	var contentView = [window contentView],
+		webview = [[CPWebView alloc] initWithFrame:[contentView bounds]];
+	[webview setMainFrameURL:kLLInstructionalVideo];
+	[contentView addSubview:webview];
+	[window orderFront:self];
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar {

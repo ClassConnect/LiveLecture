@@ -39,6 +39,7 @@ var __shared__ = nil;
 		[_collection setBackgroundColor:[CPColor colorWithCSSString:"#DDDDDD"]];
 		[itemPrototype setView:[[LLSlideThemeCollectionItem alloc] initWithFrame:CGRectMake(0,0,199,200)]];
 		[_collection setItemPrototype:itemPrototype];
+		[_collection setDelegate:self];
 		[sv setDocumentView:_collection];
 		//	Buttons
 		var okButton = [CPButton buttonWithTitle:"OK" theme:[CPTheme defaultHudTheme]],
@@ -90,6 +91,12 @@ var __shared__ = nil;
 	}
 	[self close];
 	[[CPApplication sharedApplication] abortModal];
+}
+
+-(void)collectionView:(CPCollectionView)collection didDoubleClickOnItemAtIndex:(CPInteger)index
+{
+	[_collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:index]];
+	[self userDidConfirmNewTheme];
 }
 
 //
