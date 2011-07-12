@@ -118,9 +118,17 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	//	Add all the subviews
 	[_contentView addSubview:[nav view]];
 	
-	var gradient = [[EKGradientView alloc] initWithFrame:[_editorView frame]];
-	[gradient setColor1:[CPColor colorWithHexString:"A2A2A2"]];
-	[gradient setColor2:[CPColor colorWithHexString:"F3F3F3"]];
+	if(CPBrowserIsEngine(CPInternetExplorerBrowserEngine))
+	{
+		var gradient = [[CPView alloc] initWithFrame:[_editorView frame]];
+		[gradient setBackgroundColor:[CPColor lightGrayColor]];
+	}
+	else
+	{
+		var gradient = [[EKGradientView alloc] initWithFrame:[_editorView frame]];
+		[gradient setColor1:[CPColor colorWithHexString:"A2A2A2"]];
+		[gradient setColor2:[CPColor colorWithHexString:"F3F3F3"]];
+	}
 	[gradient setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
 	[_contentView addSubview:gradient];
 	[_contentView addSubview:_editorView];
