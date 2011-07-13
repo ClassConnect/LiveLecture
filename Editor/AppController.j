@@ -64,6 +64,8 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	CCSlideView _editorView;
 	CCSlideView _previewView;
+	
+	CPTextField _errorMessageField;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification {
@@ -83,6 +85,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	{
 		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(loadFinished:) name:LLOnlinePersistanceLoadSuccessful object:nil];
 		[[LLOnlinePersistenceHandler sharedHandler] load];
+		[self showErrorMessage:"Initializing Lecture..."];
 	}
 	else
 	{
@@ -130,6 +133,8 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		[gradient setColor2:[CPColor colorWithHexString:"F3F3F3"]];
 	}
 	[gradient setAutoresizingMask:CPViewWidthSizable|CPViewHeightSizable];
+	
+	[_errorMessageField removeFromSuperview];
 	[_contentView addSubview:gradient];
 	[_contentView addSubview:_editorView];
 	
@@ -160,10 +165,15 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 {
 //	[_label removeFromSuperview];
 //	[_progressBar removeFromSuperview];
-	var tfield = [CPTextField labelWithTitle:message];
-	[tfield setTextColor:[CPColor whiteColor]];
-	[tfield setCenter:[_contentView center]];
-	[_contentView addSubview:tfield];
+	if(!_errorMessageField)
+	{
+		_errorMessageField = [CPTextField labelWithTitle:""];
+		[_errorMessageField setTextColor:[CPColor whiteColor]];
+		[_contentView addSubview:_errorMessageField];
+	}
+	[_errorMessageField setStringValue:message];
+	[_errorMessageField sizeToFit];
+	[_errorMessageField setCenter:[_contentView center]];
 }
 
 -(void)setupMenuBar {
