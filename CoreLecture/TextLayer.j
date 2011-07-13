@@ -2546,6 +2546,7 @@ var TextLayerIsMSIE = NO;
 {
 	[super endEditing];
 	[self orphanSharedCaret];
+	[[LLInspectorPanel sharedPanel] close];
 }
 
 -(void)editingControl:(CCWidgetEditingControl)editingControl didOffsetByPoint:(CGPoint)point

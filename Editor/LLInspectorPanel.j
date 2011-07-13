@@ -9,6 +9,8 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 @implementation LLInspectorPanel : CPPanel
 {
 	LLInspectorPanelContentView _content;
+	
+	CPToolbarItem _inspectorItem;
 }
 
 + (id)sharedPanel
@@ -22,8 +24,9 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 
 - (id)init
 {
-	var size = [[CCWidget inspectorContentViewClass] contentSize];
-	if (self = [super initWithContentRect:CGRectMake(400, 100, size.width, size.height) styleMask:CPTitledWindowMask|CPResizableWindowMask|CPClosableWindowMask])
+	var size = [[CCWidget inspectorContentViewClass] contentSize],
+		windowSize = [[[[CPApplication sharedApplication] delegate]._mainWindow contentView] frameSize];
+	if (self = [super initWithContentRect:CGRectMake(windowSize.width - size.width, 110, size.width, size.height) styleMask:CPTitledWindowMask|CPResizableWindowMask|CPClosableWindowMask])
 	{
 		[self setShowsResizeIndicator:NO];
 		[self setTitle:@"Inspector"];
@@ -31,6 +34,7 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 		//	Set the default inspector thing
 		_content = [[CCWidget inspectorContentViewClass] new];
 		[[self contentView] addSubview:_content];
+		[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonToBlue) name:CPWindowWillCloseNotification object:self];
 	}
 	return self;
 }
@@ -59,6 +63,35 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 	[_content widgetDidChange];
 }
 
+-(void)inspectorToolbarItem
+{
+	if(!_inspectorItem)
+	{
+		//	Find the inspector item
+		var items = [[[[CPApplication sharedApplication] delegate]._mainWindow toolbar] items],
+			count = [items count];
+		while(count && !_inspectorItem)
+		{
+			if([items[count-1] label] == "Inspector")
+				_inspectorItem = items[count-1];
+			count--;
+		}
+	}
+	return _inspectorItem;
+}
+
+-(void)changeButtonToBlue
+{
+	var item = [self inspectorToolbarItem];
+	[item setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[self class]] pathForResource:"icon_inspector_blue.png"] size:CGSizeMake(32,32)]];
+}
+
+-(void)changeButtonToGray
+{
+	var item = [self inspectorToolbarItem];
+	[item setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[self class]] pathForResource:"icon_inspector_gray.png"] size:CGSizeMake(32,32)]];
+}
+
 @end
 
 @implementation CPApplication (LLInspectorPanelAdditions)
@@ -66,6 +99,7 @@ var __LLINSPECTORPANEL_SHARED__ = nil;
 - (void)orderFrontInspectorPanel
 {
     [[LLInspectorPanel sharedPanel] orderFront:self];
+	[[LLInspectorPanel sharedPanel] changeButtonToGray];
 }
 
 @end
