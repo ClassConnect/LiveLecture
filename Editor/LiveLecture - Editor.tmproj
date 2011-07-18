@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>LLOnlinePersistenceHandler.j</string>
+	<string>../CoreLecture/CCWebWidgetLayer.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -17,6 +17,8 @@
 			<string></string>
 		</dict>
 		<dict>
+			<key>expanded</key>
+			<true/>
 			<key>name</key>
 			<string>LLSharedUtilities</string>
 			<key>regexFolderFilter</key>
@@ -51,6 +53,34 @@
 			<key>firstVisibleLine</key>
 			<integer>125</integer>
 		</dict>
+		<key>../CoreLecture/CCWebWidgetLayer.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>1</integer>
+				<key>line</key>
+				<integer>18</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
+		<key>../CoreLecture/TextLayer.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>39</integer>
+				<key>line</key>
+				<integer>11</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
+		</dict>
 		<key>LLOnlinePersistenceHandler.j</key>
 		<dict>
 			<key>caret</key>
@@ -69,6 +99,8 @@
 	<key>openDocuments</key>
 	<array>
 		<string>LLOnlinePersistenceHandler.j</string>
+		<string>../CoreLecture/CCWebWidgetLayer.j</string>
+		<string>../CoreLecture/TextLayer.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>

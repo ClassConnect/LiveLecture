@@ -22,7 +22,7 @@
 	[self setNeedsDisplay];
 }
 
--(void)drawInContext:(CGContext)context {
+-(void)drawWhileEditing:(CGContext)context {
 	//	When the image is nil or when the load isnt completed, show the gray
 	var bounds = [self bounds];
 	if([_image loadStatus] == CPImageLoadStatusCompleted)
@@ -37,6 +37,11 @@
 		// CGContextSetFillColor([CPColor grayColor]);
 		// CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
 	}
+}
+
+-(void)drawWhilePresenting:(CGContext)context
+{
+	[self drawWhileEditing:context];
 }
 
 -(void)setWidget:(CCWidget)widget {

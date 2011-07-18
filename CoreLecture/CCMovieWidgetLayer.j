@@ -62,11 +62,6 @@ var kCCMovieWidgetLayerPlayButton = nil;
 	}
 }
 
--(void)drawThumbnail:(CGContext)context
-{
-	[self drawWhileEditing:context];
-}
-
 -(void)drawWhilePresenting:(CGContext)context
 {
 	if(_isDirty)

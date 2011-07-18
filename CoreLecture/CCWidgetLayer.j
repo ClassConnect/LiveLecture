@@ -393,17 +393,18 @@ var kMinimumWidgetSize = 50;
 
 -(void)drawWhilePresenting:(CGContext)context
 {
-	
+	//	Do nothing
 }
 
 -(void)drawThumbnail:(CGContext)context
 {
-	
+	//	By default, the thumbnail should be the same as the editor mode
+	[self drawWhileEditing:context];
 }
 
 -(void)drawWhileEditing:(CGContext)context
 {
-	
+	//	Do nothing
 }
 
 //	

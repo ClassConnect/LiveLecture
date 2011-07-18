@@ -43,24 +43,24 @@ var _GLOBE_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pat
 	[_thumbnailText setStringValue:[widget URL]];
 }
 
--(void)drawInContext:(CGContext)context {
-	if(!_isPresenting)
+-(void)drawWhileEditing:(CGContext)context
+{
+	CGContextSetFillColor(context, [CPColor whiteColor]);
+	CGContextFillRect(context,[self bounds]); 
+	CGContextSetFillColor(context, [CPColor blackColor]);
+	CGContextFillRect(context, CGRectInset([self bounds], 5.0, 5.0));
+	if([_GLOBE_ loadStatus] == CPImageLoadStatusCompleted)
 	{
-		CGContextSetFillColor(context, [CPColor whiteColor]);
-		CGContextFillRect(context,[self bounds]); 
-		CGContextSetFillColor(context, [CPColor blackColor]);
-		CGContextFillRect(context, CGRectInset([self bounds], 5.0, 5.0));
-		if([_GLOBE_ loadStatus] == CPImageLoadStatusCompleted)
-		{
-			CGContextDrawImage(context,CGRectMake((CGRectGetWidth([self bounds]) / 2)-64,(CGRectGetHeight([self bounds]) / 2)-10-128,128,128),_GLOBE_);
-		}
-		[_thumbnailText setBounds:CGRectMake(0,0,CGRectGetWidth([self bounds]), 50)];
-		[_thumbnailText setPosition:CGPointMake(0,(CGRectGetHeight([self bounds]) / 2))];
-		[_thumbnailText setHidden:NO];
-		[_contentLayer setHidden:YES];
-		return;
+		CGContextDrawImage(context,CGRectMake((CGRectGetWidth([self bounds]) / 2)-64,(CGRectGetHeight([self bounds]) / 2)-10-128,128,128),_GLOBE_);
 	}
-	
+	[_thumbnailText setBounds:CGRectMake(0,0,CGRectGetWidth([self bounds]), 50)];
+	[_thumbnailText setPosition:CGPointMake(0,(CGRectGetHeight([self bounds]) / 2))];
+	[_thumbnailText setHidden:NO];
+	[_contentLayer setHidden:YES];	
+}
+
+-(void)drawWhilePresenting:(CGContext)context
+{
 	[_thumbnailText setHidden:YES];
 	[_contentLayer setHidden:NO];
 	[_contentLayer setBounds:[self bounds]];
