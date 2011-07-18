@@ -23,6 +23,7 @@ HOST = ""
 @import "CCSlideView+LLSidebarAdditions.j"
 @import "LLSidebarController.j"
 @import "LLAnnoyingGrayScreenView.j"
+@import "EKGradientView.j"
 
 @implementation AppController : CPObject {
 	CPView _contentView;
@@ -163,6 +164,7 @@ HOST = ""
 		
 		//	Setup the arrow that will let the user click and open the sidebar
 		var arrowSize = 64;
+/*
 		var sidebarButton = [CPButton buttonWithTitle:""];
 		[sidebarButton setBordered:NO];
 		[sidebarButton setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_sidebar_arrow.png"] size:CGSizeMake(arrowSize,arrowSize)]];
@@ -174,7 +176,20 @@ HOST = ""
 		//	Makes it stay on the bottom left when the frame changes
 		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin];
 		[view addSubview:sidebarButton];
-		
+*/
+		var gradient = [[EKGradientView alloc] initWithFrame:CGRectMake(0,0,20,[_contentView bounds].size.height)];
+		[gradient setColor2:[CPColor blackColor]];
+		[gradient setColor1:[CPColor colorWithRed:(100/255) green:(100/255) blue:(100/255) alpha:1]];
+		[gradient setOrientation:"vertical"];
+		[gradient setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin|CPViewHeightSizable];
+		var sidebarButton = [CPButton buttonWithTitle:""];
+		[sidebarButton setFrame:[gradient bounds]];
+		[sidebarButton setBordered:NO];
+		[sidebarButton setTarget:_controller];
+		[sidebarButton setAction:@selector(toggleSidebar)];
+		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin|CPViewHeightSizable];
+		[gradient addSubview:sidebarButton];
+		[view addSubview:gradient];
 		
 		if(![[LLUser currentUser] isTeacher])
 		{

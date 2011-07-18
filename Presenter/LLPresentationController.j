@@ -11,6 +11,8 @@
 
 var __LLPRESENTATION_SHARED__ = nil;
 
+LLCurrentSlideDidChangeNotification = "LLCurrentSlideDidChangeNotification"
+
 @implementation LLPresentationController : CPObject {
 	CPInteger _llid @accessors(property=livelectureID);
 	CPInteger _classID @accessors(property=classID);
@@ -77,6 +79,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 		return;
 	_currentSlideIndex = currentSlideIndex;
 	[mainSlideView setSlide:[self currentSlide]];
+	[[CPNotificationCenter defaultCenter] postNotificationName:LLCurrentSlideDidChangeNotification object:nil];
 }
 
 -(CCSlide)currentSlide
@@ -124,15 +127,20 @@ var __LLPRESENTATION_SHARED__ = nil;
 	
 	//	View animations
 	var sidebar = [sidebarController view],
-		sbf = [sidebar frame],
-		svf = [mainSlideView frame],
-		height = sbf.size.height,
-		oldSidebarFrame = ((_showsSidebar) ? CGRectMake(0-sbf.size.width,0,sbf.size.width,height) : CGRectMake(0,0,sbf.size.width,height)),
-		oldSlideViewFrame = ((_showsSidebar) ? CGRectMake(0,0,svf.size.width,height) : CGRectMake(sbf.size.width,0,svf.size.width,height)),
-		newSidebarFrame = ((_showsSidebar) ? CGRectMake(0,0,sbf.size.width,height) : CGRectMake(0-sbf.size.width,0,sbf.size.width,height)),
-		newSlideViewFrame = ((_showsSidebar) ? CGRectMake(sbf.size.width,0,svf.size.width - sbf.size.width,height) : CGRectMake(0,0,svf.size.width+sbf.size.width,height));
+		mainFrame = [[[CPApplication sharedApplication] delegate]._contentView frame],
+		width = mainFrame.size.width,
+		height = mainFrame.size.height,
+		sidebarSize = 215,
+		sidebarVisibleSidebarFrame = CGRectMake(0,0,sidebarSize,height),
+		sidebarHiddenSidebarFrame = CGRectMake(-sidebarSize,0,sidebarSize,height),
+		sidebarVisibleSlideViewFrame = CGRectMake(sidebarSize,0,width-sidebarSize,height),
+		sidebarHiddenSlideViewFrame = CGRectMake(0,0,width,height);
+		// oldSidebarFrame = ((_showsSidebar) ? CGRectMake(0-sbf.size.width,0,sbf.size.width,height) : CGRectMake(0,0,sbf.size.width,height)),
+		// oldSlideViewFrame = ((_showsSidebar) ? CGRectMake(0,0,svf.size.width,height) : CGRectMake(sbf.size.width,0,svf.size.width,height)),
+		// newSidebarFrame = ((_showsSidebar) ? CGRectMake(0,0,sbf.size.width,height) : CGRectMake(0-sbf.size.width,0,sbf.size.width,height)),
+		// newSlideViewFrame = ((_showsSidebar) ? CGRectMake(sbf.size.width,0,svf.size.width - sbf.size.width,height) : CGRectMake(0,0,svf.size.width+sbf.size.width,height));
 		
-	if(animated)
+	if(NO/*animated*/)
 	{
 		var sidebaranimation = [[CPPropertyAnimation alloc] initWithView:sidebar],
 			slideviewanimation = [[CPPropertyAnimation alloc] initWithView:mainSlideView];
@@ -146,8 +154,11 @@ var __LLPRESENTATION_SHARED__ = nil;
 	}
 	else
 	{
-		[sidebar setFrame:newSidebarFrame];
-		[mainSlideView setFrame:newSlideViewFrame];
+		// [sidebar setFrame:newSidebarFrame];
+		// [mainSlideView setFrame:newSlideViewFrame];
+		[sidebar setFrame:(_showsSidebar ? sidebarVisibleSidebarFrame : sidebarHiddenSidebarFrame)];
+		[mainSlideView setFrame:(_showsSidebar ? sidebarVisibleSlideViewFrame : sidebarHiddenSlideViewFrame)];
+		[[mainSlideView slideLayer] reposition];
 	}
 }
 

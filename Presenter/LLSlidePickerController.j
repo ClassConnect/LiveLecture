@@ -27,6 +27,13 @@
 	[_collection setContent:[[LLPresentationController sharedController] allSlides]];
 	[sv setDocumentView:_collection];
 	[self setView:sv];
+	
+	[[CPNotificationCenter defaultCenter]  addObserver:self selector:@selector(currentSlideChanged) name:LLCurrentSlideDidChangeNotification object:nil];
+}
+
+-(void)currentSlideChanged
+{
+	[_collection setSelectionIndexes:[CPIndexSet indexSetWithIndex:[[LLPresentationController sharedController] currentSlideIndex]]];
 }
 
 -(void)collectionViewDidChangeSelection:(CPCollectionView)collection

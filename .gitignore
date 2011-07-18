@@ -3,6 +3,8 @@ Icon?
 # Settings for TextMate FTP
 .ftpssh_settings
 
+*.tmproj
+
 # Thumbnails
 ._*
 
