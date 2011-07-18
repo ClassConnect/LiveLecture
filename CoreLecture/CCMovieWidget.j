@@ -130,6 +130,25 @@
 
 @end
 
+@implementation CCMovieWidget (LLRTEAdditions)
+
+-(void)syncVideos
+{
+	return window.LLRTE != undefined;
+}
+
+-(BOOL)allowedToSendData:(JSObject)data
+{
+	return YES;
+}
+
+-(CPString)receiverChannelForData:(JSObject)data
+{
+	return "kLLRTEChannelStudents";
+}
+
+@end
+
 @implementation CCMovieWidget (CPCoding)
 
 -(id)initWithCoder:(CPCoder)coder
