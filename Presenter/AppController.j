@@ -18,12 +18,14 @@ HOST = ""
 @import "LLPresentationEventHandler.j"
 @import "LLRTE.j"
 @import "LLUser.j"
-@import "../LLSharedUtilities/LLQuizWidget.j"
-@import "../LLSharedUtilities/LLQuizWidgetLayer.j"
-@import "CCSlideView+LLSidebarAdditions.j"
+@import "EKGradientView.j"
 @import "LLSidebarController.j"
 @import "LLAnnoyingGrayScreenView.j"
-@import "EKGradientView.j"
+@import "CCSlideView+LLSidebarAdditions.j"
+
+@import "../LLSharedUtilities/LLQuizWidget.j"
+@import "../LLSharedUtilities/LLQuizWidgetLayer.j"
+@import "../LLSharedUtilities/CCMovieWidget+LiveLectureAdditions.j"
 
 @implementation AppController : CPObject {
 	CPView _contentView;

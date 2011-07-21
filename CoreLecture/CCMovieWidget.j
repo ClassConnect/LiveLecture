@@ -78,7 +78,7 @@
 //	we want (like turning off related videos)
 -(id)_initWithCleanedMovie:(CPFlashMovie)movie
 {
-	if(self = [super init])
+	if(self = [self init])
 	{
 		[self setMovie:movie];
 	}
@@ -149,6 +149,8 @@
 
 @end
 
+//	NOTE TO SCOTT! These are only in here for the sake of CoreLecture, the real
+//	implementation is in CCMovieWidget+LiveLectureAdditions
 @implementation CCMovieWidget (CPCoding)
 
 -(id)initWithCoder:(CPCoder)coder

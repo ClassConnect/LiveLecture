@@ -18,23 +18,25 @@ HOST = ""
 @import "MediaKit/MediaKit.j"
 @import "GrowlCappuccino/GrowlCappuccino.j"
 @import "../CoreLecture/CoreLecture.j"
+@import "ERIC_EDIT_ME.j"
 @import "LLUser.j"
+@import "EKGradientView.j"
 @import "LLInspectorPanel.j"
 @import "LLSlideThemeManager.j"
 @import "LLPreviewEventHandler.j"
 @import "LLPresentationController.j"
 @import "LLOnlinePersistenceHandler.j"
 @import "LLSlideNavigationViewController.j"
-@import "EKGradientView.j"
-@import "ERIC_EDIT_ME.j"
 
 @import "../LLSharedUtilities/LLSlideCollectionItem.j"
 @import "../LLSharedUtilities/LLQuizWidget.j"
 @import "../LLSharedUtilities/LLQuizWidgetLayer.j"
+@import "../LLSharedUtilities/CCMovieWidget+LiveLectureAdditions.j"
 
 // Identifiers
 //	TODO: Make 'Other Widgets' bring up a panel where the user can drag in widgets that their school has added
 var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
+	LLToolbarDuplicateSlideItemIdentifier = "LLToolbarDuplicateSlideItemIdentifier",
 	LLToolbarDeleteSlideItemIdentifier = "LLToolbarDeleteSlideItemIdentifier",
 	LLToolbarSelectThemeItemIdentifier = "LLToolbarSelectThemeItemIdentifier",
 	//	Filebox and Searchbox
@@ -220,6 +222,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
    return [	CPToolbarFlexibleSpaceItemIdentifier,
 			CPToolbarSpaceItemIdentifier,
 			LLToolbarNewSlideItemIdentifier,
+			LLToolbarDuplicateSlideItemIdentifier,
 			LLToolbarDeleteSlideItemIdentifier,
 			LLToolbarSelectThemeItemIdentifier,
 			LLToolbarNewTextWidgetItemIdentifier,
@@ -236,6 +239,7 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 // Return an array of toolbar item identifier (the default toolbar items that are present in the toolbar)
 - (CPArray)toolbarDefaultItemIdentifiers:(CPToolbar)aToolbar {
    return [	LLToolbarNewSlideItemIdentifier,
+			LLToolbarDuplicateSlideItemIdentifier,
 			LLToolbarDeleteSlideItemIdentifier,
    			CPToolbarSpaceItemIdentifier,
 			LLToolbarSelectThemeItemIdentifier,
@@ -268,6 +272,11 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 														action = @selector(newSlide);
 														label = "New Slide";
 														imagename = "icon_slide_new.png";
+														break;
+		case LLToolbarDuplicateSlideItemIdentifier:		target = _controller;
+														action = @selector(duplicateCurrentSlide);
+														label = "Duplicate Slide";
+														imagename = "icon_slide_duplicate.png";
 														break;
 		case LLToolbarDeleteSlideItemIdentifier:		target = _controller;
 														action = @selector(deleteCurrentSlide);

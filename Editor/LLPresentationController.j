@@ -110,6 +110,28 @@ var __LLPRESENTATION_SHARED__ = nil;
 		s = [CCSlide contentSlide];
 	else
 		s = [CCSlide titleSlide];
+	[self newSlide:s];
+	// [s setTheme:[_presentation theme]];
+	// if([[_presentation slides] count])
+	// {
+	// 	[[_presentation slides] insertObject:s atIndex:_currentSlideIndex+1];
+	// 	[self setCurrentSlideIndex:_currentSlideIndex+1];
+	// }
+	// else
+	// {
+	// 	[[_presentation slides] addObject:s];
+	// 	[self setCurrentSlideIndex:0];
+	// }
+	// [navigationController addSlide:s];
+}
+
+-(void)duplicateCurrentSlide
+{
+	[self newSlide:[[self currentSlide] copy]];
+}
+
+-(void)newSlide:(CCSlide)s
+{
 	[s setTheme:[_presentation theme]];
 	if([[_presentation slides] count])
 	{
