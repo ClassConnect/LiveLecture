@@ -35,6 +35,7 @@
 	//	Whenever the widget is about to change to a different widget, we want
 	//	to update the widget to whatever is in the text field
 	[self updateWidget];
+	[self updateLayer];
 }
 
 -(void)widgetDidChange

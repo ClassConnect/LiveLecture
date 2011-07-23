@@ -1,3 +1,4 @@
+/*
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 @import "../CoreLecture/CCMovieWidget.j"
@@ -7,11 +8,13 @@
 
 -(void)syncsVideos
 {
+	debugger;
 	return self._syncsVideos = self._syncsVideos || NO;
 }
 
 -(void)setSyncsVideos:(BOOL)syncsVideos
 {
+	debugger;
 	if(!syncsVideos)
 		syncsVideos = NO;
 	if(self._syncsVideos == syncsVideos)
@@ -41,3 +44,4 @@
 }
 
 @end
+*/

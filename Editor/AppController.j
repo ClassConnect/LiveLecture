@@ -157,6 +157,10 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	
 	[[TNGrowlCenter defaultCenter] setView:_contentView];
 	
+	var widget = [[CCMovieWidget alloc] initWithFilename:"http://www.youtube.com/v/wagn8Wrmzuc&fs=1&source=uds"];
+	[widget setBounds:CGRectMake(0,0,720,480)];
+	[[_controller mainSlideView]._slideLayer addWidgetToSlide:widget];
+	
 	window.onbeforeunload = function() {
 		if([[LLPresentationController sharedController] isDirty])
 			return "You have unsaved changes, are you sure you want to leave?";

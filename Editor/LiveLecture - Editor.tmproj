@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>../CoreLecture/CCWebWidgetLayer.j</string>
+	<string>CCMovieWidgetInspectorContentView.j</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -81,6 +81,34 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
+		<key>AppController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>12</integer>
+				<key>line</key>
+				<integer>267</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>243</integer>
+		</dict>
+		<key>CCMovieWidgetInspectorContentView.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>6</integer>
+				<key>line</key>
+				<integer>20</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>6</integer>
+		</dict>
 		<key>LLOnlinePersistenceHandler.j</key>
 		<dict>
 			<key>caret</key>
@@ -95,11 +123,44 @@
 			<key>firstVisibleLine</key>
 			<integer>84</integer>
 		</dict>
+		<key>LLPresentationController.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>17</integer>
+				<key>line</key>
+				<integer>127</integer>
+			</dict>
+			<key>columnSelection</key>
+			<false/>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>102</integer>
+			<key>selectFrom</key>
+			<dict>
+				<key>column</key>
+				<integer>7</integer>
+				<key>line</key>
+				<integer>127</integer>
+			</dict>
+			<key>selectTo</key>
+			<dict>
+				<key>column</key>
+				<integer>28</integer>
+				<key>line</key>
+				<integer>127</integer>
+			</dict>
+		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
 		<string>LLOnlinePersistenceHandler.j</string>
 		<string>../CoreLecture/CCWebWidgetLayer.j</string>
+		<string>AppController.j</string>
+		<string>CCMovieWidgetInspectorContentView.j</string>
+		<string>LLPresentationController.j</string>
 		<string>../CoreLecture/TextLayer.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>

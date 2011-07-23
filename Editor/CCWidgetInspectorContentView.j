@@ -49,11 +49,23 @@
 -(void)widgetWillChange
 {
 	//	Do nothing
+	[self updateWidget];
+	[self updateLayer];
 }
 
 -(void)widgetDidChange
 {
 	//	Do nothing
+}
+
+-(void)updateWidget
+{
+	
+}
+
+-(void)updateLayer
+{
+
 }
 
 @end

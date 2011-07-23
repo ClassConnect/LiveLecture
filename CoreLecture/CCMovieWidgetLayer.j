@@ -114,19 +114,14 @@ var kCCMovieWidgetLayerPlayButton = nil;
 {
 	if(_isDirty)
 	{
-		// var html = "<object width=\"100%\" height=\"100%\">";
-		// html 	+= "<param name=\"movie\" value=\"" + [[_widget movie] filename] +"\">";
-		// html	+= "<param name=\"wmode\" value=\"transparent\">";
-		// html	+= "<embed src=\"" + [[_widget movie] filename] + "\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"100%\" height=\"100%\"></object>";
-		// 
-		// _contentElement.innerHTML = html;
-		// 
 		_isDirty = NO;
 		var params = { allowScriptAccess: "always" },
 			atts = { id: [self UID] };
-	    swfobject.embedSWF("http://www.youtube.com/e/"+[_widget youtubeID]+"?&enablejsapi=1&playerapiid="+[self UID],[self UID], "100%", "100%", "8", null, null, params, atts);
+		var urlparams = "";
+		if(window.LLRTE && [_widget syncsVideos] && [LLRTE sharedInstance] && ![[LLUser currentUser] isTeacher])
+			urlparams = "controls=0&rel=0&iv_load_policy=3&disablekb=1&showinfo=0"
+		swfobject.embedSWF("http://www.youtube.com/e/"+[_widget youtubeID]+"?&enablejsapi=1&version=3&"+urlparams+"&playerapiid="+[self UID],[self UID], "100%", "100%", "8", null, null, params, atts);
 		layer_to_uid_map[[self UID]] = self;
-		_player = document.getElementById("CCMovieWidgetPlayer"+[self UID]);
 	}
 }
 
@@ -151,27 +146,29 @@ var kCCMovieWidgetLayerPlayButton = nil;
 	_isDirty = YES;
 }
 
+//	If they are presenting, and the current user is a teacher or the current
+//	user isnt a teacher but we aren't syncing videos
 -(void)mouseDown:(CCEvent)event
 {
-	if(_isPresenting)
+	if(_isPresenting && ([[LLUser currentUser] isTeacher] || (![[LLUser currentUser] isTeacher] && ![_widget syncsVideos])))
 		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseDragged:(CCEvent)event
 {
-	if(_isPresenting)
+	if(_isPresenting && ([[LLUser currentUser] isTeacher] || (![[LLUser currentUser] isTeacher] && ![_widget syncsVideos])))
 		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseUp:(CCEvent)event
 {
-	if(_isPresenting)
+	if(_isPresenting && ([[LLUser currentUser] isTeacher] || (![[LLUser currentUser] isTeacher] && ![_widget syncsVideos])))
 		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
 -(void)mouseMoved:(CCEvent)event
 {
-	if(_isPresenting)
+	if(_isPresenting && ([[LLUser currentUser] isTeacher] || (![[LLUser currentUser] isTeacher] && ![_widget syncsVideos])))
 		[[CPPlatformWindow primaryPlatformWindow] _propagateCurrentDOMEvent:YES];
 }
 
@@ -185,17 +182,6 @@ var kCCMovieWidgetLayerPlayButton = nil;
 
 -(void)_stateChange:(CPInteger)state
 {
-	// var notification;
-	// switch(state)
-	// {
-	// 	case 1:	notification = CCMovieWidgetPlaybackStarted;
-	// 			break;
-	// 	case 2:	notification = CCMovieWidgetPlaybackPaushed;
-	// 			break;
-	// 	case 0:	notification = CCMovieWidgetPlaybackStopped;
-	// 			break;
-	// 	
-	// }
 	var n = [self _notificationFromState:state],
 		w = [self widget];
 	if(state != _previousState)

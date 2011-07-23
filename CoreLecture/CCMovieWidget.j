@@ -10,13 +10,14 @@
 @implementation CCMovieWidget : CCWidget {
 	CPFlashMovie _movie @accessors(property=movie);
 	CPString _youtubeID @accessors(property=youtubeID);
+	
+	BOOL _syncsVideos @accessors(property=syncsVideos);
 }
 
 +(CPString)cleanFilename:(CPString)filename
 {
 	// Strip autoplay
-	filename = [[filename stringByReplacingOccurrencesOfString:@"&autoplay=1" withString:@""] stringByReplacingOccurrencesOfString:@"&autoplay=0" withString:@""];
-	return filename;
+	return [[filename stringByReplacingOccurrencesOfString:@"&autoplay=1" withString:@""] stringByReplacingOccurrencesOfString:@"&autoplay=0" withString:@""];
 }
 
 //	
@@ -53,6 +54,7 @@
 	if(self = [super initWithWidget:widget])
 	{
 		[self setMovie:[widget movie]];
+		[self setSyncsVideos:[widget syncsVideos]];
 	}
 	return self;
 }
@@ -118,8 +120,9 @@
 
 -(BOOL)isEqual:(CCMovieWidget)rhs
 {
-	return	[super isEqual:rhs] 			&&
-			[_movie isEqual:[rhs movie]]	&&
+	return	[super isEqual:rhs] 				&&
+			[_movie isEqual:[rhs movie]]		&&
+			_syncsVideos == [rhs syncsVideos]	&&
 			[_youtubeID isEqual:[rhs youtubeID]];
 }
 
@@ -149,8 +152,7 @@
 
 @end
 
-//	NOTE TO SCOTT! These are only in here for the sake of CoreLecture, the real
-//	implementation is in CCMovieWidget+LiveLectureAdditions
+
 @implementation CCMovieWidget (CPCoding)
 
 -(id)initWithCoder:(CPCoder)coder
@@ -159,6 +161,7 @@
 	{
 		_movie = [CPFlashMovie flashMovieWithFile:unescape([coder decodeObjectForKey:@"movie_filename"])];
 		_youtubeID = [coder decodeObjectForKey:@"youtubeID"];
+		_syncsVideos = [coder decodeObjectForKey:@"syncsVideos"];
 	}
 	return self;
 }
@@ -168,6 +171,7 @@
 	[super encodeWithCoder:coder];
 	[coder encodeObject:escape([_movie filename]) forKey:@"movie_filename"];
 	[coder encodeObject:_youtubeID forKey:@"youtubeID"];
+	[coder encodeObject:_syncsVideos forKey:@"syncsVideos"];
 }
 
 @end
