@@ -18,24 +18,30 @@
 // 		return;
 // }
 
--(void)imageDidLoad:(CPImage)image {
+-(void)imageDidLoad:(CPImage)image
+{
 	[self setNeedsDisplay];
+}
+
+-(void)imageDidError:(CPImage)image
+{
+	if(window.TNGrowlCenter)
+	{
+		[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:@"Error loading image" message:@"There was an error loading the image at '"+[_image filename]+"'" icon:TNGrowlIconError]
+	}
 }
 
 -(void)drawWhileEditing:(CGContext)context {
 	//	When the image is nil or when the load isnt completed, show the gray
-	var bounds = [self bounds];
 	if([_image loadStatus] == CPImageLoadStatusCompleted)
 	{
-		CGContextDrawImage(context,bounds,_image);
+		CGContextDrawImage(context,[self bounds],_image);
 	}
 	else
 	{
 		CGContextSetFillColor(context,[CPColor grayColor]);
 		CGContextSetStrokeColor(context,[CPColor blackColor]);
 		CGContextFillRect(context,[self bounds]);
-		// CGContextSetFillColor([CPColor grayColor]);
-		// CGContextFillRect(CGRectInset([self bounds],1.0,1.0));
 	}
 }
 

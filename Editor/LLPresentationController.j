@@ -219,8 +219,9 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)newTextWidget
 {
 	var widget = [[CCTextWidget alloc] initWithString:@"Double click to Edit"];
-	[widget setLocation:CGPointMake(50,334)];
 	[widget setSize:CGRectMake(0,0,924,100)];
+	//	Indent the widgets if they keep throwing things in there
+	[widget setLocation:CGPointMake(50,334)];
 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
 	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[mainSlideView slide]];
 }
@@ -288,7 +289,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 -(void)showModalAlertWithText:(CPString)text informativeText:informative_text placeholder:(CPString)placeholder widgetName:(CPString)widgetname imageName:(CPString)image callback:(Function)callback
 {
 	var alert = [[CPAlert alloc] init],
-			window = [[CPApplication sharedApplication] mainWindow];
+			w = [[CPApplication sharedApplication] mainWindow];
 	_alert_callback = callback;
 	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:300];
 	[alert addButtonWithTitle:"Add "+widgetname];
@@ -299,7 +300,8 @@ var __LLPRESENTATION_SHARED__ = nil;
 	[alert setInformativeText:informative_text];
 	[alert setAccessoryView:_alert_text_field];
 	[alert setIcon:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:image] size:CGSizeMake(50,50)]];
-	[alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:@selector(alert:didEndWithReturnCode:) contextInfo:nil];
+	[alert beginSheetModalForWindow:w modalDelegate:self didEndSelector:@selector(alert:didEndWithReturnCode:) contextInfo:nil];
+	[w makeFirstResponder:_alert_text_field];
 }
 
 -(void)alert:(CPAlert)alert didEndWithReturnCode:(int)returnCode
@@ -316,6 +318,13 @@ var __LLPRESENTATION_SHARED__ = nil;
 				[[MKMediaPanel sharedMediaPanel] setImagesAsSelectedFilter];
 			if(title == "Search for Videos")
 				[[MKMediaPanel sharedMediaPanel] setVideosAsSelectedFilter];
+			//	If there is text in field, make searchbox come up with the text
+			//	already inserted and searched for
+			if([_alert_text_field stringValue] != "")
+			{
+				[[MKMediaPanel sharedMediaPanel] setSearchTerm:[_alert_text_field stringValue]];
+				[[MKMediaPanel sharedMediaPanel] search:nil];
+			}
 		}
 	}
 	_alert_callback = function(){};
