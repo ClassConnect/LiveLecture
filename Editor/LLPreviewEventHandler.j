@@ -20,12 +20,24 @@
 
 -(void)slideViewDidPressRightArrowKey:(CCSlideView)slideView
 {
-	[[LLPresentationController sharedController] moveToNextSlide];
+	if([[LLPresentationController sharedController] currentSlideIndex] == [[LLPresentationController sharedController] numberOfSlides]-1)
+	{
+		[[[LLPresentationController sharedController] mainSlideView] showPresentationFinishedView];
+	}
+	else
+	{
+		[[LLPresentationController sharedController] moveToNextSlide];
+	}
 }
 
 -(void)slideViewDidPressLeftArrowKey:(CCSlideView)slideView
 {
-	[[LLPresentationController sharedController] moveToPreviousSlide];
+	if(![[LLPresentationController sharedController] mainSlideView]._endOfSlideshow)
+		[[LLPresentationController sharedController] moveToPreviousSlide];
+	else
+	{
+		[[[LLPresentationController sharedController] mainSlideView] stopShowingPresentationFinishedView];
+	}
 }
 
 -(void)slideView:(CCSlideView)slideView didPressKey:(char)key

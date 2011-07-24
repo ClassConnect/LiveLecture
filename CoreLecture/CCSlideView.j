@@ -28,6 +28,9 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 @implementation CCSlideView : CPView
 {
 	CCSlideLayer _slideLayer @accessors(readonly,property=slideLayer);
+	CPTextField _label;
+	BOOL _endOfSlideshow;
+	
 	CALayer _firstResponder;
 	CALayer _receiverLayer;
 	BOOL _isPresenting @accessors(readonly,property=isPresenting);
@@ -192,6 +195,11 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 //
 
 -(void)mouseDown:(CPEvent)event {
+	if(_endOfSlideshow)
+	{
+		[self stopShowingPresentationFinishedView];
+		[[[CPApplication sharedApplication] delegate] endPreview];
+	}
 	var betterEvent = [CCEvent eventWithBaseEvent:event convertedPoint:[self convertPointFromWindowToSlideLayer:[event locationInWindow]]],
 			oldFirst = _firstResponder,
 			slidePoint = [self convertPointFromWindowToSlideLayer:[event locationInWindow]];
@@ -363,5 +371,32 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	}	
 }
 
+-(void)showPresentationFinishedView
+{
+	if(!_isPresenting)
+		return;
+	if(!_label)
+	{
+		_label = [CPTextField labelWithTitle:@"End of Lecture. Click to exit"];
+		[_label setAlignment:CPCenterTextAlignment];
+		[_label setTextColor:[CPColor whiteColor]];
+		[_label setFrameOrigin:CGPointMakeZero()];
+		[_label setFrameSize:CGSizeMake([self frameSize].width,[_label frameSize].height)];
+		[_label setAutoresizingMask:CPViewMaxYMargin];
+		[self addSubview:_label];
+	}
+	_endOfSlideshow = YES;
+	[[self layer] setHidden:YES];
+	[_label setHidden:NO];
+}
+
+-(void)stopShowingPresentationFinishedView
+{
+	if(!_isPresenting)
+		return;
+	_endOfSlideshow = NO;
+	[[self layer] setHidden:NO];
+	[_label setHidden:YES];
+}
 
 @end
