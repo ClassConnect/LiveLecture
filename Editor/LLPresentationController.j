@@ -221,7 +221,30 @@ var __LLPRESENTATION_SHARED__ = nil;
 	var widget = [[CCTextWidget alloc] initWithString:@"Double click to Edit"];
 	[widget setSize:CGRectMake(0,0,924,100)];
 	//	Indent the widgets if they keep throwing things in there
-	[widget setLocation:CGPointMake(50,334)];
+	var checkLocation = CGPointMake(50,334),
+		widgets = [[self currentSlide] widgets],
+		again = YES;
+	while(again)
+	{
+		//	Go through the widgets
+		for(var i = 0 ; i < [widgets count] ; i++)
+		{
+			if(CGPointEqualToPoint([widgets[i] location],checkLocation))
+			{
+				i = -1;
+				if((checkLocation.x + 10 + [widget size].size.width) < 1024)
+					checkLocation.x += 10;
+				if((checkLocation.y + 10 + [widget size].size.height) < 768)
+					checkLocation.y += 10;
+				break;
+			}
+		}
+		//	If i isnt -1 then there are no widgets there currently, so we are
+		//	finished
+		if(i != -1)
+			again = NO;
+	}
+	[widget setLocation:checkLocation];
 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
 	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[mainSlideView slide]];
 }
