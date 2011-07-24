@@ -181,9 +181,9 @@ HOST = ""
 */
 		var gradient = [[EKGradientView alloc] initWithFrame:CGRectMake(0,0,20,[_contentView bounds].size.height)];
 		[gradient setColor2:[CPColor blackColor]];
-		[gradient setColor1:[CPColor colorWithRed:(100/255) green:(100/255) blue:(100/255) alpha:1]];
+		[gradient setColor1:[CPColor colorWithRed:(50/255) green:(50/255) blue:(50/255) alpha:1]];
 		[gradient setOrientation:"vertical"];
-		[gradient setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin|CPViewHeightSizable];
+		[gradient setAutoresizingMask:CPViewMaxXMargin|CPViewHeightSizable];
 		var sidebarButton = [CPButton buttonWithTitle:""];
 		[sidebarButton setFrame:[gradient bounds]];
 		[sidebarButton setBordered:NO];

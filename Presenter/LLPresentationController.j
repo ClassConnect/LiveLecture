@@ -75,7 +75,7 @@ LLCurrentSlideDidChangeNotification = "LLCurrentSlideDidChangeNotification"
 //	----------------------------
 
 -(void)setCurrentSlideIndex:(int)currentSlideIndex {
-	if(_currentSlideIndex == currentSlideIndex)
+	if(_currentSlideIndex == currentSlideIndex || currentSlideIndex < 0)
 		return;
 	_currentSlideIndex = currentSlideIndex;
 	[mainSlideView setSlide:[self currentSlide]];

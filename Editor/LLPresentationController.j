@@ -44,10 +44,6 @@ var __LLPRESENTATION_SHARED__ = nil;
 		_alert_callback = function(){};
 		_presentation = [[CCPresentation alloc] init];
 		_currentSlideIndex = -1;
-		// var s = [CCSlide titleSlide];
-		// [s setTheme:[_presentation theme]];
-		// [_presentation addSlide:s];
-		// [self setCurrentSlideIndex:0];
 		[self newSlide];
 	}
 	return self;

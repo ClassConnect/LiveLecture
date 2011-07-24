@@ -5,6 +5,10 @@ Icon?
 
 *.tmproj
 
+# Ignore all my Capistrano information
+Capfile
+config/*
+
 # Thumbnails
 ._*
 

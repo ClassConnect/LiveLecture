@@ -22,22 +22,24 @@
 	var view = [[CPView alloc] initWithFrame:CGRectMake(0,0,215,200)];
 	[view setAutoresizingMask:CPViewHeightSizable];
 	[view setBackgroundColor:[CPColor colorWithHexString:"DAE1E9"]];
-	_buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0,175,215,25)];
-	[_buttonBar setAutoresizingMask:CPViewMinYMargin];
+	_buttonBar = [[CPButtonBar alloc] initWithFrame:CGRectMake(0,0,215,25)];
+	[_buttonBar setAutoresizingMask:CPViewMaxYMargin];
 	//	Lock Button
-	var lockButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)],
-		lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(20,20)];
-	[lockButton setBordered:NO];
-	[lockButton setImage:lockImage];
-	[lockButton setImagePosition:CPImageOnly];
+	var lockButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
+	//	lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(20,20)];
+	//	[lockButton setBordered:NO];
+	//	[lockButton setImage:lockImage];
+	//	[lockButton setImagePosition:CPImageOnly];
+	[lockButton setStringValue:"Lock Sidebar"];
 	[lockButton setTarget:self];
 	[lockButton setAction:@selector(toggleLock:)];
 	//	Stop Hosting LiveLecture button
 	var stopButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
-		stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
-	[stopButton setBordered:NO];
-	[stopButton setImage:stopImage];
-	[stopButton setImagePosition:CPImageOnly];
+	//	stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
+	//	[stopButton setBordered:NO];
+	//	[stopButton setImage:stopImage];
+	//	[stopButton setImagePosition:CPImageOnly];
+	[stopButton setStringValue:"Stop Hosting"];
 	[stopButton setTarget:[LLPresentationController sharedController]];
 	[stopButton setAction:@selector(stopHostingLiveLecture)];
 	//	Add buttons to bar
@@ -50,7 +52,7 @@
 		[_buttonBar setButtons:[lockButton]];
 	//	Setup the accordionview
 	var rteenabled = [[LLUser currentUser] RTEEnabled];
-	_accordionView = [[CCAutoresizingAccordionView alloc] initWithFrame:CGRectMake(0,0,215,175)];
+	_accordionView = [[CCAutoresizingAccordionView alloc] initWithFrame:CGRectMake(0,25,215,175)];
 	[_accordionView setAutoresizingMask:CPViewHeightSizable];
 	_pickerController = [[LLSlidePickerController alloc] init];
 	_tokboxController = [[LLTokBoxViewController alloc] init];
