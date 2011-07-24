@@ -227,16 +227,30 @@ var __LLPRESENTATION_SHARED__ = nil;
 	while(again)
 	{
 		//	Go through the widgets
+		//	BUG: The scoping on i is fucked up.
 		for(var i = 0 ; i < [widgets count] ; i++)
 		{
 			if(CGPointEqualToPoint([widgets[i] location],checkLocation))
 			{
-				i = -1;
+				var flag = 0;
 				if((checkLocation.x + 10 + [widget size].size.width) < 1024)
+				{
+					flag = 1;
 					checkLocation.x += 10;
+				}
 				if((checkLocation.y + 10 + [widget size].size.height) < 768)
+				{
+					flag = 1
 					checkLocation.y += 10;
-				break;
+				}
+				//	BUGFIX: If neither of the above get called, then it goes
+				//	into an infinite loop. Put a flag so that it only keeps
+				//	indenting if there is space to be had.
+				if(flag)
+				{
+					i = -1;
+					break;
+				}
 			}
 		}
 		//	If i isnt -1 then there are no widgets there currently, so we are
