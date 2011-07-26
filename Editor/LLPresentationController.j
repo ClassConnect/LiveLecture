@@ -261,10 +261,21 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)newQuizWidget
 {
-	var widget = [[LLQuizWidget alloc] initWithQuestion:"How to change the questions/answers" possibleAnswers:["Click on this widget","Click on the blue 'i' in the top right","Edit any fields you want","Hit Enter"]];
-	[widget setLocation:CGPointMake(362,334)];
-	[widget setSize:CGRectMake(0,0,520,300)];
-	[[mainSlideView slideLayer] addWidgetToSlide:widget];
+	//	Show black box that adds widgets
+	[[CPApplication sharedApplication] orderFrontWidgetFormPanel];
+	[[CPApplication sharedApplication] runModalForWindow:[LLWidgetFormPanel sharedPanel]];
+	[[LLWidgetFormPanel sharedPanel] setMode:LLWidgetFormPanelModeNew];
+	[[LLWidgetFormPanel sharedPanel] setWidget:[LLQuizWidget new]];
+	[[LLWidgetFormPanel sharedPanel] setCallback:function(widget){
+		[widget setLocation:CGPointMake(152,144)];
+		[widget setSize:CGRectMake(0,0,720,480)];
+		[[mainSlideView slideLayer] addWidgetToSlide:widget];
+	}];
+	// var widget = [[LLQuizWidget alloc] initWithQuestion:"How to change the questions/answers" possibleAnswers:["Click on this widget","Click on the blue 'i' in the top right","Edit any fields you want","Hit Enter"]];
+	// 	[widget setLocation:CGPointMake(362,334)];
+	// 	[widget setSize:CGRectMake(0,0,520,300)];
+	// 	[[mainSlideView slideLayer] addWidgetToSlide:widget];
+	// 	
 //	[[_presentation slides] replaceObjectAtIndex:[self currentSlideIndex] withObject:[[mainSlideView slide] copy]];
 }
 
@@ -324,7 +335,7 @@ var __LLPRESENTATION_SHARED__ = nil;
 	var alert = [[CPAlert alloc] init],
 			w = [[CPApplication sharedApplication] mainWindow];
 	_alert_callback = callback;
-	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:300];
+	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:305];
 	[alert addButtonWithTitle:"Add "+widgetname];
 	[alert addButtonWithTitle:"Cancel"];
 	if(widgetname == "Picture" || widgetname == "Video")

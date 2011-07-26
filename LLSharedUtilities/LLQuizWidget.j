@@ -22,7 +22,6 @@
 	if(self = [super initWithWidget:widget])
 	{
 		[self setQuestion:[[widget question] copy]];
-//		[self setAnswers:[[widget answers] copy]];
 		[self setAnswers:[[CPArray alloc] initWithArray:[widget answers] copyItems:YES]];
 		[self setSelectedAnswer:[[widget selectedAnswer] copy]];
 		_answerCount = [widget._answerCount copy];
@@ -48,6 +47,7 @@
 {
 	if(self = [super init])
 	{
+		_question = "";
 		_answers = [CPArray array];
 		_answerCount = [CPArray array];
 		_selectedAnswer = -1;
@@ -69,6 +69,16 @@
 	return [[LLQuizWidget alloc] initWithWidget:self];
 }
 
+-(void)setAnswers:(CPArray)answers
+{
+	_answers = answers;
+	_answerCount = [ ];
+	for(var i = 0 ; i < [_answers count] ; i++)
+	{
+		_answerCount[i] = 0;
+	}
+}
+
 -(void)addAnswer:(CPString)answer
 {
 	[_answers addObject:answer];
@@ -83,6 +93,7 @@
 -(void)removeAnswerAtIndex:(unsigned)index
 {
 	[_answers removeObjectAtIndex:index];
+	[_answerCount removeObjectAtIndex:index];
 }
 
 -(CPString)answerAtIndex:(int)index

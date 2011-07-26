@@ -26,19 +26,19 @@
 	[_buttonBar setAutoresizingMask:CPViewMaxYMargin];
 	//	Lock Button
 	var lockButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
-	//	lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(20,20)];
-	//	[lockButton setBordered:NO];
-	//	[lockButton setImage:lockImage];
-	//	[lockButton setImagePosition:CPImageOnly];
+	lockImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_lock.png"] size:CGSizeMake(20,20)];
+	[lockButton setBordered:NO];
+	[lockButton setImage:lockImage];
+	[lockButton setImagePosition:CPImageOnly];
 	[lockButton setStringValue:"Lock Sidebar"];
 	[lockButton setTarget:self];
 	[lockButton setAction:@selector(toggleLock:)];
 	//	Stop Hosting LiveLecture button
 	var stopButton = [[CPButton alloc] initWithFrame:CGRectMake(0,0,35,25)];
-	//	stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
-	//	[stopButton setBordered:NO];
-	//	[stopButton setImage:stopImage];
-	//	[stopButton setImagePosition:CPImageOnly];
+	stopImage = [[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_bar_button_stop.png"] size:CGSizeMake(20,20)];
+	[stopButton setBordered:NO];
+	[stopButton setImage:stopImage];
+	[stopButton setImagePosition:CPImageOnly];
 	[stopButton setStringValue:"Stop Hosting"];
 	[stopButton setTarget:[LLPresentationController sharedController]];
 	[stopButton setAction:@selector(stopHostingLiveLecture)];

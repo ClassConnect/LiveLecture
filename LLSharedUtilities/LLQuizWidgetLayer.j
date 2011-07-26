@@ -272,7 +272,16 @@ var _toprightimage = nil;
 {
 	[super beginEditing];
 	if(!_isPresenting && window.LLInspectorPanel != undefined)
-		[[CPApplication sharedApplication] orderFrontInspectorPanel];
+	{
+		//	[[CPApplication sharedApplication] orderFrontInspectorPanel];
+		[[CPApplication sharedApplication] orderFrontWidgetFormPanel];
+		[[CPApplication sharedApplication] runModalForWindow:[LLWidgetFormPanel sharedPanel]];
+		[[LLWidgetFormPanel sharedPanel] setMode:LLWidgetFormPanelModeEdit];
+		[[LLWidgetFormPanel sharedPanel] setWidget:_widget];
+		[[LLWidgetFormPanel sharedPanel] setCallback:function(widget){
+			[self setWidget:_widget];
+		}];
+	}
 	[self endEditing];
 }
 
