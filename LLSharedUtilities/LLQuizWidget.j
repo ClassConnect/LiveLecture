@@ -39,6 +39,7 @@
 		{
 			_answerCount[i] = 0;
 		}
+		_selectedAnswer = -1;
 	}
 	return self;
 }

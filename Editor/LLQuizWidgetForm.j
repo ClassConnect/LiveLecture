@@ -30,6 +30,7 @@
 		[answerLabel sizeToFit];
 		
 		_questionField = [CPTextField textFieldWithStringValue:@"" placeholder:@"Ask a question..." width:445];
+		[_questionField setDelegate:self];
 		
 		[questionLabel setFrameOrigin:CGPointMake(20,20)];
 		[_questionField setFrameOrigin:CGPointMake(17,57)];
@@ -119,17 +120,29 @@
 
 -(void)controlTextDidFocus:(CPTextField)textField
 {
-	var answerCount = [_answerFields count];
 	textField = [textField object];
-	if(textField == _answerFields[answerCount-1] && answerCount < 10)
-		[self _addNewTextFieldAtIndex:[_answerFields count]];
-	//	ALRIGHT LISTEN UP SHITLORDS, HERE IS THE PLAN
-	//	For some reason, Cappuccino keeps recalculating the key view loop
-	//	(incorrectly), and it won't fucking stop. So every time a text field
-	//	gets focus, I make sure the next key view is the right one. FUCK BOI!
-	var tfIndex = [_answerFields indexOfObject:textField];
-	[textField setNextKeyView:(tfIndex != 9) ? _answerFields[tfIndex+1] : _questionField];
-//	[((index) ? _answerFields[index-1] : _questionField) setNextKeyView:current];
+	if(textField != _questionField)
+	{
+		var answerCount = [_answerFields count];
+		if(textField == _answerFields[answerCount-1] && answerCount < 10)
+			[self _addNewTextFieldAtIndex:[_answerFields count]];
+	
+		//	ALRIGHT LISTEN UP SHITLORDS, HERE IS THE PLAN
+		//	For some reason, Cappuccino keeps recalculating the key view loop
+		//	(incorrectly), and it won't fucking stop. So every time a text field
+		//	gets focus, I make sure the next key view is the right one. FUCK BOI!
+		var tfIndex = [_answerFields indexOfObject:textField];
+		[textField setNextKeyView:(tfIndex != 9) ? _answerFields[tfIndex+1] : _questionField];
+		[((tfIndex) ? _answerFields[tfIndex-1] : _questionField) setNextKeyView:textField];
+	}
+	var topleftpoint = [textField frameOrigin],
+		bottomleftpoint = [textField frameOrigin],
+		superviewbounds = [[self superview] bounds];
+	//	Make the bottom left point not a liar, and actually point to the bottom left point
+	bottomleftpoint.y += [textField frameSize].height;
+	//	Scroll to the selected view
+	if(!CGRectContainsPoint(superviewbounds,topleftpoint) || !CGRectContainsPoint(superviewbounds,bottomleftpoint))
+		[[self superview] scrollToPoint:[textField frameOrigin]];
 }
 
 @end

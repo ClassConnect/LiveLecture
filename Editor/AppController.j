@@ -162,6 +162,14 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		if([[LLPresentationController sharedController] isDirty])
 			return "You have unsaved changes, are you sure you want to leave?";
 	}
+	
+	//	Add a quiz widget on screen
+/*
+	var widg = [[LLQuizWidget alloc] initWithQuestion:"Lady?" possibleAnswers:["G","a","g","a"]];
+	[widg setSize:CGRectMake(0,0,720,480)];
+	[widg setLocation:CGPointMake(100,100)];
+	[[[_controller mainSlideView] slideLayer] addWidgetToSlide:widg];
+*/
 }
 
 -(void)showErrorMessage:(CPString)message
