@@ -99,6 +99,7 @@
 			continue;
 		[_answerFields[i] setStringValue:[_widget answerAtIndex:i]];
 	}
+	[[self window] makeFirstResponder:_questionField];
 }
 
 -(void)commit

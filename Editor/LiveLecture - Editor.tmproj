@@ -13,6 +13,8 @@
 			<string>LiveLecture</string>
 			<key>regexFolderFilter</key>
 			<string>!.*/(\.[^/]*|CVS|_darcs|_MTN|\{arch\}|blib|.*~\.nib|.*\.(framework|app|pbproj|pbxproj|xcode(proj)?|bundle))$</string>
+			<key>selected</key>
+			<true/>
 			<key>sourceDirectory</key>
 			<string></string>
 		</dict>
@@ -53,62 +55,6 @@
 			<key>firstVisibleLine</key>
 			<integer>139</integer>
 		</dict>
-		<key>../CoreLecture/CCMovieWidgetLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>2</integer>
-				<key>line</key>
-				<integer>104</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>96</integer>
-		</dict>
-		<key>../CoreLecture/CCWebWidgetLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>18</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
-		<key>../CoreLecture/CCWidgetLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>1</integer>
-				<key>line</key>
-				<integer>192</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>165</integer>
-		</dict>
-		<key>../CoreLecture/TextLayer.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>39</integer>
-				<key>line</key>
-				<integer>11</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
-		</dict>
 		<key>../LLSharedUtilities/CCMovieWidget+LiveLectureAdditions.j</key>
 		<dict>
 			<key>caret</key>
@@ -123,93 +69,104 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>AppController.j</key>
+		<key>../LLSharedUtilities/LLQuizWidget.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>46</integer>
+				<integer>21</integer>
 				<key>line</key>
-				<integer>146</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>128</integer>
-		</dict>
-		<key>GrowlCappuccino/TNGrowlCenter.j</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>20</integer>
-				<key>line</key>
-				<integer>173</integer>
+				<integer>114</integer>
 			</dict>
 			<key>columnSelection</key>
 			<false/>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>149</integer>
+			<integer>86</integer>
 			<key>selectFrom</key>
 			<dict>
 				<key>column</key>
-				<integer>7</integer>
+				<integer>6</integer>
 				<key>line</key>
-				<integer>173</integer>
+				<integer>114</integer>
 			</dict>
 			<key>selectTo</key>
 			<dict>
 				<key>column</key>
-				<integer>23</integer>
+				<integer>39</integer>
 				<key>line</key>
-				<integer>173</integer>
+				<integer>114</integer>
 			</dict>
 		</dict>
-		<key>LLOnlinePersistenceHandler.j</key>
+		<key>../LLSharedUtilities/LLQuizWidgetLayer.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>14</integer>
+				<integer>28</integer>
 				<key>line</key>
-				<integer>85</integer>
+				<integer>419</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>84</integer>
+			<integer>393</integer>
+		</dict>
+		<key>280UploadButton.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>25</integer>
+				<key>line</key>
+				<integer>12</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>0</integer>
 		</dict>
 		<key>LLPresentationController.j</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>9</integer>
+				<integer>37</integer>
 				<key>line</key>
-				<integer>40</integer>
+				<integer>397</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>25</integer>
+			<integer>371</integer>
+		</dict>
+		<key>LLQuizWidgetForm.j</key>
+		<dict>
+			<key>caret</key>
+			<dict>
+				<key>column</key>
+				<integer>22</integer>
+				<key>line</key>
+				<integer>117</integer>
+			</dict>
+			<key>firstVisibleColumn</key>
+			<integer>0</integer>
+			<key>firstVisibleLine</key>
+			<integer>97</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>LLOnlinePersistenceHandler.j</string>
-		<string>../CoreLecture/CCWebWidgetLayer.j</string>
-		<string>AppController.j</string>
-		<string>../CoreLecture/CCMovieWidgetLayer.j</string>
-		<string>../CoreLecture/CCWidgetLayer.j</string>
+		<string>LLQuizWidgetForm.j</string>
+		<string>../LLSharedUtilities/LLQuizWidgetLayer.j</string>
 		<string>LLPresentationController.j</string>
-		<string>GrowlCappuccino/TNGrowlCenter.j</string>
-		<string>../CoreLecture/TextLayer.j</string>
+		<string>280UploadButton.j</string>
+		<string>../LLSharedUtilities/LLQuizWidget.j</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<false/>
 	<key>windowFrame</key>
-	<string>{{0, 4}, {1436, 874}}</string>
+	<string>{{0, 4}, {1440, 874}}</string>
 </dict>
 </plist>

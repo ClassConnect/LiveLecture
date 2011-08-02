@@ -5,7 +5,6 @@
  *	Main overarching class that handles the communication 
  *	between different parts of the application, when appropriate.
  */
-
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 @import "MediaKit/MediaKit.j"
@@ -13,8 +12,17 @@
 @import "MKMediaPanel+LLRadioSelection.j"
 @import "LLSlideThemeSelectionPanel.j"
 @import "LLFileboxPanel.j"
+@import "280UploadButton.j"
 
 var __LLPRESENTATION_SHARED__ = nil;
+
+var file_extension = function(string){
+	var c = [string componentsSeparatedByString:"."];
+	if(c.length)
+		return c[c.length-1];
+	else
+		return "";
+}
 
 @implementation LLPresentationController : CPObject
 {
@@ -25,6 +33,8 @@ var __LLPRESENTATION_SHARED__ = nil;
 	LLSlideNavigationController navigationController @accessors;
 	CCSlideView mainSlideView @accessors;
 	
+	CPAlert _alert;
+	CPString _growlIntervalID;
 	Function _alert_callback;
 	CPTextField _alert_text_field;
 	
@@ -332,24 +342,25 @@ var __LLPRESENTATION_SHARED__ = nil;
 
 -(void)showModalAlertWithText:(CPString)text informativeText:informative_text placeholder:(CPString)placeholder widgetName:(CPString)widgetname imageName:(CPString)image callback:(Function)callback
 {
-	var alert = [[CPAlert alloc] init],
-			w = [[CPApplication sharedApplication] mainWindow];
+	_alert = [[CPAlert alloc] init];
+	var	w = [[CPApplication sharedApplication] mainWindow];
 	_alert_callback = callback;
 	_alert_text_field = [CPTextField textFieldWithStringValue:"" placeholder:placeholder width:305];
-	[alert addButtonWithTitle:"Add "+widgetname];
-	[alert addButtonWithTitle:"Cancel"];
+	[_alert addButtonWithTitle:"Add "+widgetname];
+	[_alert addButtonWithTitle:"Cancel"];
 	if(widgetname == "Picture" || widgetname == "Video")
-		[alert addButtonWithTitle:"Search for "+widgetname+"s"];
-	[alert setMessageText:text];
-	[alert setInformativeText:informative_text];
-	[alert setAccessoryView:_alert_text_field];
-	[alert setIcon:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:image] size:CGSizeMake(50,50)]];
-	[alert beginSheetModalForWindow:w modalDelegate:self didEndSelector:@selector(alert:didEndWithReturnCode:) contextInfo:nil];
-	[w makeFirstResponder:_alert_text_field];
+		[_alert addButtonWithTitle:"Search for "+widgetname+"s"];
+	[_alert setMessageText:text];
+	[_alert setInformativeText:informative_text];
+	[_alert setAccessoryView:_alert_text_field];
+	[_alert setIcon:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:image] size:CGSizeMake(50,50)]];
+	[_alert beginSheetModalForWindow:w modalDelegate:self didEndSelector:@selector(alert:didEndWithReturnCode:) contextInfo:nil];
+	[[_alert window] makeFirstResponder:_alert_text_field];
 }
 
 -(void)alert:(CPAlert)alert didEndWithReturnCode:(int)returnCode
 {
+	window.clearInterval(_growlIntervalID)
 	if(returnCode == 0 && [_alert_text_field stringValue] != "")
 		_alert_callback([_alert_text_field stringValue]);
 	else
@@ -372,23 +383,96 @@ var __LLPRESENTATION_SHARED__ = nil;
 		}
 	}
 	_alert_callback = function(){};
+	[[mainSlideView window] makeFirstResponder:mainSlideView];
 }
 
 -(void)showPictureURLPanel
 {
-	[self showModalAlertWithText:"Picture URL:"
-				 informativeText:"Make sure to include 'http://'"
-					 placeholder:"http://www.google.com/images/logos/ps_logo2.png"
-					  widgetName:"Picture"
-					   imageName:"alert_icon_picture.png"
-						callback:function(text){
+	//	Since I have to show a custom view, I am just going to copy the alert code from above to here
+	_alert_callback = function(text){
 		//	Make new Picture Widget with the given URL
 		var widget = [[CCPictureWidget alloc] initWithPathToImage:text];
 		[widget setSize:CGRectMake(0,0,720,480)];
 		//	((1024 / 2) - (720 / 2)), ((768 / 2) - (480 / 2))
 		[widget setLocation:CGPointMake(152,144)];
 		[[mainSlideView slideLayer] addWidgetToSlide:widget];
-	}];
+	};
+	_alert = [[CPAlert alloc] init];
+	var w = [[CPApplication sharedApplication] mainWindow];
+	[_alert addButtonWithTitle:"Add Picture"];
+	[_alert addButtonWithTitle:"Cancel"];
+	[_alert addButtonWithTitle:"Search for Pictures"];
+	[_alert setMessageText:"Add Picture"];
+	var v = [[CPView alloc] initWithFrame:CGRectMake(0,0,305,25)],
+		button = [[UploadButton alloc] initWithFrame:CGRectMake(230,0,75,25)],
+		orLabel = [CPTextField labelWithTitle:"or"],
+		urlField = [CPTextField textFieldWithStringValue:"" placeholder:"enter url" width:200];
+	[button setTheme:[CPTheme defaultTheme]];
+	[button setTitle:"Upload"];
+	[button setBordered:YES];
+	[button setURL:"/app/livelecture/iapi_imgupload.php"];
+	[button setDelegate:self];
+	[orLabel setFrame:CGRectMake(200,2,27,17)];
+	[urlField setFrameOrigin:CGPointMake(0,0)];
+	[orLabel setAlignment:CPCenterTextAlignment];
+	_alert_text_field = urlField;
+	[v addSubview:button];
+	[v addSubview:orLabel];
+	[v addSubview:urlField];
+	[_alert setAccessoryView:v];
+	[_alert setIcon:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"alert_icon_picture.png"] size:CGSizeMake(50,50)]];
+	[_alert beginSheetModalForWindow:w modalDelegate:self didEndSelector:@selector(alert:didEndWithReturnCode:) contextInfo:nil];
+}
+
+-(void)uploadButton:(UploadButton)button didChangeSelection:(CPString)selection
+{
+	var ext = file_extension(selection)
+	if(![["png","gif","jpg","jpeg"] containsObject:ext])
+	{
+		[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Invalid Extension" message:"LiveLecture only supports png, gif, jpg, and jpeg image types" icon:TNGrowlIconError];
+		return;
+	}
+	[button setEnabled:NO];
+	for(var i = 0 ; i < [[_alert buttons] count] ; i++)
+	{
+		if([[_alert buttons][i] title] != "Cancel")
+		{
+			[[_alert buttons][i] setEnabled:NO];
+		}
+	}
+//	[[_alert buttons] makeObjectsPerformSelector:@selector(setEnabled:) withObject:NO];
+	[button submit];
+}
+
+-(void)uploadButtonDidBeginUpload:(UploadButton)button
+{
+	[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Upload Started" message:"Please wait while we upload your image"];
+	_growlIntervalID = window.setInterval(function(){
+		var messages = ["Still uploading...", "Is this a big file or what?", "We haven't forgotten about you, we are just still uploading"],
+			message = messages[Math.floor(Math.random() * 3)];
+		[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Uploading..." message:message];
+	},5000)
+}
+
+-(void)uploadButton:(UploadButton)button didFinishUploadWithData:(CPString)data
+{
+	var url = [data objectFromJSON].url;
+	[_alert_text_field setStringValue:url];
+	[self _endSheet];
+}
+
+-(void)uploadButton:(UploadButton)button didFailWithError:(CPString)error
+{
+	[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Error" message:"An error occured. Please try again" icon:TNGrowlIconError];
+	[_alert_text_field setStringValue:""];
+	[self _endSheet];
+}
+
+-(void)_endSheet
+{
+	window.clearInterval(_growlIntervalID);
+	[[CPApplication sharedApplication] endSheet:[_alert window]];
+	[[mainSlideView window] makeFirstResponder:mainSlideView];
 }
 
 -(void)showMovieURLPanel

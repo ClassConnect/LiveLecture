@@ -15,6 +15,11 @@
 	return self
 }
 
+-(void)acceptsFirstResponder
+{
+	return YES;
+}
+
 -(void)setWidget:(CCWidget)widget
 {
 	_widget = widget;
@@ -29,6 +34,12 @@
 -(void)commit
 {
 	//	Do nothing
+}
+
+-(void)simulateOK
+{
+	// Call the method the OK button would have called
+	[[self window] ok];
 }
 
 @end

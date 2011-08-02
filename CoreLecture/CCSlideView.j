@@ -371,6 +371,24 @@ function CCCallDelegateMethodWithTwoObjects(delegate,selector,object1,object2)
 	}	
 }
 
+-(void)cut:(id)sender
+{
+	if(_firstResponder && [_firstResponder respondsToSelector:@selector(cut:)])
+		[_firstResponder cut:sender];
+}
+
+-(void)copy:(id)sender
+{
+	if(_firstResponder && [_firstResponder respondsToSelector:@selector(copy:)])
+		[_firstResponder copy:sender];
+}
+
+-(void)paste:(id)sender
+{
+	if(_firstResponder && [_firstResponder respondsToSelector:@selector(paste:)])
+		[_firstResponder paste:sender];
+}
+
 -(void)showPresentationFinishedView
 {
 	if(!_isPresenting)

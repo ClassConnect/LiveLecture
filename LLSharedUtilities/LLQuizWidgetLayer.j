@@ -314,7 +314,6 @@ var _textColor = [CPColor blackColor];
 	//	Make the area below the question a lighter gray than the other
 	CGContextSetStrokeColor(context,[CPColor colorWithHexString:"666"]);
 	CGContextSetFillColor(context, [CPColor colorWithHexString:"CCC"]);
-	CGContextMoveToPoint(context, 0, qheight);
 	CGContextMoveToPoint(context, 0, radius);
 	CGContextAddLineToPoint(context, 0, size.height - radius);
 	CGContextAddArc(context, radius, size.height - radius, radius, Math.PI, Math.PI / 2, 0); //STS fixed

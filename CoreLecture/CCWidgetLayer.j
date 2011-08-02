@@ -26,6 +26,10 @@ var kMinimumWidgetSize = 50;
 	BOOL _isPresenting @accessors(readonly,property=isPresenting);
 	
 	id _delegate @accessors(property=delegate);
+	
+	CPArray _editingLayers;
+	CPArray _thumbnailLayers;
+	CPArray _presentingLayers;
 }
 
 +(CCWidgetLayer)widgetLayerForWidget:(CCWidget)widget
@@ -50,7 +54,9 @@ var kMinimumWidgetSize = 50;
 	
 	[self setAnchorPoint:CGPointMakeZero()];
 	_controls = [CPArray array];
-	
+	_editingLayers = [ ];
+	_thumbnailLayers = [ ];
+	_presentingLayers = [ ];
 	return self;
 }
 
@@ -380,15 +386,26 @@ var kMinimumWidgetSize = 50;
 		CGContextFillRect(context,[self bounds]);
 		return;
 	}
+	//	Hide all the layers, then unhide the ones for the current context
+	[_editingLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:YES];
+	[_thumbnailLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:YES];
+	[_presentingLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:YES];
 	if(_isPresenting)
 	{
+		[_presentingLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:NO];
 		[self drawWhilePresenting:context];
 		return;
 	}
 	if(_isThumbnail)
+	{
+		[_thumbnailLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:NO];
 		[self drawThumbnail:context];
+	}
 	else
+	{
+		[_editingLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:NO];
 		[self drawWhileEditing:context];
+	}
 }
 
 -(void)drawWhilePresenting:(CGContext)context
@@ -399,6 +416,8 @@ var kMinimumWidgetSize = 50;
 -(void)drawThumbnail:(CGContext)context
 {
 	//	By default, the thumbnail should be the same as the editor mode
+	//	Though we also need to make sure that the editing layers are not hidden
+	[_editingLayers makeObjectsPerformSelector:@selector(setHidden:) withObject:NO];
 	[self drawWhileEditing:context];
 }
 

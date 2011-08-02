@@ -123,11 +123,11 @@ var kCCMovieWidgetLayerPlayButton = nil;
 		swfobject.embedSWF("http://www.youtube.com/e/"+[_widget youtubeID]+"?&enablejsapi=1&version=3&"+urlparams+"&playerapiid="+[self UID],[self UID], "100%", "100%", "8", null, null, params, atts);
 		layer_to_uid_map[[self UID]] = self;
 	}
+	CGContextSetFillColor(context,[CPColor grayColor]);
+	CGContextFillRect(context,[self bounds]);
 }
 
 -(void)setWidget:(CCMovieWidget)widget {
-	if([_widget isEqual:widget])
-		return;
 	[[CPNotificationCenter defaultCenter] removeObserver:self name:CCMovieWidgetPlaybackStarted object:_widget];
 	[[CPNotificationCenter defaultCenter] removeObserver:self name:CCMovieWidgetPlaybackPaused object:_widget];
 	[[CPNotificationCenter defaultCenter] removeObserver:self name:CCMovieWidgetPlaybackStopped object:_widget];

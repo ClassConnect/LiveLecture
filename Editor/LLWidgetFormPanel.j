@@ -61,19 +61,14 @@ LLWidgetFormPanelModeEdit = "LLWidgetFormPanelModeEdit"
 
 -(CPView)_configureFormForWidget:(CCWidget)widget
 {
-//	if([_form class] != [widget formClass])
-//	{
-		var svfs = [sv frameSize];
-		_form = [[[widget formClass] alloc] initWithFrame:CGRectMake(0,0,svfs.width-15,svfs.height)];
-//	}
-	[_form setWidget:widget];
+	var svfs = [sv frameSize];
+	_form = [[[widget formClass] alloc] initWithFrame:CGRectMake(0,0,svfs.width-15,svfs.height)];
 	[sv setDocumentView:_form];
+	[_form setWidget:widget];
 }
 
 -(void)setWidget:(CCWidget)widget
 {
-	// if([widget isEqual:_widget])
-	// 	return;
 	_widget = widget;
 	[self _configureFormForWidget:widget];
 	[self _updateUI];
@@ -113,7 +108,7 @@ LLWidgetFormPanelModeEdit = "LLWidgetFormPanelModeEdit"
 
 -(void)orderFrontWidgetFormPanel
 {
-	[[LLWidgetFormPanel sharedPanel] orderFront:self];
+	[[LLWidgetFormPanel sharedPanel] makeKeyAndOrderFront:self];
 }
 
 @end
