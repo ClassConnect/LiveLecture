@@ -7,8 +7,6 @@
  */
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "MediaKit/MediaKit.j"
-@import "../CoreLecture/CoreLecture.j"
 @import "MKMediaPanel+LLRadioSelection.j"
 @import "LLSlideThemeSelectionPanel.j"
 @import "LLFileboxPanel.j"
@@ -449,9 +447,9 @@ var file_extension = function(string){
 	[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Upload Started" message:"Please wait while we upload your image"];
 	_growlIntervalID = window.setInterval(function(){
 		var messages = ["Still uploading...", "Is this a big file or what?", "We haven't forgotten about you, we are just still uploading"],
-			message = messages[Math.floor(Math.random() * 3)];
+			message = messages[Math.floor(Math.random() * messages.length)];
 		[[TNGrowlCenter defaultCenter] pushNotificationWithTitle:"Uploading..." message:message];
-	},5000)
+	},5000);
 }
 
 -(void)uploadButton:(UploadButton)button didFinishUploadWithData:(CPString)data
@@ -470,9 +468,9 @@ var file_extension = function(string){
 
 -(void)_endSheet
 {
-	window.clearInterval(_growlIntervalID);
+   	window.clearInterval(_growlIntervalID);
 	[[CPApplication sharedApplication] endSheet:[_alert window]];
-	[[mainSlideView window] makeFirstResponder:mainSlideView];
+	[[mainSlideView window] makeFirstResponder:mainSlideView]; 
 }
 
 -(void)showMovieURLPanel
@@ -485,12 +483,12 @@ var file_extension = function(string){
 						callback:function(text){
 		//	Make new Movie Widget with the given URL
 		var widget;
-		if(text.indexOf("youtube.com") == -1)
-			widget = [[CCMovieWidget alloc] initWithYoutubeID:text];
-		else
+		if(text.indexOf("youtube.com") == -1 && text.indexOf("youtu.be") == -1)
 		{
-			widget = [[CCMovieWidget alloc] initWithFile:text];
+			widget = [[CCMovieWidget alloc] initWithYoutubeID:text];
 		}
+		else
+			widget = [[CCMovieWidget alloc] initWithFile:text];
 		[widget setSize:CGRectMake(0,0,720,480)];
 		//	((1024 / 2) - (720 / 2)), ((768 / 2) - (480 / 2))
 		[widget setLocation:CGPointMake(152,144)];

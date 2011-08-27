@@ -1,6 +1,5 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 
 var __LLSLIDETHEMEMANAGER_THEMEURL__ = "Resources/Themes/themes.json";
 

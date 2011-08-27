@@ -4,35 +4,27 @@
  *
  * Created by Scott Rice on January 12, 2011.
  * Copyright 2011, ClassConnect All rights reserved.
- *
- *	Class that is called as soon as the application loads
  */
-
-//	Debug
-//HOST = "http://ccinternal.com"
-//	Production
-HOST = ""
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "MediaKit/MediaKit.j"
-@import "GrowlCappuccino/GrowlCappuccino.j"
+@import <MediaKit/MediaKit.j>
+@import <GrowlCappuccino/GrowlCappuccino.j>
+// @import <CoreLecture/CoreLecture.j>
+// @import <LiveLectureUtilities/LiveLectureUtilities.j>
 @import "../CoreLecture/CoreLecture.j"
+@import "../LiveLectureUtilities/LiveLectureUtilities.j"
 @import "ERIC_EDIT_ME.j"
 @import "LLUser.j"
 @import "EKGradientView.j"
 @import "LLInspectorPanel.j"
 @import "LLWidgetFormPanel.j"
 @import "LLSlideThemeManager.j"
+@import "LLClassSelectorPanel.j"
 @import "LLPreviewEventHandler.j"
 @import "LLPresentationController.j"
 @import "LLOnlinePersistenceHandler.j"
 @import "LLSlideNavigationViewController.j"
-
-@import "../LLSharedUtilities/LLSlideCollectionItem.j"
-@import "../LLSharedUtilities/LLQuizWidget.j"
-@import "../LLSharedUtilities/LLQuizWidgetLayer.j"
-@import "../LLSharedUtilities/CCMovieWidget+LiveLectureAdditions.j"
 
 // Identifiers
 //	TODO: Make 'Other Widgets' bring up a panel where the user can drag in widgets that their school has added
@@ -162,17 +154,6 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 		if([[LLPresentationController sharedController] isDirty])
 			return "You have unsaved changes, are you sure you want to leave?";
 	}
-	
-	//	Add the widget I am currently testing on the slide
-	// var widg = [[LLQuizWidget alloc] initWithQuestion:"Lady?" possibleAnswers:["G","a","g","a"]];
-	// [widg setSize:CGRectMake(0,0,720,480)];
-	// [widg setLocation:CGPointMake(100,100)];
-	// [[[_controller mainSlideView] slideLayer] addWidgetToSlide:widg];
-//	var widg = [[CCWebWidget alloc] initWithURL:"http://localhost/test.html"];
-	var widg = [[CCWebWidget alloc] initWithURL:"http://apple.com/"];
-	[widg setSize:CGRectMake(0,0,720,480)];
-	[widg setLocation:CGPointMake(100,100)];
-	[[[_controller mainSlideView] slideLayer] addWidgetToSlide:widg];
 }
 
 -(void)showErrorMessage:(CPString)message
@@ -203,13 +184,18 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	[[menu itemWithTitle:"Save"] setTarget:[LLOnlinePersistenceHandler sharedHandler]];
 	[[menu itemWithTitle:"Save"] setAction:@selector(save)];
 	
+	var hostItem = [[CPMenuItem alloc] initWithTitle:"Host this LiveLecture" action:@selector(host) keyEquivalent:""];
+	[hostItem setTarget:self];
+	[hostItem setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_host.png"] size:CGSizeMake(16,16)]];
 	var helpItem = [[CPMenuItem alloc] initWithTitle:"Help" action:@selector(help) keyEquivalent:""];
 	[helpItem setTarget:self];
+	[helpItem setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_help.png"] size:CGSizeMake(16,16)]];
 	var backItem = [[CPMenuItem alloc] initWithTitle:"Back to ClassConnect" action:@selector(back) keyEquivalent:""];
 	[backItem setTarget:self];
 	[backItem setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_back.png"] size:CGSizeMake(16,16)]];
 	[menu addItem:backItem];
 	[menu addItem:helpItem];
+	[menu addItem:hostItem];
 }
 
 -(void)back
@@ -226,6 +212,13 @@ var LLToolbarNewSlideItemIdentifier = "LLToolbarNewSlideItemIdentifier",
 	[webview setMainFrameURL:kLLInstructionalVideo];
 	[contentView addSubview:webview];
 	[window orderFront:self];
+}
+
+-(void)host
+{
+    [[LLClassSelectorPanel sharedPanel] runModalWithSuccessFunction:function(selected){
+        window.location.href = "/app/livelecture/cacheswap.php?classID="+[selected classID]+"&fid="+[[LLOnlinePersistenceHandler sharedHandler] liveLectureID];
+    }];
 }
 
 - (CPArray)toolbarAllowedItemIdentifiers:(CPToolbar)aToolbar {

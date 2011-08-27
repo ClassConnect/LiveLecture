@@ -186,10 +186,8 @@ var UPLOAD_IFRAME_PREFIX = "UPLOAD_IFRAME_",
 
 - (void)uploadDidFinishWithResponse:(CPString)response
 {   
-//	window.setTimeout(function(){
     if ([_delegate respondsToSelector:@selector(uploadButton:didFinishUploadWithData:)])
         [_delegate uploadButton: self didFinishUploadWithData: response];
-//	},2000);
 }
 
 - (void)uploadDidFailWithError:(CPString)anError

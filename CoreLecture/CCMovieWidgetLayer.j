@@ -8,7 +8,7 @@
 @import <AppKit/AppKit.j>
 @import "CCWidgetLayer.j"
 
-@import "swfobject.js"
+@import "Resources/swfobject.js"
 
 CCMovieWidgetPlaybackStarted = "CCMovieWidgetPlaybackStarted"
 CCMovieWidgetPlaybackPaused = "CCMovieWidgetPlaybackPaused"

@@ -1,6 +1,5 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "MediaKit/MediaKit.j"
 
 @implementation MKMediaPanel (LLRadioSelection)
 

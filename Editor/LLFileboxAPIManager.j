@@ -13,17 +13,7 @@ kLLFileboxFileTypeWebsiteDragType = "kLLFileboxFileTypeWebsiteDragType";
 
 function _iapi_url_for_folder(folder)
 {
-	return "/app/livelecture/iapi_filebox.cc?fid="+folder;
-}
-
-function _iapi_folders_url_for_folder(folder)
-{
-	return "/app/livelecture/iapi_filebox_folders.cc?fid="+folder;
-}
-
-function _iapi_files_url_for_folder(folder)
-{
-	return "/app/livelecture/iapi_filebox_files.cc?fid="+folder;
+	return "/app/livelecture/iapi_filebox.php?fid="+folder;
 }
 
 ///////////////////////////////////////////////////////////
@@ -43,7 +33,7 @@ function _iapi_files_url_for_folder(folder)
 }
 -(CPString)typeIconURL
 {
-	return HOST+"/app/core/site_img/fileBox/folder.png";
+	return "/app/core/site_img/fileBox/folder.png";
 }
 @end
 

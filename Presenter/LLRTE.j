@@ -6,12 +6,11 @@
 @import <Foundation/Foundation.j>
 @import <Foundation/CPObjJRuntime.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 @import "LLUser.j"
 @import "LLStudentListManager.j"
 @import "CCWidget+LLRTEAdditions.j"
 
-@import "faye.js"
+@import "Resources/faye.js"
 
 kLLRTEChannelEveryone = "kLLRTEChannelEveryone"
 kLLRTEChannelTeachers = "kLLRTEChannelTeachers"

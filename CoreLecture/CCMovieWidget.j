@@ -20,7 +20,7 @@
 	return [[filename stringByReplacingOccurrencesOfString:@"&autoplay=1" withString:@""] stringByReplacingOccurrencesOfString:@"&autoplay=0" withString:@""];
 }
 
-//	
+//	Take a string of an unknown format and turn it into a youtube ID
 +(CPString)_youtubeIDFromFilename:(CPString)filename
 {
 	var yid = "";
@@ -32,14 +32,21 @@
 	}
 	else
 	{
-		var yid_location = filename.indexOf("v=");
-		//	Move it over so that yid_location now points to the start of the youtube id
-		yid_location += 2;
-		while((yid_location < filename.length) && (filename.charAt(yid_location) != "&"))
-		{
-			yid += filename.charAt(yid_location);
-			yid_location++;
-		}
+	    if(filename.indexOf("youtu.be") != -1)
+	    {
+	        yid = [filename stringByReplacingOccurrencesOfString:@"http://youtu.be/" withString:@""];
+	    }
+	    else
+	    {
+	        var yid_location = filename.indexOf("v=");
+    		//	Move it over so that yid_location now points to the start of the youtube id
+    		yid_location += 2;
+    		while((yid_location < filename.length) && (filename.charAt(yid_location) != "&"))
+    		{
+    			yid += filename.charAt(yid_location);
+    			yid_location++;
+    		}
+	    }
 	}
 	return yid;
 }

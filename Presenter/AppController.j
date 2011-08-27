@@ -6,26 +6,26 @@
  * Copyright 2011, ClassConnect All rights reserved.
  */
 
-//	Debug
-//HOST = "http://ccinternal.com"
-//	Production
-HOST = ""
-
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
+// @import <CoreLecture/CoreLecture.j>
+// @import <LiveLectureUtilities/LiveLectureUtilities.j>
 @import "../CoreLecture/CoreLecture.j"
+@import "../LiveLectureUtilities/LiveLectureUtilities.j"
 @import "LLPresentationController.j"
 @import "LLPresentationEventHandler.j"
 @import "LLRTE.j"
 @import "LLUser.j"
 @import "EKGradientView.j"
 @import "LLSidebarController.j"
-@import "LLAnnoyingGrayScreenView.j"
 @import "CCSlideView+LLSidebarAdditions.j"
 
-@import "../LLSharedUtilities/LLQuizWidget.j"
-@import "../LLSharedUtilities/LLQuizWidgetLayer.j"
-@import "../LLSharedUtilities/CCMovieWidget+LiveLectureAdditions.j"
+//  The final word in the name represents the state of the sidebar when it uses
+//  that image. So an open sidebar would use the SIDEBAR_ICON_OPEN image, which
+//  would most likely have the word 'close' or something similar on it.
+SIDEBAR_TAB_SIZE = CGSizeMake(44,200);
+SIDEBAR_ICON_OPEN = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:self] pathForResource:"sidebar_icon_open.png"] size:SIDEBAR_TAB_SIZE];
+SIDEBAR_ICON_CLOSE = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:self] pathForResource:"sidebar_icon_close.png"] size:SIDEBAR_TAB_SIZE];
 
 @implementation AppController : CPObject {
 	CPView _contentView;
@@ -35,6 +35,8 @@ HOST = ""
 	CPURLConnection _loadConnection;
 	CPURLConnection _configConnection;
 	LLPresentationController _controller;
+	
+	CPButton _sidebarButton @accessors(readonly,property=sidebarButton);
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification {
@@ -56,7 +58,7 @@ HOST = ""
 			var lid = [args objectForKey:@"lid"];
 			[[LLPresentationController sharedController] setIsFile:NO];
 			[[LLPresentationController sharedController] setLivelectureID:lid];
-			url = [CPURL URLWithString:HOST + "/app/livelecture/config.cc?lid="+lid];
+			url = [CPURL URLWithString:"/app/livelecture/config.php?lid="+lid];
 		}
 		else
 		{
@@ -71,7 +73,7 @@ HOST = ""
 			[user setIsTeacher:YES];
 			[user setVideoEnabled:NO];
 			user._allowed = YES;
-			url = [CPURL URLWithString:HOST + "/app/livelecture/config.cc?fid="+fid+"&cid="+cid];
+			url = [CPURL URLWithString:"/app/livelecture/config.php?fid="+fid+"&cid="+cid];
 		}
 		var req = [CPURLRequest requestWithURL:url],
 			_configConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
@@ -165,33 +167,19 @@ HOST = ""
 		[[LLPresentationController sharedController] setShowsSidebar:NO animated:YES];
 		
 		//	Setup the arrow that will let the user click and open the sidebar
-		var arrowSize = 64;
-/*
-		var sidebarButton = [CPButton buttonWithTitle:""];
-		[sidebarButton setBordered:NO];
-		[sidebarButton setImage:[[CPImage alloc] initWithContentsOfFile:[[CPBundle mainBundle] pathForResource:"icon_sidebar_arrow.png"] size:CGSizeMake(arrowSize,arrowSize)]];
-		[sidebarButton setImagePosition:CPImageOnly];
-		[sidebarButton setTarget:_controller];
-		[sidebarButton setAction:@selector(toggleSidebar)];
-		//	Initially positions it on the bottom left
-		[sidebarButton setFrame:CGRectMake(0,CGRectGetHeight([_contentView bounds])-arrowSize,arrowSize,arrowSize)];
-		//	Makes it stay on the bottom left when the frame changes
-		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin];
-		[view addSubview:sidebarButton];
-*/
-		var gradient = [[EKGradientView alloc] initWithFrame:CGRectMake(0,0,20,[_contentView bounds].size.height)];
-		[gradient setColor2:[CPColor blackColor]];
-		[gradient setColor1:[CPColor colorWithRed:(50/255) green:(50/255) blue:(50/255) alpha:1]];
-		[gradient setOrientation:"vertical"];
-		[gradient setAutoresizingMask:CPViewMaxXMargin|CPViewHeightSizable];
-		var sidebarButton = [CPButton buttonWithTitle:""];
-		[sidebarButton setFrame:[gradient bounds]];
-		[sidebarButton setBordered:NO];
-		[sidebarButton setTarget:_controller];
-		[sidebarButton setAction:@selector(toggleSidebar)];
-		[sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin|CPViewHeightSizable];
-		[gradient addSubview:sidebarButton];
-		[view addSubview:gradient];
+		var sidebar_tab_width = SIDEBAR_TAB_SIZE.width,
+		    sidebar_tab_height = SIDEBAR_TAB_SIZE.height;
+		_sidebarButton = [CPButton buttonWithTitle:""];
+		[_sidebarButton setBordered:NO];
+		[_sidebarButton setImage:SIDEBAR_ICON_CLOSE];
+		[_sidebarButton setImagePosition:CPImageOnly];
+		[_sidebarButton setTarget:_controller];
+		[_sidebarButton setAction:@selector(toggleSidebar)];
+		//  Initially position it in the middle of the screen vertically, but at 0px horizontally
+		[_sidebarButton setFrame:CGRectMake(0,([_contentView frameSize].height-sidebar_tab_height)/2,sidebar_tab_width,sidebar_tab_height)];
+		//  Make sure it stays there when the frame changes
+		[_sidebarButton setAutoresizingMask:CPViewMinYMargin|CPViewMaxXMargin|CPViewMaxYMargin];
+		[view addSubview:_sidebarButton];
 		
 		if(![[LLUser currentUser] isTeacher])
 		{
@@ -217,7 +205,7 @@ HOST = ""
 		}
 		[_label setStringValue:"Loading LiveLecture Presentation"];
 		[_progressBar setDoubleValue:10];
-		var urlstr = HOST + "/app/livelecture/load.cc?"+(([_controller isFile]) ? "fid" : "lid")+"="+[_controller livelectureID]+(([_controller isFile]) ? "&cid="+[_controller classID] : "");
+		var urlstr = "/app/livelecture/load.php?"+(([_controller isFile]) ? "fid" : "lid")+"="+[_controller livelectureID]+(([_controller isFile]) ? "&cid="+[_controller classID] : "");
 		var req = [CPURLRequest requestWithURL:[CPURL URLWithString:urlstr]];
 		_loadConnection = [[CPURLConnection alloc] initWithRequest:req delegate:self startImmediately:NO];
 		_timer = [CPTimer scheduledTimerWithTimeInterval:.05 callback:function(){

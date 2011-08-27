@@ -1,6 +1,5 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 @import "LLInspectorPanel.j"
 
 @implementation CCWidgetInspectorContentView : CPView

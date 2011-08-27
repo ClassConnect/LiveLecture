@@ -5,7 +5,6 @@
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 @import "CPPropertyAnimation.j"
 @import "LLSidebarController.j"
 
@@ -160,6 +159,7 @@ LLCurrentSlideDidChangeNotification = "LLCurrentSlideDidChangeNotification"
 		[mainSlideView setFrame:(_showsSidebar ? sidebarVisibleSlideViewFrame : sidebarHiddenSlideViewFrame)];
 		[[mainSlideView slideLayer] reposition];
 	}
+	[[[[CPApplication sharedApplication] delegate] sidebarButton] setImage:(_showsSidebar ? SIDEBAR_ICON_OPEN : SIDEBAR_ICON_CLOSE)];
 }
 
 -(BOOL)sidebarIsLocked

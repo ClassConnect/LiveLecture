@@ -6,7 +6,6 @@
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 
 var __LLUSER_SHARED__ = nil
 

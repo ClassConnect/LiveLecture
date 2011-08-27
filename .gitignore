@@ -12,6 +12,14 @@ config/*
 # Thumbnails
 ._*
 
+# Ignore all the build directories
+Editor/Build
+Presenter/Build
+
+# Also ignore the compiled directories
+Editor.release
+Presenter.release
+
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes

@@ -1,7 +1,6 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 @import <AppKit/CPAccordionView.j>
-@import "../CoreLecture/CoreLecture.j"
 @import "LLSlidePickerController.j"
 @import "LLStudentListViewController.j"
 @import "LLTokBoxViewController.j"

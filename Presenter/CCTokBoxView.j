@@ -2,7 +2,7 @@
 @import <AppKit/AppKit.j>
 @import "CPArray+CCAdditions.j"
 
-@import "TokBox.js"
+@import "Resources/TokBox.js"
 
 var kCCTokBoxAPIKey = "627682";
 

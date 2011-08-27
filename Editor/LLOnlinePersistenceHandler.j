@@ -7,8 +7,8 @@
 var __LLONLINEPERSISTENCEHANDLER_SHARED__ = nil;
 
 //var kLLLoadURL = "/app/livelecture/pptconversiontest.php";
-var kLLLoadURL = HOST+"/app/livelecture/load.cc";
-var kLLSaveURL = HOST+"/app/livelecture/save.cc";
+var kLLLoadURL = "/app/livelecture/load.php";
+var kLLSaveURL = "/app/livelecture/save.php";
 
 LLOnlinePersistanceSaveSuccessful = "LLOnlinePersistanceSaveSuccessful";
 LLOnlinePersistanceLoadSuccessful = "LLOnlinePersistanceLoadSuccessful";

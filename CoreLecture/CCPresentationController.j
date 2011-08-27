@@ -8,11 +8,9 @@
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "MediaKit/MediaKit.j"
 @import "CCSlideView.j"
 @import "CCSlideLayer.j"
 @import "CCPresentation.j"
-//@import "LLSlideNavigationViewController.j"
 
 var __CCPRESENTATION_SHARED__ = nil
 

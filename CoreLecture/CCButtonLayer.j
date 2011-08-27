@@ -1,10 +1,11 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CCEvent.j"
+@import "CCEvent.j"
 
 @implementation CCButtonLayer : CALayer
 {
 	CPImage _image @accessors(property=image);
+	CPImage _imageForDisabled @accessors(property=imageForDisabled);
 	
 	id _target @accessors(property=target);
 	SEL _action @accessors(property=action);
@@ -52,6 +53,14 @@
 	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:image];
 }
 
+-(void)setImageForDisabled:(CPImage)image
+{
+	if(_imageForDisabled == image)
+		return;
+	_imageForDisabled = image;
+	[[CPNotificationCenter defaultCenter] addObserver:self selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:image];
+}
+
 -(void)mouseDown:(CCEvent)event
 {
 	if(_enabled)
@@ -68,11 +77,14 @@
 
 -(void)drawInContext:(CGContext)context
 {
-	if(_enabled)
-	{
-		if([_image loadStatus] == CPImageLoadStatusCompleted)
-			CGContextDrawImage(context,[self bounds],_image)
-	}
+	var image = [self imageForState];
+	if([image loadStatus] == CPImageLoadStatusCompleted)
+		CGContextDrawImage(context,[self bounds],image)
+}
+
+-(void)imageForState
+{
+	return _enabled ? _image : _imageForDisabled;
 }
 
 @end

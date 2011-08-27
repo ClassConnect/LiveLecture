@@ -1,6 +1,5 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 
 @implementation CCSlideView (LLSidebarAdditions)
 
@@ -8,7 +7,7 @@
 {
 	var p = [self convertPoint:[event locationInWindow] fromView:nil],
 		c = [LLPresentationController sharedController]
-	if(![c showsSidebar] && p.x < 50)
+	if(![c showsSidebar] && p.x < 44)
 	{
 		[c setShowsSidebar:YES animated:YES];
 		return;

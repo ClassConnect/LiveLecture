@@ -2,11 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CPApplicationDelegateClass</key>
-	<string>AppController</string>
+	<key>CPBundleIdentifier</key>
+	<string>com.classconnet.CoreLecture</string>
+	<key>CPBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
 	<key>CPBundleName</key>
-	<string>LiveLecture</string>
-	<key>CPPrincipalClass</key>
-	<string>CPApplication</string>
+	<string>CoreLecture</string>
+	<key>CPBundlePackageType</key>
+	<string>FMWK</string>
 </dict>
 </plist>

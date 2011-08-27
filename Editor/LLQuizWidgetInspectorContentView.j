@@ -1,8 +1,6 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../CoreLecture/CoreLecture.j"
 @import "CCWidgetInspectorContentView.j"
-@import "../LLSharedUtilities/LLQuizWidget.j"
 
 @implementation LLQuizWidgetInspectorContentView : CCWidgetInspectorContentView
 {

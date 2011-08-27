@@ -5,7 +5,6 @@
 
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
-@import "../LLSharedUtilities/LLSlideCollectionItem.j"
 @import "CPCollectionView+LLMutableContent.j"
 
 var LLSlideDragType = "LLSlideDragType";

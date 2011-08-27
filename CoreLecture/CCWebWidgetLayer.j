@@ -10,7 +10,7 @@
 @import "CCWebWidget.j"
 @import "TextLayer.j"
 
-var BORDER = 8;
+var BORDER = 4;
 var BUTTONY = 5;
 
 //	To still load these here while the CCWebWidgetLayer class still isn't
@@ -19,6 +19,8 @@ var BUTTONY = 5;
 var _GLOBE_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_globe.png"] size:CGSizeMake(128,128)];
 var _BACK_ARROW_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_back.png"] size:CGSizeMake(24,24)];
 var _FORWARD_ARROW_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_forward.png"] size:CGSizeMake(24,24)];
+var _BACK_DISABLED_ARROW_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_back_disabled.png"] size:CGSizeMake(24,24)];
+var _FORWARD_DISABLED_ARROW_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_forward_disabled.png"] size:CGSizeMake(24,24)];
 var _NEW_TAB_ICON_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:[CCWebWidget class]] pathForResource:@"widget_resource_web_new_tab.png"] size:CGSizeMake(24,24)];
 
 @implementation CCWebWidgetLayer : CCWidgetLayer
@@ -80,16 +82,18 @@ var _NEW_TAB_ICON_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleFo
 	
 	var bundle = [CPBundle bundleForClass:[self class]];
 	_backButton = [CCButtonLayer buttonWithImage:_BACK_ARROW_];
-	if([_BACK_ARROW_ loadStatus] != CPImageLoadStatusCompleted)
-		[[CPNotificationCenter defaultCenter] addObserver:_backButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_BACK_ARROW_];
+	[_backButton setImageForDisabled:_BACK_DISABLED_ARROW_];
+	// [[CPNotificationCenter defaultCenter] addObserver:_backButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_BACK_ARROW_];
+	// [[CPNotificationCenter defaultCenter] addObserver:_backButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_BACK_DISABLED_ARROW_];
 	[_backButton setTarget:self];
 	[_backButton setAction:@selector(back)];
 	[_backButton setPosition:CGPointMake(20,BUTTONY)];
 	[_backButton setBounds:CGRectMake(0,0,20,20)];
 	
 	_forwardButton = [CCButtonLayer buttonWithImage:_FORWARD_ARROW_];
-	if([_FORWARD_ARROW_ loadStatus] != CPImageLoadStatusCompleted)
-		[[CPNotificationCenter defaultCenter] addObserver:_forwardButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_FORWARD_ARROW_];
+	[_forwardButton setImageForDisabled:_FORWARD_DISABLED_ARROW_];
+	// [[CPNotificationCenter defaultCenter] addObserver:_forwardButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_FORWARD_ARROW_];
+	// [[CPNotificationCenter defaultCenter] addObserver:_forwardButton selector:@selector(setNeedsDisplay) name:CPImageDidLoadNotification object:_FORWARD_DISABLED_ARROW_];
 	[_forwardButton setTarget:self];
 	[_forwardButton setAction:@selector(forward)];
 	[_forwardButton setPosition:CGPointMake(49,BUTTONY)];
@@ -144,7 +148,7 @@ var _NEW_TAB_ICON_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleFo
 	// -----
 	[_thumbnailText setHidden:tth];
 	
-	_iframe.src = [widget URL];
+	_iframe.src = "";
 }
 
 -(void)drawWhileEditing:(CGContext)context
@@ -163,6 +167,8 @@ var _NEW_TAB_ICON_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleFo
 
 -(void)drawWhilePresenting:(CGContext)context
 {
+	if(_iframe.src != [_widget URL])
+		_iframe.src = [_widget URL];
 	[self drawChromeInContext:context withDrawingCallback:function(contentFrame){
 		CGContextSetFillColor(context,[CPColor whiteColor]);
 		//	Fill the website area, so that it emulates what a web browser would show
@@ -202,12 +208,16 @@ var _NEW_TAB_ICON_ = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleFo
 
 -(void)back
 {
+	[_backButton setEnabled:NO];
+	[_forwardButton setEnabled:NO];
 	_usedBack = YES;
 	_iframe.contentWindow.history.back();
 }
 
 -(void)forward
 {
+	[_backButton setEnabled:NO];
+	[_forwardButton setEnabled:NO];
 	_usedForward = YES;
 	_iframe.contentWindow.history.forward();
 }

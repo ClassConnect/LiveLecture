@@ -1,0 +1,1 @@
+@STATIC;1.0;u;31;Resources/MediaFilterCenter.png71;mhtml:Browser.environment/MHTMLData.txt!Resources/MediaFilterCenter.pngu;32;Resources/MediaFilterLeftCap.png72;mhtml:Browser.environment/MHTMLData.txt!Resources/MediaFilterLeftCap.pngu;33;Resources/MediaFilterRightCap.png73;mhtml:Browser.environment/MHTMLData.txt!Resources/MediaFilterRightCap.png
