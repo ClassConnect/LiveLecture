@@ -1,4 +1,8 @@
 #! /bin/bash
+
+# Thank you Ted Kalaw for your contribution to this file (the 'comment_import'
+# and 'uncomment_import' functions). I couldn't have done it without you bro!
+
 function bold_echo {
   echo ----------------------------
   echo $1
