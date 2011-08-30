@@ -84,8 +84,8 @@ LLWidgetFormPanelModeEdit = "LLWidgetFormPanelModeEdit"
 
 -(void)_updateUI
 {
-	[_okButton setTitle:(_mode == LLWidgetFormPanelModeNew ? @"Add" : @"Edit")];
-	[self setTitle:(_mode == LLWidgetFormPanelModeNew ? @"New" : @"Edit")+" "+[_widget name]];	
+	[_okButton setTitle:(_mode == LLWidgetFormPanelModeNew ? @"Add" : @"Update")];
+	[self setTitle:(_mode == LLWidgetFormPanelModeNew ? @"New" : @"Update")+" "+[_widget name]];	
 }
 
 -(void)ok

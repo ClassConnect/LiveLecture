@@ -13,12 +13,18 @@ config/*
 ._*
 
 # Ignore all the build directories
-Editor/Build
-Presenter/Build
+*/Build
 
 # Also ignore the compiled directories
 Editor.release
 Presenter.release
+
+# Ignore the compiled versions of CoreLecture and LiveLectureUtilities, those should be rebuit
+# before release anyway
+Editor/Frameworks/CoreLecture
+Presenter/Frameworks/CoreLecture
+Editor/Frameworks/LiveLectureUtilities
+Presenter/Frameworks/LiveLectureUtilities
 
 # Files that might appear on external disk
 .Spotlight-V100

@@ -122,7 +122,7 @@
 
 -(CPString)thumbnailURL
 {
-	return "http://img.youtube.com/vi/"+_youtubeID+"1.jpg";
+	return "http://img.youtube.com/vi/"+_youtubeID+"/1.jpg";
 }
 
 -(BOOL)isEqual:(CCMovieWidget)rhs

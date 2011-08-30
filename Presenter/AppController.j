@@ -23,7 +23,7 @@
 //  The final word in the name represents the state of the sidebar when it uses
 //  that image. So an open sidebar would use the SIDEBAR_ICON_OPEN image, which
 //  would most likely have the word 'close' or something similar on it.
-SIDEBAR_TAB_SIZE = CGSizeMake(44,200);
+SIDEBAR_TAB_SIZE = CGSizeMake(40,179);
 SIDEBAR_ICON_OPEN = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:self] pathForResource:"sidebar_icon_open.png"] size:SIDEBAR_TAB_SIZE];
 SIDEBAR_ICON_CLOSE = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleForClass:self] pathForResource:"sidebar_icon_close.png"] size:SIDEBAR_TAB_SIZE];
 
@@ -190,6 +190,7 @@ SIDEBAR_ICON_CLOSE = [[CPImage alloc] initWithContentsOfFile:[[CPBundle bundleFo
 		{
 			//	Do teacher specific config
 			[[LLRTE sharedInstance] sendSlideAction:kLLRTEActionMoveToSlide withArguments:[0]];
+			[[LLPresentationController sharedController] setShowsSidebar:YES animated:NO];
 		}
 		window.onbeforeunload = function() {
 			if(![[LLPresentationController sharedController] stopped] && [[LLUser currentUser] isTeacher] && [[LLUser currentUser] RTEEnabled] && ![[LLPresentationController sharedController] isFile])
